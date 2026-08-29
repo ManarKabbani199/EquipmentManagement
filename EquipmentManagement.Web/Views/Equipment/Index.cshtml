@@ -1,0 +1,160 @@
+@model IEnumerable<EquipmentManagement.Domain.Entities.Equipment>
+
+@{
+    ViewData["Title"] = "المعدات";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>المعدات</h1>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create"
+           class="btn btn-primary">
+            إضافة معدة
+        </a>
+    }
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        لا توجد معدات حاليًا.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-striped align-middle">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>الصورة</th>
+                    <th>اسم المعدة</th>
+                    <th>الرقم التسلسلي</th>
+                    <th>الوصف</th>
+                    <th>تاريخ الشراء</th>
+                    <th>سعر الشراء</th>
+                    <th>الحالة</th>
+                    <th>التصنيف</th>
+                    <th>العمليات</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ImagePath))
+                            {
+                                <a href="@item.ImagePath"
+                                   target="_blank">
+
+                                    <img src="@item.ImagePath"
+                                         alt="صورة @item.Name"
+                                         class="img-thumbnail"
+                                         style="width:100px;
+                                                height:80px;
+                                                object-fit:cover;" />
+
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    لا توجد صورة
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @item.Name
+                        </td>
+
+                        <td>
+                            @item.SerialNumber
+                        </td>
+
+                        <td>
+                            @item.Description
+                        </td>
+
+                        <td>
+                            @item.PurchaseDate.ToString("yyyy/MM/dd")
+                        </td>
+
+                        <td>
+                            @item.PurchasePrice.ToString("N2")
+                        </td>
+
+                        <td>
+                            @if (item.IsAvailable)
+                            {
+                                <span class="badge bg-success">
+                                    متاحة
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    مستعارة
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @if (item.Category != null)
+                            {
+                                @item.Category.Name
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+
+                        <td>
+                            <a asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn btn-info btn-sm">
+                                التفاصيل
+                            </a>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-warning btn-sm">
+                                    تعديل
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-danger btn-sm">
+                                    حذف
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+}

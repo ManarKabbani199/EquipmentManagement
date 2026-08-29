@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="EquipmentManagement.Application/EquipmentManagement.Application.csproj" />
+  <Project Path="EquipmentManagement.Domain/EquipmentManagement.Domain.csproj" />
+  <Project Path="EquipmentManagement.Infrastructure/EquipmentManagement.Infrastructure.csproj" />
+  <Project Path="EquipmentManagement.Web/EquipmentManagement.Web.csproj" />
+</Solution>

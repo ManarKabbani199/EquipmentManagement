@@ -1,0 +1,116 @@
+@model EquipmentManagement.Domain.Entities.BorrowingRecord
+
+@{
+    ViewData["Title"] = "تفاصيل الاستعارة";
+}
+
+<h1>تفاصيل الاستعارة</h1>
+
+<hr />
+
+<div class="card">
+    <div class="card-body">
+
+        <dl class="row">
+
+            <dt class="col-sm-3">
+                اسم المعدة
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.Equipment.Name
+            </dd>
+
+            <dt class="col-sm-3">
+                اسم الموظف
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.Employee.FullName
+            </dd>
+
+            <dt class="col-sm-3">
+                تاريخ الاستعارة
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.BorrowDate.ToString("yyyy/MM/dd HH:mm")
+            </dd>
+
+            <dt class="col-sm-3">
+                تاريخ الإرجاع المتوقع
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.ExpectedReturnDate.ToString("yyyy/MM/dd HH:mm")
+            </dd>
+
+            <dt class="col-sm-3">
+                تاريخ الإرجاع الفعلي
+            </dt>
+
+            <dd class="col-sm-9">
+                @if (Model.ActualReturnDate.HasValue)
+                {
+                    @Model.ActualReturnDate.Value.ToString("yyyy/MM/dd HH:mm")
+                }
+                else
+                {
+                    <span>-</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3">
+                حالة الاستعارة
+            </dt>
+
+            <dd class="col-sm-9">
+                @if (Model.IsReturned)
+                {
+                    <span class="badge bg-success">
+                        تم الإرجاع
+                    </span>
+                }
+                else if (Model.ExpectedReturnDate < DateTime.Now)
+                {
+                    <span class="badge bg-danger">
+                        متأخرة
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-warning text-dark">
+                        قيد الاستعارة
+                    </span>
+                }
+            </dd>
+
+        </dl>
+
+    </div>
+</div>
+
+<div class="mt-3">
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        العودة إلى القائمة
+    </a>
+
+    @if (User.IsInRole("Admin") && !Model.IsReturned)
+    {
+        <form asp-action="ReturnEquipment"
+              asp-route-id="@Model.Id"
+              method="post"
+              class="d-inline">
+
+            <button type="submit"
+                    class="btn btn-success"
+                    onclick="return confirm('هل تريدين تأكيد إرجاع هذه المعدة؟');">
+                إرجاع المعدة
+            </button>
+
+        </form>
+    }
+
+</div>

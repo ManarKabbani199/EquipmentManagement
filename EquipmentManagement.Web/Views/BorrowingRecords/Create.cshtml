@@ -1,0 +1,243 @@
+@model EquipmentManagement.Domain.Entities.BorrowingRecord
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "استعارة معدة";
+
+    var equipmentImages =
+        ViewData["EquipmentImages"]
+            as Dictionary<int, string>
+        ?? new Dictionary<int, string>();
+}
+
+<h1>استعارة معدة</h1>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-md-6 col-lg-5">
+
+        <form asp-action="Create"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            <!-- اختيار المعدة -->
+            <div class="form-group mb-3">
+
+                <label asp-for="EquipmentId"
+                       class="control-label">
+                    المعدة
+                </label>
+
+                <select asp-for="EquipmentId"
+                        class="form-select"
+                        asp-items="ViewBag.EquipmentId">
+
+                    <option value="">
+                        -- اختاري المعدة --
+                    </option>
+
+                </select>
+
+                <span asp-validation-for="EquipmentId"
+                      class="text-danger">
+                </span>
+
+                <!-- صورة المعدة المختارة -->
+                <div id="equipmentImageContainer"
+                     class="mt-3 text-center"
+                     style="display:none;">
+
+                    <label class="form-label d-block">
+                        صورة المعدة المختارة
+                    </label>
+
+                    <img id="equipmentImage"
+                         src=""
+                         alt="صورة المعدة المختارة"
+                         class="img-thumbnail"
+                         style="width:260px;
+                                height:200px;
+                                object-fit:contain;" />
+
+                </div>
+
+                <!-- تظهر عند عدم وجود صورة -->
+                <div id="equipmentNoImage"
+                     class="alert alert-secondary mt-3"
+                     style="display:none;">
+
+                    لا توجد صورة لهذه المعدة.
+
+                </div>
+
+            </div>
+
+            <!-- يظهر اختيار الموظف للمدير فقط -->
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="form-group mb-3">
+
+                    <label asp-for="EmployeeId"
+                           class="control-label">
+                        الموظف
+                    </label>
+
+                    <select asp-for="EmployeeId"
+                            class="form-select"
+                            asp-items="ViewBag.EmployeeId">
+
+                        <option value="">
+                            -- اختاري الموظف --
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="EmployeeId"
+                          class="text-danger">
+                    </span>
+
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    سيتم تسجيل الاستعارة باسم الموظف
+                    المسجل دخوله تلقائيًا.
+                </div>
+            }
+
+            <!-- تاريخ الإرجاع المتوقع -->
+            <div class="form-group mb-3">
+
+                <label asp-for="ExpectedReturnDate"
+                       class="control-label">
+                    تاريخ الإرجاع المتوقع
+                </label>
+
+                <input asp-for="ExpectedReturnDate"
+                       class="form-control" />
+
+                <span asp-validation-for="ExpectedReturnDate"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <!-- أزرار النموذج -->
+            <div class="form-group d-flex gap-2">
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    استعارة
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    العودة إلى القائمة
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial"
+        );
+    }
+
+    <script>
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+                const equipmentImages =
+                    @Html.Raw(
+                        JsonSerializer.Serialize(
+                            equipmentImages
+                        )
+                    );
+
+                const equipmentSelect =
+                    document.getElementById(
+                        "EquipmentId"
+                    );
+
+                const imageContainer =
+                    document.getElementById(
+                        "equipmentImageContainer"
+                    );
+
+                const equipmentImage =
+                    document.getElementById(
+                        "equipmentImage"
+                    );
+
+                const noImageMessage =
+                    document.getElementById(
+                        "equipmentNoImage"
+                    );
+
+                function updateEquipmentImage() {
+                    const selectedId =
+                        equipmentSelect.value;
+
+                    const imagePath =
+                        equipmentImages[selectedId];
+
+                    // إخفاء العرض السابق
+                    imageContainer.style.display =
+                        "none";
+
+                    noImageMessage.style.display =
+                        "none";
+
+                    equipmentImage.removeAttribute(
+                        "src"
+                    );
+
+                    // لم يتم اختيار معدة
+                    if (!selectedId) {
+                        return;
+                    }
+
+                    // المعدة لديها صورة
+                    if (imagePath) {
+                        equipmentImage.src =
+                            imagePath;
+
+                        imageContainer.style.display =
+                            "block";
+                    }
+                    else {
+                        // المعدة ليس لديها صورة
+                        noImageMessage.style.display =
+                            "block";
+                    }
+                }
+
+                // تغيير الصورة عند تغيير المعدة
+                equipmentSelect.addEventListener(
+                    "change",
+                    updateEquipmentImage
+                );
+
+                // عرض الصورة عند إعادة الصفحة
+                // وفيها اختيار سابق
+                updateEquipmentImage();
+            }
+        );
+    </script>
+}

@@ -1,0 +1,284 @@
+@model IEnumerable<EquipmentManagement.Domain.Entities.BorrowingRecord>
+
+@{
+    ViewData["Title"] = "سجلات الاستعارة";
+}
+
+<h1>سجلات الاستعارة</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        استعارة معدة
+    </a>
+    <form asp-action="Index" method="get" class="row g-3 mb-4">
+
+        <div class="col-md-5">
+            <label class="form-label">
+                البحث
+            </label>
+
+            <input type="text" name="search" value="@ViewData["CurrentSearch"]" class="form-control"
+                   placeholder="اسم المعدة أو الموظف" />
+        </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="col-md-4">
+                
+                <label class="form-label">
+                    الموظف
+                </label>
+
+                <select name="employeeId" class="form-select" asp-items="ViewBag.EmployeeId">
+
+                    <option value="">
+                        جميع الموظفين
+                    </option>
+
+                </select>
+            </div>
+        }
+
+        <div class="col-md-4">
+            <label class="form-label">
+                حالة الاستعارة
+            </label>
+
+            <select name="status" class="form-select">
+
+                <option value="">
+                    جميع الحالات
+                </option>
+
+                <option value="active" selected="@(ViewData["CurrentStatus"]?.ToString() == "active")">
+                    قيد الاستعارة
+                </option>
+
+                <option value="returned" selected="@(ViewData["CurrentStatus"]?.ToString() == "returned")">
+                    تم الإرجاع
+                </option>
+
+                <option value="overdue" selected="@(ViewData["CurrentStatus"]?.ToString() == "overdue")">
+                    متأخرة
+                </option>
+
+            </select>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end gap-2">
+
+            <button type="submit" class="btn btn-primary">
+                بحث
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                إلغاء
+            </a>
+
+        </div>
+        <p class="text-muted">
+    عدد النتائج:
+    <strong>@ViewData["TotalRecords"]</strong>
+</p>
+
+    </form>
+</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        لا توجد سجلات استعارة حاليًا.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>الصورة</th>
+                    <th>المعدة</th>
+                    <th>الموظف</th>
+                    <th>تاريخ الاستعارة</th>
+                    <th>تاريخ الإرجاع المتوقع</th>
+                    <th>تاريخ الإرجاع الفعلي</th>
+                    <th>الحالة</th>
+                    <th>العمليات</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+    @if (!string.IsNullOrWhiteSpace(
+            item.Equipment?.ImagePath))
+    {
+        <a href="@item.Equipment.ImagePath"
+           target="_blank">
+
+            <img src="@item.Equipment.ImagePath"
+                 alt="صورة @item.Equipment.Name"
+                 class="img-thumbnail"
+                 style="width:90px;
+                        height:70px;
+                        object-fit:cover;" />
+        </a>
+    }
+    else
+    {
+        <span class="text-muted">
+            لا توجد صورة
+        </span>
+    }
+</td>
+                        <td>
+    <strong>
+        @item.Equipment.Name
+    </strong>
+
+    @if (!string.IsNullOrWhiteSpace(
+            item.Equipment.Description))
+    {
+        <div class="text-muted small">
+            @item.Equipment.Description
+        </div>
+    }
+</td>
+
+                        <td>
+                            @item.Employee.FullName
+                        </td>
+
+                        <td>
+                            @item.BorrowDate.ToString("yyyy/MM/dd HH:mm")
+                        </td>
+
+                        <td>
+                            @item.ExpectedReturnDate.ToString("yyyy/MM/dd HH:mm")
+                        </td>
+
+                        <td>
+                            @if (item.ActualReturnDate.HasValue)
+                            {
+                                @item.ActualReturnDate.Value.ToString("yyyy/MM/dd HH:mm")
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+
+                        <td>
+                            @if (item.IsReturned)
+                            {
+                                <span class="badge bg-success">
+                                    تم الإرجاع
+                                </span>
+                            }
+                            else if (item.ExpectedReturnDate < DateTime.Now)
+                            {
+                                <span class="badge bg-danger">
+                                    متأخرة
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    قيد الاستعارة
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                التفاصيل
+                            </a>
+
+                            @if (User.IsInRole("Admin") && !item.IsReturned)
+                            {
+                                <form asp-action="ReturnEquipment" asp-route-id="@item.Id" method="post" class="d-inline">
+
+                                    <button type="submit" class="btn btn-success btn-sm"
+                                            onclick="return confirm('هل تريدين تأكيد إرجاع هذه المعدة؟');">
+                                        إرجاع المعدة
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                    
+                }
+            </tbody>
+
+        </table>
+        @{
+    var currentPage = (int)(ViewData["CurrentPage"] ?? 1);
+    var totalPages = (int)(ViewData["TotalPages"] ?? 0);
+}
+
+@if (totalPages > 1)
+{
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-pageNumber="@(currentPage - 1)"
+                   asp-route-search="@ViewData["CurrentSearch"]"
+                   asp-route-status="@ViewData["CurrentStatus"]"
+                   asp-route-employeeId="@ViewData["CurrentEmployeeId"]">
+                    السابق
+                </a>
+            </li>
+
+            @for (var pageIndex = 1; pageIndex <= totalPages; pageIndex++)
+{
+    <li class="page-item @(pageIndex == currentPage ? "active" : "")">
+
+        <a class="page-link"
+           asp-action="Index"
+           asp-route-pageNumber="@pageIndex"
+           asp-route-search="@ViewData["CurrentSearch"]"
+           asp-route-status="@ViewData["CurrentStatus"]"
+           asp-route-employeeId="@ViewData["CurrentEmployeeId"]">
+
+            @pageIndex
+
+        </a>
+
+    </li>
+}
+
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-pageNumber="@(currentPage + 1)"
+                   asp-route-search="@ViewData["CurrentSearch"]"
+                   asp-route-status="@ViewData["CurrentStatus"]"
+                   asp-route-employeeId="@ViewData["CurrentEmployeeId"]">
+                    التالي
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+}
+    </div>
+}

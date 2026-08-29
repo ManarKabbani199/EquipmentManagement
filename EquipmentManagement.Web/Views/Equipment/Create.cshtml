@@ -1,0 +1,124 @@
+@model EquipmentManagement.Domain.Entities.Equipment
+
+@{
+    ViewData["Title"] = "إضافة معدة";
+}
+
+<h1>إضافة معدة جديدة</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label">
+                    اسم المعدة
+                </label>
+
+                <input asp-for="Name" class="form-control" />
+
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="CategoryId" class="control-label">
+                    التصنيف
+                </label>
+
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId">
+                    <option value="">-- اختاري التصنيف --</option>
+                </select>
+
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="SerialNumber" class="control-label">
+                    الرقم التسلسلي
+                </label>
+
+                <input asp-for="SerialNumber" class="form-control" />
+
+                <span asp-validation-for="SerialNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="control-label">
+                    الوصف
+                </label>
+
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="PurchaseDate" class="control-label">
+                    تاريخ الشراء
+                </label>
+
+                <input asp-for="PurchaseDate" type="date" class="form-control" />
+
+                <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="PurchasePrice" class="control-label">
+                    سعر الشراء
+                </label>
+
+                <input asp-for="PurchasePrice" type="number" step="0.01" min="0" class="form-control" />
+
+                <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+            </div>
+
+            <div class="form-check mb-3">
+                <input asp-for="IsAvailable" class="form-check-input" />
+
+                <label asp-for="IsAvailable" class="form-check-label">
+                    المعدة متاحة للاستعارة
+                </label>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="imageFile" class="control-label">
+                    صورة المعدة
+                </label>
+
+                <input type="file" id="imageFile" name="imageFile" class="form-control"
+                       accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+
+                <div class="form-text">
+                    الأنواع المسموحة: JPG، PNG، WEBP.
+                    الحد الأقصى للحجم: 5 MB.
+                </div>
+
+                @Html.ValidationMessage(
+                    "imageFile",
+                    null,
+                    new { @class = "text-danger" }
+                )
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="إضافة المعدة" class="btn btn-primary" />
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    العودة إلى القائمة
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
