@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using EquipmentManagement.Domain.Entities;
 using EquipmentManagement.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Localization;
+using EquipmentManagement.Web;
 
 
 namespace EquipmentManagement.Web.Controllers
@@ -18,12 +20,16 @@ namespace EquipmentManagement.Web.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
+        private readonly IStringLocalizer<SharedResource> _localizer;
+
         public EquipmentController(
-            ApplicationDbContext context,
-            IWebHostEnvironment webHostEnvironment)
+    ApplicationDbContext context,
+    IWebHostEnvironment webHostEnvironment,
+    IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _localizer = localizer;
         }
 
         // GET: Equipment
@@ -107,7 +113,7 @@ namespace EquipmentManagement.Web.Controllers
                 {
                     ModelState.AddModelError(
                         nameof(equipment.SerialNumber),
-                        "يوجد جهاز آخر يستخدم هذا الرقم التسلسلي."
+                        _localizer["DuplicateSerialNumber"]
                     );
                 }
             }
@@ -123,7 +129,7 @@ namespace EquipmentManagement.Web.Controllers
                 {
                     ModelState.AddModelError(
                         "imageFile",
-                        "يُسمح فقط بصور JPG وPNG وWEBP."
+                        _localizer["AllowedImageTypes"]
                     );
                 }
 
@@ -134,7 +140,7 @@ namespace EquipmentManagement.Web.Controllers
                 {
                     ModelState.AddModelError(
                         "imageFile",
-                        "نوع ملف الصورة غير صالح."
+                        _localizer["InvalidImageType"]
                     );
                 }
 
@@ -142,10 +148,23 @@ namespace EquipmentManagement.Web.Controllers
                 {
                     ModelState.AddModelError(
                         "imageFile",
-                        "يجب ألا يزيد حجم الصورة عن 5 MB."
+                        _localizer["ImageSizeExceeded"]
                     );
                 }
             }
+
+            if (equipment.PurchaseDate == default)
+            {
+                ModelState.Remove(
+                    nameof(equipment.PurchaseDate)
+                );
+
+                ModelState.AddModelError(
+                    nameof(equipment.PurchaseDate),
+                    _localizer["PurchaseDateRequired"]
+                );
+            }
+
 
             if (!ModelState.IsValid)
             {
@@ -206,7 +225,7 @@ namespace EquipmentManagement.Web.Controllers
 
                     ModelState.AddModelError(
                         "imageFile",
-                        "حدث خطأ أثناء حفظ الصورة."
+                        _localizer["ImageSaveFailed"]
                     );
 
                     ViewData["CategoryId"] = new SelectList(
@@ -220,8 +239,8 @@ namespace EquipmentManagement.Web.Controllers
                 }
             }
 
-            TempData["SuccessMessage"] =
-                "تمت إضافة المعدة بنجاح.";
+            TempData["SuccessMessage"] = _localizer[
+            "EquipmentCreatedSuccessfully"].Value;
 
             return RedirectToAction(nameof(Index));
         }
@@ -346,6 +365,18 @@ namespace EquipmentManagement.Web.Controllers
                 }
             }
 
+            if (equipment.PurchaseDate == default)
+            {
+                ModelState.Remove(
+                    nameof(equipment.PurchaseDate)
+                );
+
+                ModelState.AddModelError(
+                    nameof(equipment.PurchaseDate),
+                    _localizer["PurchaseDateRequired"]
+                );
+            }
+
             if (!ModelState.IsValid)
             {
                 // إعادة عرض الصورة الحالية
@@ -440,7 +471,7 @@ namespace EquipmentManagement.Web.Controllers
 
                     ModelState.AddModelError(
                         "imageFile",
-                        "حدث خطأ أثناء حفظ الصورة الجديدة."
+                        _localizer["NewImageSaveFailed"]
                     );
 
                     ViewData["CategoryId"] = new SelectList(
@@ -468,8 +499,7 @@ namespace EquipmentManagement.Web.Controllers
                 throw;
             }
 
-            TempData["SuccessMessage"] =
-                "تم تعديل المعدة بنجاح.";
+            TempData["SuccessMessage"] = _localizer["EquipmentUpdatedSuccessfully"].Value;
 
             return RedirectToAction(nameof(Index));
         }
@@ -514,8 +544,8 @@ namespace EquipmentManagement.Web.Controllers
 
             if (hasBorrowingRecords)
             {
-                TempData["ErrorMessage"] =
-                    "لا يمكن حذف المعدة لأنها مرتبطة بسجلات استعارة سابقة.";
+                TempData["ErrorMessage"] = _localizer[
+                "EquipmentHasBorrowingRecords"].Value;
 
                 return RedirectToAction(nameof(Index));
             }
@@ -545,7 +575,7 @@ namespace EquipmentManagement.Web.Controllers
             }
 
             TempData["SuccessMessage"] =
-                "تم حذف المعدة وصورتها بنجاح.";
+           _localizer["EquipmentDeletedSuccessfully"].Value;
 
             return RedirectToAction(nameof(Index));
         }

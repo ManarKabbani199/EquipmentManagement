@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using EquipmentManagement.Domain.Entities;
 using EquipmentManagement.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.Extensions.Localization;
+using EquipmentManagement.Web;
 
 
 
@@ -20,9 +21,12 @@ namespace EquipmentManagement.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoriesController(ApplicationDbContext context)
+        private readonly IStringLocalizer<SharedResource> _localizer;
+
+        public CategoriesController(ApplicationDbContext context, IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
+            _localizer = localizer;
         }
 
         // GET: Categories
@@ -66,6 +70,12 @@ namespace EquipmentManagement.Web.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] =
+                    _localizer[
+                        "CategoryCreatedSuccessfully"
+                    ].Value;
+
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -117,6 +127,10 @@ namespace EquipmentManagement.Web.Controllers
                         throw;
                     }
                 }
+                TempData["SuccessMessage"] =
+    _localizer[
+        "CategoryUpdatedSuccessfully"
+    ].Value;
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -159,7 +173,9 @@ namespace EquipmentManagement.Web.Controllers
             if (hasEquipment)
             {
                 TempData["ErrorMessage"] =
-                    "لا يمكن حذف التصنيف لأنه يحتوي على معدات.";
+    _localizer[
+        "CategoryHasEquipment"
+    ].Value;
 
                 return RedirectToAction(nameof(Index));
             }
@@ -168,7 +184,9 @@ namespace EquipmentManagement.Web.Controllers
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] =
-                "تم حذف التصنيف بنجاح.";
+    _localizer[
+        "CategoryDeletedSuccessfully"
+    ].Value;
 
             return RedirectToAction(nameof(Index));
         }

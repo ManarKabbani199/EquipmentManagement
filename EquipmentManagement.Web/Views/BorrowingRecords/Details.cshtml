@@ -1,116 +1,175 @@
 @model EquipmentManagement.Domain.Entities.BorrowingRecord
 
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+
 @{
-    ViewData["Title"] = "تفاصيل الاستعارة";
+    ViewData["Title"] =
+        Localizer["BorrowingDetails"];
+
+    var confirmReturn =
+        Localizer["ConfirmReturnEquipment"].Value;
 }
 
-<h1>تفاصيل الاستعارة</h1>
+<div class="row justify-content-center">
 
-<hr />
+    <div class="col-md-9 col-lg-7">
 
-<div class="card">
-    <div class="card-body">
+        <div class="card shadow-sm">
 
-        <dl class="row">
+            <div class="card-header bg-info">
 
-            <dt class="col-sm-3">
-                اسم المعدة
-            </dt>
+                <h1 class="h4 mb-0">
+                    @Localizer["BorrowingDetails"]
+                </h1>
 
-            <dd class="col-sm-9">
-                @Model.Equipment.Name
-            </dd>
+            </div>
 
-            <dt class="col-sm-3">
-                اسم الموظف
-            </dt>
+            <div class="card-body">
 
-            <dd class="col-sm-9">
-                @Model.Employee.FullName
-            </dd>
-
-            <dt class="col-sm-3">
-                تاريخ الاستعارة
-            </dt>
-
-            <dd class="col-sm-9">
-                @Model.BorrowDate.ToString("yyyy/MM/dd HH:mm")
-            </dd>
-
-            <dt class="col-sm-3">
-                تاريخ الإرجاع المتوقع
-            </dt>
-
-            <dd class="col-sm-9">
-                @Model.ExpectedReturnDate.ToString("yyyy/MM/dd HH:mm")
-            </dd>
-
-            <dt class="col-sm-3">
-                تاريخ الإرجاع الفعلي
-            </dt>
-
-            <dd class="col-sm-9">
-                @if (Model.ActualReturnDate.HasValue)
+                @if (!string.IsNullOrWhiteSpace(
+                    Model.Equipment?.ImagePath))
                 {
-                    @Model.ActualReturnDate.Value.ToString("yyyy/MM/dd HH:mm")
-                }
-                else
-                {
-                    <span>-</span>
-                }
-            </dd>
+                    <div class="text-center mb-4">
 
-            <dt class="col-sm-3">
-                حالة الاستعارة
-            </dt>
+                        <a href="@Model.Equipment.ImagePath"
+                           target="_blank"
+                           rel="noopener noreferrer">
 
-            <dd class="col-sm-9">
-                @if (Model.IsReturned)
-                {
-                    <span class="badge bg-success">
-                        تم الإرجاع
-                    </span>
-                }
-                else if (Model.ExpectedReturnDate < DateTime.Now)
-                {
-                    <span class="badge bg-danger">
-                        متأخرة
-                    </span>
-                }
-                else
-                {
-                    <span class="badge bg-warning text-dark">
-                        قيد الاستعارة
-                    </span>
-                }
-            </dd>
+                            <img src="@Model.Equipment.ImagePath"
+                                 alt="@Localizer[
+                                     "EquipmentImageAlt",
+                                     Model.Equipment.Name
+                                 ]"
+                                 class="img-thumbnail"
+                                 style="width:280px;
+                                        height:210px;
+                                        object-fit:contain;" />
 
-        </dl>
+                        </a>
+
+                    </div>
+                }
+
+                <dl class="row mb-0">
+
+                    <dt class="col-sm-4">
+                        @Localizer["EquipmentName"]
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @(Model.Equipment?.Name ?? "-")
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Localizer["EmployeeName"]
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @(Model.Employee?.FullName ?? "-")
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Localizer["BorrowDate"]
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @Model.BorrowDate.ToString("g")
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Localizer["ExpectedReturnDate"]
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @Model.ExpectedReturnDate.ToString("g")
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Localizer["ActualReturnDate"]
+                    </dt>
+
+                    <dd class="col-sm-8">
+
+                        @if (Model.ActualReturnDate.HasValue)
+                        {
+                            @Model.ActualReturnDate.Value.ToString("g")
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Localizer["BorrowingStatus"]
+                    </dt>
+
+                    <dd class="col-sm-8">
+
+                        @if (Model.IsReturned)
+                        {
+                            <span class="badge bg-success">
+                                @Localizer["Returned"]
+                            </span>
+                        }
+                        else if (
+                            Model.ExpectedReturnDate <
+                            DateTime.Now)
+                        {
+                            <span class="badge bg-danger">
+                                @Localizer["Overdue"]
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">
+                                @Localizer["Active"]
+                            </span>
+                        }
+
+                    </dd>
+
+                </dl>
+
+            </div>
+
+            <div class="card-footer">
+
+                <div class="d-flex gap-2 flex-wrap">
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+
+                        @Localizer["BackToList"]
+
+                    </a>
+
+                    @if (User.IsInRole("Admin") &&
+                         !Model.IsReturned)
+                    {
+                        <form asp-action="ReturnEquipment"
+                              asp-route-id="@Model.Id"
+                              method="post"
+                              onsubmit="return confirm('@confirmReturn');">
+
+                            <button type="submit"
+                                    class="btn btn-success">
+
+                                @Localizer["ReturnEquipment"]
+
+                            </button>
+
+                        </form>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
-</div>
-
-<div class="mt-3">
-
-    <a asp-action="Index"
-       class="btn btn-secondary">
-        العودة إلى القائمة
-    </a>
-
-    @if (User.IsInRole("Admin") && !Model.IsReturned)
-    {
-        <form asp-action="ReturnEquipment"
-              asp-route-id="@Model.Id"
-              method="post"
-              class="d-inline">
-
-            <button type="submit"
-                    class="btn btn-success"
-                    onclick="return confirm('هل تريدين تأكيد إرجاع هذه المعدة؟');">
-                إرجاع المعدة
-            </button>
-
-        </form>
-    }
 
 </div>

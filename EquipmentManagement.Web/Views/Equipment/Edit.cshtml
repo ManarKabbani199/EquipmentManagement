@@ -1,101 +1,222 @@
 @model EquipmentManagement.Domain.Entities.Equipment
 
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = Localizer["EditEquipment"];
 }
 
-<h1>Edit</h1>
+<div class="row justify-content-center">
 
-<h4>Equipment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SerialNumber" class="control-label"></label>
-                <input asp-for="SerialNumber" class="form-control" />
-                <span asp-validation-for="SerialNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PurchaseDate" class="control-label"></label>
-                <input asp-for="PurchaseDate" class="form-control" />
-                <span asp-validation-for="PurchaseDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PurchasePrice" class="control-label"></label>
-                <input asp-for="PurchasePrice" class="form-control" />
-                <span asp-validation-for="PurchasePrice" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsAvailable" /> @Html.DisplayNameFor(model =>
-                                        model.IsAvailable)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            @if (!string.IsNullOrEmpty(Model.ImagePath))
-            {
-                <div class="form-group mb-3">
-                    <label class="form-label">
-                        الصورة الحالية
-                    </label>
+    <div class="col-md-8 col-lg-7">
 
-                    <div>
-                        <img src="@Model.ImagePath" alt="صورة @Model.Name" class="img-thumbnail" style="width:180px;
-                        height:140px;
-                        object-fit:cover;" />
+        <div class="card shadow-sm">
+
+            <div class="card-header bg-warning">
+
+                <h1 class="h4 mb-0">
+                    @Localizer["EditEquipment"]
+                </h1>
+
+            </div>
+
+            <div class="card-body">
+
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger">
                     </div>
-                </div>
-            }
 
-            <div class="form-group mb-3">
-                <label for="imageFile" class="control-label">
-                    اختيار صورة جديدة
-                </label>
+                    <input type="hidden" asp-for="Id" />
 
-                <input type="file" id="imageFile" name="imageFile" class="form-control"
-                       accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+                    <div class="mb-3">
 
-                <div class="form-text">
-                    اتركي الحقل فارغًا للاحتفاظ بالصورة الحالية.
-                    الحد الأقصى: 5 MB.
-                </div>
+                        <label asp-for="Name" class="form-label">
 
-                @Html.ValidationMessage(
-                    "imageFile",
-                    null,
-                    new { @class = "text-danger" }
-                )
+                            @Localizer["EquipmentName"]
+
+                        </label>
+
+                        <input asp-for="Name" class="form-control" />
+
+                        <span asp-validation-for="Name" class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="CategoryId" class="form-label">
+
+                            @Localizer["Category"]
+
+                        </label>
+
+                        <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+                        </select>
+
+                        <span asp-validation-for="CategoryId" class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="SerialNumber" class="form-label">
+
+                            @Localizer["SerialNumber"]
+
+                        </label>
+
+                        <input asp-for="SerialNumber" class="form-control" />
+
+                        <span asp-validation-for="SerialNumber" class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="Description" class="form-label">
+
+                            @Localizer["Description"]
+
+                        </label>
+
+                        <textarea asp-for="Description" class="form-control" rows="3">
+                        </textarea>
+
+                        <span asp-validation-for="Description" class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="PurchaseDate" class="form-label">
+
+                            @Localizer["PurchaseDate"]
+
+                        </label>
+
+                        <input asp-for="PurchaseDate" type="date" class="form-control" data-val="true"
+                               data-val-required="@Localizer["PurchaseDateRequired"]" />
+
+                        <span asp-validation-for="PurchaseDate" class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="PurchasePrice" class="form-label">
+
+                            @Localizer["PurchasePrice"]
+
+                        </label>
+
+                        <input asp-for="PurchasePrice" type="number" step="0.01" min="0" class="form-control" />
+
+                        <span asp-validation-for="PurchasePrice" class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="form-check mb-3">
+
+                        <input asp-for="IsAvailable" class="form-check-input" />
+
+                        <label asp-for="IsAvailable" class="form-check-label">
+
+                            @Localizer["AvailableForBorrowing"]
+
+                        </label>
+
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.ImagePath))
+                    {
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                @Localizer["CurrentImage"]
+                            </label>
+
+                            <div>
+
+                                <a href="@Model.ImagePath" target="_blank" rel="noopener noreferrer">
+
+                                    <img src="@Model.ImagePath" alt="@Localizer["EquipmentImageAlt", Model.Name]"
+                                         class="img-thumbnail" style="width:180px;
+                                    height:140px;
+                                    object-fit:cover;" />
+
+                                </a>
+
+                            </div>
+
+                        </div>
+                    }
+
+                    <div class="mb-3">
+
+                        <label for="imageFile" class="form-label">
+
+                            @Localizer["SelectNewImage"]
+
+                        </label>
+
+                        <input type="file" id="imageFile" name="imageFile" class="form-control"
+                               accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+
+                        <div class="form-text">
+                            @Localizer["KeepCurrentImageHelp"]
+                        </div>
+
+                        @Html.ValidationMessage(
+                            "imageFile",
+                            null,
+                            new
+                            {
+                                @class = "text-danger"
+                            }
+                        )
+
+                    </div>
+
+                    <div class="d-flex gap-2">
+
+                        <button type="submit" class="btn btn-warning">
+
+                            @Localizer["SaveChanges"]
+
+                        </button>
+
+                        <a asp-action="Index" class="btn btn-secondary">
+
+                            @Localizer["BackToList"]
+
+                        </a>
+
+                    </div>
+
+                </form>
+
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+        </div>
+
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
+
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial"
+        );
     }
+
 }

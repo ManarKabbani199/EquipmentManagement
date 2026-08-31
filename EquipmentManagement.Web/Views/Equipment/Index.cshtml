@@ -1,19 +1,27 @@
 @model IEnumerable<EquipmentManagement.Domain.Entities.Equipment>
 
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+
 @{
-    ViewData["Title"] = "المعدات";
+    ViewData["Title"] = Localizer["Equipment"];
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>المعدات</h1>
+<div class="d-flex justify-content-between
+            align-items-center mb-4">
+
+    <h1>@Localizer["Equipment"]</h1>
 
     @if (User.IsInRole("Admin"))
     {
         <a asp-action="Create"
            class="btn btn-primary">
-            إضافة معدة
+
+            @Localizer["CreateNewEquipment"]
+
         </a>
     }
+
 </div>
 
 @if (TempData["SuccessMessage"] != null)
@@ -22,6 +30,7 @@
         @TempData["SuccessMessage"]
     </div>
 }
+
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger">
@@ -32,41 +41,48 @@
 @if (!Model.Any())
 {
     <div class="alert alert-info">
-        لا توجد معدات حاليًا.
+        @Localizer["NoEquipment"]
     </div>
 }
 else
 {
     <div class="table-responsive">
 
-        <table class="table table-bordered table-striped align-middle">
+        <table class="table table-bordered
+                      table-striped align-middle">
 
             <thead class="table-dark">
+
                 <tr>
-                    <th>الصورة</th>
-                    <th>اسم المعدة</th>
-                    <th>الرقم التسلسلي</th>
-                    <th>الوصف</th>
-                    <th>تاريخ الشراء</th>
-                    <th>سعر الشراء</th>
-                    <th>الحالة</th>
-                    <th>التصنيف</th>
-                    <th>العمليات</th>
+                    <th>@Localizer["Image"]</th>
+                    <th>@Localizer["EquipmentName"]</th>
+                    <th>@Localizer["SerialNumber"]</th>
+                    <th>@Localizer["Description"]</th>
+                    <th>@Localizer["PurchaseDate"]</th>
+                    <th>@Localizer["PurchasePrice"]</th>
+                    <th>@Localizer["Status"]</th>
+                    <th>@Localizer["Category"]</th>
+                    <th>@Localizer["Actions"]</th>
                 </tr>
+
             </thead>
 
             <tbody>
+
                 @foreach (var item in Model)
                 {
                     <tr>
+
                         <td>
+
                             @if (!string.IsNullOrEmpty(item.ImagePath))
                             {
                                 <a href="@item.ImagePath"
-                                   target="_blank">
+                                   target="_blank"
+                                   rel="noopener noreferrer">
 
                                     <img src="@item.ImagePath"
-                                         alt="صورة @item.Name"
+                                         alt="@Localizer["EquipmentImageAlt", item.Name]"
                                          class="img-thumbnail"
                                          style="width:100px;
                                                 height:80px;
@@ -77,9 +93,10 @@ else
                             else
                             {
                                 <span class="text-muted">
-                                    لا توجد صورة
+                                    @Localizer["NoImage"]
                                 </span>
                             }
+
                         </td>
 
                         <td>
@@ -95,7 +112,7 @@ else
                         </td>
 
                         <td>
-                            @item.PurchaseDate.ToString("yyyy/MM/dd")
+                            @item.PurchaseDate.ToString("d")
                         </td>
 
                         <td>
@@ -103,21 +120,24 @@ else
                         </td>
 
                         <td>
+
                             @if (item.IsAvailable)
                             {
                                 <span class="badge bg-success">
-                                    متاحة
+                                    @Localizer["Available"]
                                 </span>
                             }
                             else
                             {
                                 <span class="badge bg-warning text-dark">
-                                    مستعارة
+                                    @Localizer["Borrowed"]
                                 </span>
                             }
+
                         </td>
 
                         <td>
+
                             @if (item.Category != null)
                             {
                                 @item.Category.Name
@@ -126,32 +146,47 @@ else
                             {
                                 <span>-</span>
                             }
+
                         </td>
 
                         <td>
-                            <a asp-action="Details"
-                               asp-route-id="@item.Id"
-                               class="btn btn-info btn-sm">
-                                التفاصيل
-                            </a>
 
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <a asp-action="Edit"
+                            <div class="d-flex gap-2 flex-wrap">
+
+                                <a asp-action="Details"
                                    asp-route-id="@item.Id"
-                                   class="btn btn-warning btn-sm">
-                                    تعديل
+                                   class="btn btn-info btn-sm">
+
+                                    @Localizer["Details"]
+
                                 </a>
 
-                                <a asp-action="Delete"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-danger btn-sm">
-                                    حذف
-                                </a>
-                            }
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-warning btn-sm">
+
+                                        @Localizer["Edit"]
+
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-danger btn-sm">
+
+                                        @Localizer["Delete"]
+
+                                    </a>
+                                }
+
+                            </div>
+
                         </td>
+
                     </tr>
                 }
+
             </tbody>
 
         </table>

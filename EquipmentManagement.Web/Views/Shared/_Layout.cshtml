@@ -1,113 +1,216 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using System.Globalization
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+
+@{
+    var culture =
+        CultureInfo.CurrentUICulture
+            .TwoLetterISOLanguageName;
+
+    var isArabic = culture == "ar";
+    var direction = isArabic ? "rtl" : "ltr";
+
+    var returnUrl =
+        Context.Request.Path +
+        Context.Request.QueryString;
+}
+
+<!DOCTYPE html>
+
+<html lang="@culture" dir="@direction">
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EquipmentManagement.Web</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>
+        @ViewData["Title"] - @Localizer["ApplicationName"]
+    </title>
+
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/EquipmentManagement.Web.styles.css" asp-append-version="true" />
+
+    @if (isArabic)
+    {
+        <link rel="stylesheet"
+              href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" />
+    }
+    else
+    {
+        <link rel="stylesheet"
+              href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    }
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/EquipmentManagement.Web.styles.css"
+          asp-append-version="true" />
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EquipmentManagement.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
 
+<header>
+    <nav class="navbar navbar-expand-sm navbar-light bg-white
+                border-bottom box-shadow mb-3">
+
+        <div class="container-fluid">
+
+            <a class="navbar-brand"
+               asp-controller="Home"
+               asp-action="Index">
+                @Localizer["ApplicationName"]
+            </a>
+
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse collapse
+                        d-sm-inline-flex justify-content-between">
+
+                <ul class="navbar-nav flex-grow-1">
+
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"
+                           asp-controller="Home"
+                           asp-action="Index">
+                            @Localizer["Home"]
+                        </a>
+                    </li>
+
+                    @if (User.IsInRole("Admin"))
+                    {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">
-                                الرئيسية
+                            <a class="nav-link text-dark"
+                               asp-controller="Dashboard"
+                               asp-action="Index">
+                                @Localizer["Dashboard"]
                             </a>
                         </li>
 
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Categories" asp-action="Index">
-                                    التصنيفات
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="Categories"
+                               asp-action="Index">
+                                @Localizer["Categories"]
+                            </a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Equipment" asp-action="Index">
-                                    المعدات
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="Equipment"
+                               asp-action="Index">
+                                @Localizer["Equipment"]
+                            </a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Employees" asp-action="Index">
-                                    الموظفون
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BorrowingRecords" asp-action="Index">
-                                    إدارة الاستعارات
-                                </a>
-                            </li>
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Dashboard" asp-action="Index">
-                                        لوحة التحكم
-                                    </a>
-                                </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="Employees"
+                               asp-action="Index">
+                                @Localizer["Employees"]
+                            </a>
+                        </li>
 
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Categories" asp-action="Index">
-                                        التصنيفات
-                                    </a>
-                                </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="BorrowingRecords"
+                               asp-action="Index">
+                                @Localizer["ManageBorrowings"]
+                            </a>
+                        </li>
+                    }
 
-                                <!-- بقية روابط المدير تبقى كما هي -->
-                            }
-                        }
+                    @if (User.IsInRole("Employee"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="BorrowingRecords"
+                               asp-action="Index">
+                                @Localizer["MyBorrowings"]
+                            </a>
+                        </li>
 
-                        @if (User.IsInRole("Employee"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BorrowingRecords" asp-action="Index">
-                                    استعاراتي
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="BorrowingRecords"
+                               asp-action="Create">
+                                @Localizer["BorrowEquipment"]
+                            </a>
+                        </li>
+                    }
 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BorrowingRecords" asp-action="Create">
-                                    استعارة معدة
-                                </a>
-                            </li>
-                        }
+                </ul>
 
-                    </ul>
+                <div class="d-flex align-items-center gap-2">
+
+                    <a class="btn btn-sm btn-outline-primary"
+                       asp-controller="Localization"
+                       asp-action="SetLanguage"
+                       asp-route-culture="ar"
+                       asp-route-returnUrl="@returnUrl">
+                        العربية
+                    </a>
+
+                    <a class="btn btn-sm btn-outline-secondary"
+                       asp-controller="Localization"
+                       asp-action="SetLanguage"
+                       asp-route-culture="en"
+                       asp-route-returnUrl="@returnUrl">
+                        English
+                    </a>
+
                     <partial name="_LoginPartial" />
+
                 </div>
+
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
+
+<div class="container">
+
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
+</div>
+
+<footer class="border-top footer text-muted">
+
     <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+        &copy; 2026 - @Localizer["ApplicationName"] -
+
+        <a asp-controller="Home"
+           asp-action="Privacy">
+            @Localizer["Privacy"]
+        </a>
+
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - EquipmentManagement.Web - <a asp-area="" asp-controller="Home"
-                                                       asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
 </body>
 
 </html>

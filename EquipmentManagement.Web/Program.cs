@@ -2,6 +2,9 @@ using EquipmentManagement.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -113,10 +116,62 @@ builder.Services.ConfigureApplicationCookie(options =>
 //
 
 // Controllers وRazor Views
-builder.Services.AddControllersWithViews();
+//
+// دعم ملفات الترجمة الموجودة داخل مجلد Resources
+//
+builder.Services.AddLocalization(options =>
+{
+    options.ResourcesPath = "Resources";
+});
 
+//
+// تسجيل Controllers وRazor Views
+// مع دعم ترجمة النصوص ورسائل التحقق
+//
+builder.Services
+    .AddControllersWithViews()
+    .AddViewLocalization(
+        LanguageViewLocationExpanderFormat.Suffix
+    )
+    .AddDataAnnotationsLocalization(options =>
+{
+    options.DataAnnotationLocalizerProvider =
+        (modelType, localizerFactory) =>
+            localizerFactory.Create(
+             typeof(EquipmentManagement.Web.SharedResource)
+            );
+});
+
+//
 // صفحات Identity مثل Login وLogout
+//
 builder.Services.AddRazorPages();
+
+//
+// إعداد اللغات المدعومة
+//
+builder.Services.Configure<RequestLocalizationOptions>(
+    options =>
+    {
+        var supportedCultures = new[]
+        {
+            new CultureInfo("ar"),
+            new CultureInfo("en")
+        };
+
+        // اللغة الافتراضية للمشروع
+        options.DefaultRequestCulture =
+            new RequestCulture("ar");
+
+        // اللغات المدعومة لترجمة الواجهة
+        options.SupportedUICultures =
+            supportedCultures;
+
+        // اللغات المدعومة للتواريخ والأرقام والعملات
+        options.SupportedCultures =
+            supportedCultures;
+    }
+);
 
 var app = builder.Build();
 
@@ -288,6 +343,18 @@ if (!app.Environment.IsDevelopment())
 
 // تحويل HTTP إلى HTTPS
 app.UseHttpsRedirection();
+//
+// تفعيل اللغة المختارة داخل كل طلب
+//
+var localizationOptions =
+    app.Services
+        .GetRequiredService<
+            Microsoft.Extensions.Options
+                .IOptions<RequestLocalizationOptions>
+        >()
+        .Value;
+
+app.UseRequestLocalization(localizationOptions);
 
 //
 // السماح بعرض الملفات الموجودة داخل wwwroot

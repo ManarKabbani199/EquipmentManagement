@@ -1,55 +1,133 @@
 @model IEnumerable<EquipmentManagement.Domain.Entities.Category>
 
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Localizer["Categories"];
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between
+            align-items-center mb-4">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    <h1>@Localizer["Categories"]</h1>
+
+    <a asp-action="Create"
+       class="btn btn-primary">
+
+        @Localizer["CreateNewCategory"]
+
+    </a>
+
+</div>
+
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-success">
+    <div class="alert alert-success alert-dismissible fade show"
+         role="alert">
+
         @TempData["SuccessMessage"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close">
+        </button>
+
     </div>
 }
 
 @if (TempData["ErrorMessage"] != null)
 {
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-dismissible fade show"
+         role="alert">
+
         @TempData["ErrorMessage"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close">
+        </button>
+
     </div>
 }
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        @Localizer["NoCategories"]
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+
+        <table class="table table-bordered
+                      table-striped align-middle">
+
+            <thead class="table-dark">
+
+                <tr>
+                    <th>@Localizer["Name"]</th>
+                    <th>@Localizer["Description"]</th>
+                    <th>@Localizer["Actions"]</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @item.Name
+                        </td>
+
+                        <td>
+                            @item.Description
+                        </td>
+
+                        <td>
+
+                            <div class="d-flex gap-2 flex-wrap">
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-warning btn-sm">
+
+                                    @Localizer["Edit"]
+
+                                </a>
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-info btn-sm">
+
+                                    @Localizer["Details"]
+
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-danger btn-sm">
+
+                                    @Localizer["Delete"]
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+}

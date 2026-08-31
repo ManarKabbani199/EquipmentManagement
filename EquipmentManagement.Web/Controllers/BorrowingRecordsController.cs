@@ -9,6 +9,7 @@ using EquipmentManagement.Domain.Entities;
 using EquipmentManagement.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.Extensions.Localization;
 
 
 namespace EquipmentManagement.Web.Controllers
@@ -17,10 +18,14 @@ namespace EquipmentManagement.Web.Controllers
     public class BorrowingRecordsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public BorrowingRecordsController(ApplicationDbContext context)
+        public BorrowingRecordsController(
+            ApplicationDbContext context,
+            IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
+            _localizer = localizer;
         }
 
         private async Task<Employee?> GetCurrentEmployeeAsync()
@@ -145,7 +150,7 @@ namespace EquipmentManagement.Web.Controllers
 
             return View(borrowingRecords);
         }
-        // GET: BorrowingRecords/Details/5
+        // GET: BorrowingRecords/Details/5// GET: BorrowingRecords/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -153,10 +158,32 @@ namespace EquipmentManagement.Web.Controllers
                 return NotFound();
             }
 
-            var borrowingRecord = await _context.BorrowingRecords
+            var query = _context.BorrowingRecords
                 .Include(b => b.Employee)
                 .Include(b => b.Equipment)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .AsQueryable();
+
+            if (!User.IsInRole("Admin"))
+            {
+                var currentEmployee =
+                    await GetCurrentEmployeeAsync();
+
+                if (currentEmployee == null)
+                {
+                    return Forbid();
+                }
+
+                // منع الموظف من مشاهدة استعارات موظف آخر
+                query = query.Where(
+                    b => b.EmployeeId == currentEmployee.Id
+                );
+            }
+
+            var borrowingRecord =
+                await query.FirstOrDefaultAsync(
+                    b => b.Id == id.Value
+                );
+
             if (borrowingRecord == null)
             {
                 return NotFound();
@@ -239,7 +266,7 @@ namespace EquipmentManagement.Web.Controllers
                 {
                     ModelState.AddModelError(
                         "EmployeeId",
-                        "يرجى اختيار موظف صحيح."
+                       _localizer["InvalidEmployeeSelection"]
                     );
                 }
             }
@@ -254,6 +281,7 @@ namespace EquipmentManagement.Web.Controllers
 
                 // الموظف لا يستطيع اختيار موظف آخر
                 borrowingRecord.EmployeeId = currentEmployee.Id;
+                ModelState.Remove(  nameof(BorrowingRecord.EmployeeId)  );
             }
 
             var equipment = await _context.Equipment
@@ -266,7 +294,7 @@ namespace EquipmentManagement.Web.Controllers
             {
                 ModelState.AddModelError(
                     "EquipmentId",
-                    "المعدة غير متاحة أو غير موجودة."
+                    _localizer["EquipmentUnavailable"]
                 );
             }
 
@@ -274,7 +302,7 @@ namespace EquipmentManagement.Web.Controllers
             {
                 ModelState.AddModelError(
                     "ExpectedReturnDate",
-                    "تاريخ الإرجاع المتوقع يجب أن يكون في المستقبل."
+                    _localizer["ExpectedReturnDateFuture"]
                 );
             }
 
@@ -288,6 +316,9 @@ namespace EquipmentManagement.Web.Controllers
 
                 _context.BorrowingRecords.Add(borrowingRecord);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] =
+               _localizer["BorrowingCreatedSuccessfully"].Value;
+
 
                 return RedirectToAction(nameof(Index));
             }
@@ -341,7 +372,8 @@ namespace EquipmentManagement.Web.Controllers
 
             if (borrowingRecord.IsReturned)
             {
-                TempData["ErrorMessage"] = "تم إرجاع هذه المعدة مسبقًا.";
+                TempData["ErrorMessage"] =
+                _localizer["EquipmentAlreadyReturned"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -352,7 +384,7 @@ namespace EquipmentManagement.Web.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "تم إرجاع المعدة بنجاح.";
+            TempData["SuccessMessage"] = _localizer["EquipmentReturnedSuccessfully"].Value;
 
             return RedirectToAction(nameof(Index));
         }

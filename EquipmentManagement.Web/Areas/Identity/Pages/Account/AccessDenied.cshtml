@@ -1,12 +1,10 @@
-﻿@page
-@model LockoutModel
+@page
 
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<EquipmentManagement.Web.SharedResource> Localizer
 
 @{
-    ViewData["Title"] =
-        Localizer["AccountLocked"];
+    ViewData["Title"] = Localizer["AccessDenied"];
 }
 
 <div class="row justify-content-center">
@@ -18,7 +16,7 @@
             <div class="card-header bg-danger text-white">
 
                 <h1 class="h4 mb-0">
-                    @Localizer["AccountLocked"]
+                    @Localizer["AccessDenied"]
                 </h1>
 
             </div>
@@ -28,18 +26,24 @@
                 <div class="mb-4"
                      style="font-size:4rem; line-height:1;">
 
-                    🔒
+                    ⛔
 
                 </div>
 
-                <p class="text-danger mb-4">
-                    @Localizer["AccountLockedMessage"]
+                <h2 class="h5 mb-3">
+                    @Localizer["AccessDenied"]
+                </h2>
+
+                <p class="text-muted mb-4">
+                    @Localizer["AccessDeniedMessage"]
                 </p>
 
-                <a asp-page="./Login"
+                <a asp-area=""
+                   asp-controller="Home"
+                   asp-action="Index"
                    class="btn btn-primary">
 
-                    @Localizer["ReturnToLogin"]
+                    @Localizer["ReturnHome"]
 
                 </a>
 
