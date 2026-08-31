@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace EquipmentManagement.Web.Controllers;
 
@@ -14,12 +15,17 @@ public class EmployeesController : Controller
     private readonly ApplicationDbContext _context;
     private readonly UserManager<IdentityUser> _userManager;
 
+    private readonly IStringLocalizer<SharedResource>
+    _localizer;
+
     public EmployeesController(
-        ApplicationDbContext context,
-        UserManager<IdentityUser> userManager)
+    ApplicationDbContext context,
+    UserManager<IdentityUser> userManager,
+    IStringLocalizer<SharedResource> localizer)
     {
         _context = context;
         _userManager = userManager;
+        _localizer = localizer;
     }
 
     // GET: Employees
@@ -54,6 +60,40 @@ public class EmployeesController : Controller
         return View();
     }
 
+    private string LocalizeIdentityError(
+    IdentityError error)
+    {
+        return error.Code switch
+        {
+            "DuplicateEmail" =>
+                _localizer["EmailAlreadyUsed"],
+
+            "DuplicateUserName" =>
+                _localizer["EmailAlreadyUsed"],
+
+            "InvalidEmail" =>
+                _localizer["InvalidEmail"],
+
+            "PasswordTooShort" =>
+                _localizer["PasswordMinimumLength"],
+
+            "PasswordRequiresDigit" =>
+                _localizer["PasswordRequiresDigit"],
+
+            "PasswordRequiresLower" =>
+                _localizer["PasswordRequiresLowercase"],
+
+            "PasswordRequiresUpper" =>
+                _localizer["PasswordRequiresUppercase"],
+
+            "PasswordRequiresNonAlphanumeric" =>
+                _localizer["PasswordRequiresSymbol"],
+
+            _ =>
+                _localizer["IdentityOperationFailed"]
+        };
+    }
+
     // POST: Employees/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -76,8 +116,9 @@ public class EmployeesController : Controller
         if (existingIdentityUser != null || existingEmployee)
         {
             ModelState.AddModelError(
-                nameof(model.Email),
-                "يوجد حساب يستخدم هذا البريد الإلكتروني.");
+            nameof(model.Email),
+           _localizer["EmailAlreadyUsed"]
+           );
 
             return View(model);
         }
@@ -99,8 +140,9 @@ public class EmployeesController : Controller
             foreach (var error in createResult.Errors)
             {
                 ModelState.AddModelError(
-                    string.Empty,
-                    error.Description);
+                 string.Empty,
+                LocalizeIdentityError(error)
+                );
             }
 
             return View(model);
@@ -118,8 +160,8 @@ public class EmployeesController : Controller
             foreach (var error in roleResult.Errors)
             {
                 ModelState.AddModelError(
-                    string.Empty,
-                    error.Description);
+                string.Empty,
+                LocalizeIdentityError(error));
             }
 
             return View(model);
@@ -146,13 +188,15 @@ public class EmployeesController : Controller
 
             ModelState.AddModelError(
                 string.Empty,
-                "حدث خطأ أثناء حفظ بيانات الموظف.");
+                _localizer["EmployeeSaveFailed"]);
 
             return View(model);
         }
 
         TempData["SuccessMessage"] =
-            "تم إنشاء الموظف وحساب تسجيل الدخول بنجاح.";
+        _localizer[
+        "EmployeeUpdatedSuccessfully"
+         ].Value;
 
         return RedirectToAction(nameof(Index));
     }
@@ -264,8 +308,7 @@ public class EmployeesController : Controller
 
         if (hasBorrowingRecords)
         {
-            TempData["ErrorMessage"] =
-                "لا يمكن حذف الموظف لأنه مرتبط بسجلات استعارة سابقة.";
+            TempData["ErrorMessage"] = _localizer[ "EmployeeHasBorrowingRecords" ].Value;
 
             return RedirectToAction(nameof(Index));
         }
@@ -289,23 +332,25 @@ public class EmployeesController : Controller
 
                 if (!deleteResult.Succeeded)
                 {
-                    throw new InvalidOperationException(
-                        "تعذر حذف حساب تسجيل الدخول."
-                    );
+                  throw new InvalidOperationException(
+                 _localizer[
+                 "IdentityAccountDeleteFailed"
+                 ] );
                 }
             }
 
             await transaction.CommitAsync();
 
-            TempData["SuccessMessage"] =
-                "تم حذف الموظف وحساب تسجيل الدخول بنجاح.";
+            TempData["SuccessMessage"] =  _localizer[ "EmployeeDeletedSuccessfully"].Value;
         }
         catch
         {
             await transaction.RollbackAsync();
 
             TempData["ErrorMessage"] =
-                "حدث خطأ أثناء حذف الموظف.";
+            _localizer[
+            "EmployeeDeleteFailed"
+            ].Value;
         }
 
         return RedirectToAction(nameof(Index));

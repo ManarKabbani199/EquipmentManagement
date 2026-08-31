@@ -1,0 +1,757 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+
+  <data name="ApplicationName" xml:space="preserve">
+    <value>نظام إدارة المعدات</value>
+  </data>
+
+  <data name="Home" xml:space="preserve">
+    <value>الرئيسية</value>
+  </data>
+
+  <data name="Dashboard" xml:space="preserve">
+    <value>لوحة التحكم</value>
+  </data>
+
+  <data name="Categories" xml:space="preserve">
+    <value>التصنيفات</value>
+  </data>
+
+  <data name="Equipment" xml:space="preserve">
+    <value>المعدات</value>
+  </data>
+
+  <data name="Employees" xml:space="preserve">
+    <value>الموظفون</value>
+  </data>
+
+  <data name="BorrowingRecords" xml:space="preserve">
+    <value>سجلات الاستعارة</value>
+  </data>
+
+  <data name="ManageBorrowings" xml:space="preserve">
+    <value>إدارة الاستعارات</value>
+  </data>
+
+  <data name="MyBorrowings" xml:space="preserve">
+    <value>استعاراتي</value>
+  </data>
+
+  <data name="BorrowEquipment" xml:space="preserve">
+    <value>استعارة معدة</value>
+  </data>
+
+  <data name="Login" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+
+  <data name="Logout" xml:space="preserve">
+    <value>تسجيل الخروج</value>
+  </data>
+
+  <data name="Privacy" xml:space="preserve">
+    <value>الخصوصية</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+  <value>مرحبًا</value>
+</data>
+<data name="Welcome" xml:space="preserve">
+  <value>مرحبًا بك</value>
+</data>
+
+<data name="LearnAbout" xml:space="preserve">
+  <value>تعرّف على</value>
+</data>
+
+<data name="BuildingWebApps" xml:space="preserve">
+  <value>إنشاء تطبيقات الويب باستخدام ASP.NET Core</value>
+</data>
+<data name="DashboardSummary" xml:space="preserve">
+  <value>ملخص حالة المعدات والاستعارات والموظفين</value>
+</data>
+
+<data name="TotalEquipment" xml:space="preserve">
+  <value>إجمالي المعدات</value>
+</data>
+
+<data name="ViewEquipment" xml:space="preserve">
+  <value>عرض المعدات</value>
+</data>
+
+<data name="AvailableEquipment" xml:space="preserve">
+  <value>المعدات المتاحة</value>
+</data>
+
+<data name="BorrowedEquipment" xml:space="preserve">
+  <value>المعدات المستعارة</value>
+</data>
+
+<data name="TotalEmployees" xml:space="preserve">
+  <value>عدد الموظفين</value>
+</data>
+
+<data name="ViewEmployees" xml:space="preserve">
+  <value>عرض الموظفين</value>
+</data>
+
+<data name="ActiveBorrowings" xml:space="preserve">
+  <value>الاستعارات النشطة</value>
+</data>
+
+<data name="ViewBorrowings" xml:space="preserve">
+  <value>عرض الاستعارات</value>
+</data>
+
+<data name="OverdueBorrowings" xml:space="preserve">
+  <value>الاستعارات المتأخرة</value>
+</data>
+
+<data name="OverdueEquipmentWarning" xml:space="preserve">
+  <value>توجد معدات تجاوزت موعد الإرجاع.</value>
+</data>
+
+<data name="NoOverdueBorrowings" xml:space="preserve">
+  <value>لا توجد استعارات متأخرة.</value>
+</data>
+
+<data name="RecentActiveBorrowings" xml:space="preserve">
+  <value>آخر الاستعارات النشطة</value>
+</data>
+
+<data name="ViewAllBorrowings" xml:space="preserve">
+  <value>عرض جميع الاستعارات</value>
+</data>
+
+<data name="NoActiveBorrowings" xml:space="preserve">
+  <value>لا توجد استعارات نشطة حاليًا.</value>
+</data>
+
+<data name="Employee" xml:space="preserve">
+  <value>الموظف</value>
+</data>
+
+<data name="BorrowDate" xml:space="preserve">
+  <value>تاريخ الاستعارة</value>
+</data>
+
+<data name="ExpectedReturnDate" xml:space="preserve">
+  <value>موعد الإرجاع</value>
+</data>
+
+<data name="Status" xml:space="preserve">
+  <value>الحالة</value>
+</data>
+
+<data name="Details" xml:space="preserve">
+  <value>التفاصيل</value>
+</data>
+
+<data name="Overdue" xml:space="preserve">
+  <value>متأخرة</value>
+</data>
+
+<data name="OnTime" xml:space="preserve">
+  <value>ضمن الموعد</value>
+</data>
+<data name="CreateNewCategory" xml:space="preserve">
+  <value>إضافة تصنيف جديد</value>
+</data>
+
+<data name="Name" xml:space="preserve">
+  <value>الاسم</value>
+</data>
+
+<data name="Description" xml:space="preserve">
+  <value>الوصف</value>
+</data>
+
+<data name="Actions" xml:space="preserve">
+  <value>الإجراءات</value>
+</data>
+
+<data name="Edit" xml:space="preserve">
+  <value>تعديل</value>
+</data>
+
+<data name="Delete" xml:space="preserve">
+  <value>حذف</value>
+</data>
+
+<data name="NoCategories" xml:space="preserve">
+  <value>لا توجد تصنيفات مسجلة حاليًا.</value>
+</data>
+<data name="Save" xml:space="preserve">
+  <value>حفظ</value>
+</data>
+
+<data name="BackToList" xml:space="preserve">
+  <value>العودة إلى القائمة</value>
+</data>
+<data name="EditCategory" xml:space="preserve">
+  <value>تعديل التصنيف</value>
+</data>
+
+<data name="SaveChanges" xml:space="preserve">
+  <value>حفظ التعديلات</value>
+</data>
+<data name="CategoryDetails" xml:space="preserve">
+  <value>تفاصيل التصنيف</value>
+</data>
+<data name="DeleteCategory" xml:space="preserve">
+  <value>حذف التصنيف</value>
+</data>
+
+<data name="DeleteConfirmation" xml:space="preserve">
+  <value>هل أنت متأكد من تنفيذ الحذف؟</value>
+</data>
+
+<data name="DeleteCategoryWarning" xml:space="preserve">
+  <value>لن تتمكن من استعادة هذا التصنيف بعد حذفه.</value>
+</data>
+
+<data name="ConfirmDelete" xml:space="preserve">
+  <value>تأكيد الحذف</value>
+</data>
+
+<data name="Cancel" xml:space="preserve">
+  <value>إلغاء</value>
+</data>
+<data name="CreateNewEquipment" xml:space="preserve">
+  <value>إضافة معدة جديدة</value>
+</data>
+
+<data name="NoEquipment" xml:space="preserve">
+  <value>لا توجد معدات مسجلة حاليًا.</value>
+</data>
+
+<data name="Image" xml:space="preserve">
+  <value>الصورة</value>
+</data>
+
+<data name="EquipmentName" xml:space="preserve">
+  <value>اسم المعدة</value>
+</data>
+
+<data name="SerialNumber" xml:space="preserve">
+  <value>الرقم التسلسلي</value>
+</data>
+
+<data name="PurchaseDate" xml:space="preserve">
+  <value>تاريخ الشراء</value>
+</data>
+
+<data name="PurchasePrice" xml:space="preserve">
+  <value>سعر الشراء</value>
+</data>
+
+<data name="Category" xml:space="preserve">
+  <value>التصنيف</value>
+</data>
+
+<data name="NoImage" xml:space="preserve">
+  <value>لا توجد صورة</value>
+</data>
+
+<data name="EquipmentImageAlt" xml:space="preserve">
+  <value>صورة المعدة {0}</value>
+</data>
+
+<data name="Available" xml:space="preserve">
+  <value>متاحة</value>
+</data>
+
+<data name="Borrowed" xml:space="preserve">
+  <value>مستعارة</value>
+</data>
+<data name="SelectCategory" xml:space="preserve">
+  <value>-- اختاري التصنيف --</value>
+</data>
+
+<data name="AvailableForBorrowing" xml:space="preserve">
+  <value>المعدة متاحة للاستعارة</value>
+</data>
+
+<data name="EquipmentImage" xml:space="preserve">
+  <value>صورة المعدة</value>
+</data>
+
+<data name="ImageUploadRequirements" xml:space="preserve">
+  <value>الأنواع المسموحة: JPG وPNG وWEBP. الحد الأقصى للحجم: 5 MB.</value>
+</data>
+
+<data name="AddEquipment" xml:space="preserve">
+  <value>إضافة المعدة</value>
+</data>
+<data name="EditEquipment" xml:space="preserve">
+  <value>تعديل المعدة</value>
+</data>
+
+<data name="CurrentImage" xml:space="preserve">
+  <value>الصورة الحالية</value>
+</data>
+
+<data name="SelectNewImage" xml:space="preserve">
+  <value>اختيار صورة جديدة</value>
+</data>
+
+<data name="KeepCurrentImageHelp" xml:space="preserve">
+  <value>اتركي الحقل فارغًا للاحتفاظ بالصورة الحالية. الحد الأقصى للحجم: 5 MB.</value>
+</data>
+<data name="EquipmentDetails" xml:space="preserve">
+  <value>تفاصيل المعدة</value>
+</data>
+
+<data name="ClickImageForFullSize" xml:space="preserve">
+  <value>اضغطي على الصورة لعرضها بالحجم الكامل.</value>
+</data>
+
+<data name="NoImageForEquipment" xml:space="preserve">
+  <value>لا توجد صورة لهذه المعدة.</value>
+</data>
+<data name="DeleteEquipment" xml:space="preserve">
+  <value>حذف المعدة</value>
+</data>
+
+<data name="DeleteEquipmentWarning" xml:space="preserve">
+  <value>لن تتمكني من استعادة هذه المعدة بعد حذفها.</value>
+</data>
+<data name="CreateNewEmployee" xml:space="preserve">
+  <value>إضافة موظف جديد</value>
+</data>
+
+<data name="NoEmployees" xml:space="preserve">
+  <value>لا يوجد موظفون مسجلون حاليًا.</value>
+</data>
+
+<data name="FullName" xml:space="preserve">
+  <value>الاسم الكامل</value>
+</data>
+
+<data name="Email" xml:space="preserve">
+  <value>البريد الإلكتروني</value>
+</data>
+
+<data name="Department" xml:space="preserve">
+  <value>القسم</value>
+</data>
+<data name="Password" xml:space="preserve">
+  <value>كلمة المرور</value>
+</data>
+
+<data name="ConfirmPassword" xml:space="preserve">
+  <value>تأكيد كلمة المرور</value>
+</data>
+
+<data name="CreateEmployeeAndAccount" xml:space="preserve">
+  <value>إنشاء الموظف والحساب</value>
+</data>
+<data name="EditEmployee" xml:space="preserve">
+  <value>تعديل الموظف</value>
+</data>
+<data name="EmployeeDetails" xml:space="preserve">
+  <value>تفاصيل الموظف</value>
+</data>
+<data name="DeleteEmployee" xml:space="preserve">
+  <value>حذف الموظف</value>
+</data>
+
+<data name="DeleteEmployeeWarning" xml:space="preserve">
+  <value>سيتم حذف سجل الموظف، ولن تتمكني من استعادته بعد ذلك.</value>
+</data>
+<data name="Search" xml:space="preserve">
+  <value>بحث</value>
+</data>
+
+<data name="BorrowingSearchPlaceholder" xml:space="preserve">
+  <value>اسم المعدة أو الموظف</value>
+</data>
+
+<data name="AllEmployees" xml:space="preserve">
+  <value>جميع الموظفين</value>
+</data>
+
+<data name="BorrowingStatus" xml:space="preserve">
+  <value>حالة الاستعارة</value>
+</data>
+
+<data name="AllStatuses" xml:space="preserve">
+  <value>جميع الحالات</value>
+</data>
+
+<data name="Active" xml:space="preserve">
+  <value>قيد الاستعارة</value>
+</data>
+
+<data name="Returned" xml:space="preserve">
+  <value>تم الإرجاع</value>
+</data>
+
+<data name="Reset" xml:space="preserve">
+  <value>إلغاء التصفية</value>
+</data>
+
+<data name="ResultsCount" xml:space="preserve">
+  <value>عدد النتائج</value>
+</data>
+
+<data name="NoBorrowingRecords" xml:space="preserve">
+  <value>لا توجد سجلات استعارة حاليًا.</value>
+</data>
+
+<data name="ActualReturnDate" xml:space="preserve">
+  <value>تاريخ الإرجاع الفعلي</value>
+</data>
+
+<data name="ReturnEquipment" xml:space="preserve">
+  <value>إرجاع المعدة</value>
+</data>
+
+<data name="ConfirmReturnEquipment" xml:space="preserve">
+  <value>هل تريدين تأكيد إرجاع هذه المعدة؟</value>
+</data>
+
+<data name="Pagination" xml:space="preserve">
+  <value>صفحات النتائج</value>
+</data>
+
+<data name="Previous" xml:space="preserve">
+  <value>السابق</value>
+</data>
+
+<data name="Next" xml:space="preserve">
+  <value>التالي</value>
+</data>
+<data name="SelectEquipment" xml:space="preserve">
+  <value>-- اختاري المعدة --</value>
+</data>
+
+<data name="SelectedEquipmentImage" xml:space="preserve">
+  <value>صورة المعدة المختارة</value>
+</data>
+
+<data name="SelectEmployee" xml:space="preserve">
+  <value>-- اختاري الموظف --</value>
+</data>
+
+<data name="CurrentEmployeeBorrowingNotice" xml:space="preserve">
+  <value>سيتم تسجيل الاستعارة باسم الموظف المسجل دخوله تلقائيًا.</value>
+</data>
+
+<data name="ConfirmBorrowing" xml:space="preserve">
+  <value>تأكيد الاستعارة</value>
+</data>
+<data name="BorrowingDetails" xml:space="preserve">
+  <value>تفاصيل الاستعارة</value>
+</data>
+
+<data name="EmployeeName" xml:space="preserve">
+  <value>اسم الموظف</value>
+</data>
+<data name="InvalidEmployeeSelection" xml:space="preserve">
+  <value>يرجى اختيار موظف صحيح.</value>
+</data>
+
+<data name="EquipmentUnavailable" xml:space="preserve">
+  <value>المعدة غير متاحة أو غير موجودة.</value>
+</data>
+
+<data name="ExpectedReturnDateFuture" xml:space="preserve">
+  <value>تاريخ الإرجاع المتوقع يجب أن يكون في المستقبل.</value>
+</data>
+
+<data name="BorrowingCreatedSuccessfully" xml:space="preserve">
+  <value>تم تسجيل الاستعارة بنجاح.</value>
+</data>
+
+<data name="EquipmentAlreadyReturned" xml:space="preserve">
+  <value>تم إرجاع هذه المعدة مسبقًا.</value>
+</data>
+
+<data name="EquipmentReturnedSuccessfully" xml:space="preserve">
+  <value>تم إرجاع المعدة بنجاح.</value>
+</data>
+<data name="LoginInstructions" xml:space="preserve">
+  <value>أدخلي بيانات حسابك للوصول إلى النظام.</value>
+</data>
+
+<data name="RememberMe" xml:space="preserve">
+  <value>تذكرني</value>
+</data>
+
+<data name="ForgotPassword" xml:space="preserve">
+  <value>هل نسيت كلمة المرور؟</value>
+</data>
+
+<data name="InvalidLoginAttempt" xml:space="preserve">
+  <value>البريد الإلكتروني أو كلمة المرور غير صحيحة.</value>
+</data>
+<data name="AccessDenied" xml:space="preserve">
+  <value>الوصول مرفوض</value>
+</data>
+
+<data name="AccessDeniedMessage" xml:space="preserve">
+  <value>لا تملكين الصلاحية اللازمة للوصول إلى هذه الصفحة.</value>
+</data>
+
+<data name="ReturnHome" xml:space="preserve">
+  <value>العودة إلى الصفحة الرئيسية</value>
+</data>
+<data name="RegistrationDisabled" xml:space="preserve">
+  <value>التسجيل غير متاح</value>
+</data>
+
+<data name="RegistrationDisabledMessage" xml:space="preserve">
+  <value>يتم إنشاء حسابات الموظفين بواسطة مدير النظام فقط.</value>
+</data>
+<data name="FullNameRequired" xml:space="preserve">
+  <value>اسم الموظف مطلوب.</value>
+</data>
+
+<data name="EmailRequired" xml:space="preserve">
+  <value>البريد الإلكتروني مطلوب.</value>
+</data>
+
+<data name="InvalidEmail" xml:space="preserve">
+  <value>يرجى إدخال بريد إلكتروني صحيح.</value>
+</data>
+
+<data name="DepartmentRequired" xml:space="preserve">
+  <value>القسم مطلوب.</value>
+</data>
+
+<data name="PasswordRequired" xml:space="preserve">
+  <value>كلمة المرور مطلوبة.</value>
+</data>
+
+<data name="PasswordMinimumLength" xml:space="preserve">
+  <value>يجب ألا تقل كلمة المرور عن 6 أحرف.</value>
+</data>
+
+<data name="ConfirmPasswordRequired" xml:space="preserve">
+  <value>تأكيد كلمة المرور مطلوب.</value>
+</data>
+
+<data name="PasswordsDoNotMatch" xml:space="preserve">
+  <value>كلمتا المرور غير متطابقتين.</value>
+</data>
+<data name="EmailAlreadyUsed" xml:space="preserve">
+  <value>يوجد حساب يستخدم هذا البريد الإلكتروني.</value>
+</data>
+
+<data name="PasswordRequiresDigit" xml:space="preserve">
+  <value>يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.</value>
+</data>
+
+<data name="PasswordRequiresLowercase" xml:space="preserve">
+  <value>يجب أن تحتوي كلمة المرور على حرف صغير.</value>
+</data>
+
+<data name="PasswordRequiresUppercase" xml:space="preserve">
+  <value>يجب أن تحتوي كلمة المرور على حرف كبير.</value>
+</data>
+
+<data name="PasswordRequiresSymbol" xml:space="preserve">
+  <value>يجب أن تحتوي كلمة المرور على رمز خاص.</value>
+</data>
+
+<data name="IdentityOperationFailed" xml:space="preserve">
+  <value>تعذر إكمال عملية إنشاء الحساب.</value>
+</data>
+
+<data name="EmployeeSaveFailed" xml:space="preserve">
+  <value>حدث خطأ أثناء حفظ بيانات الموظف.</value>
+</data>
+
+<data name="EmployeeCreatedSuccessfully" xml:space="preserve">
+  <value>تم إنشاء الموظف وحساب تسجيل الدخول بنجاح.</value>
+</data>
+
+<data name="EmployeeUpdatedSuccessfully" xml:space="preserve">
+  <value>تم تعديل بيانات الموظف بنجاح.</value>
+</data>
+
+<data name="EmployeeHasBorrowingRecords" xml:space="preserve">
+  <value>لا يمكن حذف الموظف لأنه مرتبط بسجلات استعارة سابقة.</value>
+</data>
+
+<data name="IdentityAccountDeleteFailed" xml:space="preserve">
+  <value>تعذر حذف حساب تسجيل الدخول.</value>
+</data>
+
+<data name="EmployeeDeletedSuccessfully" xml:space="preserve">
+  <value>تم حذف الموظف وحساب تسجيل الدخول بنجاح.</value>
+</data>
+
+<data name="EmployeeDeleteFailed" xml:space="preserve">
+  <value>حدث خطأ أثناء حذف الموظف.</value>
+</data>
+<data name="DuplicateSerialNumber" xml:space="preserve">
+  <value>توجد معدة أخرى تستخدم هذا الرقم التسلسلي.</value>
+</data>
+
+<data name="AllowedImageTypes" xml:space="preserve">
+  <value>يُسمح فقط بصور JPG وPNG وWEBP.</value>
+</data>
+
+<data name="InvalidImageType" xml:space="preserve">
+  <value>نوع ملف الصورة غير صالح.</value>
+</data>
+
+<data name="ImageSizeExceeded" xml:space="preserve">
+  <value>يجب ألا يزيد حجم الصورة عن 5 MB.</value>
+</data>
+
+<data name="ImageSaveFailed" xml:space="preserve">
+  <value>حدث خطأ أثناء حفظ الصورة.</value>
+</data>
+
+<data name="NewImageSaveFailed" xml:space="preserve">
+  <value>حدث خطأ أثناء حفظ الصورة الجديدة.</value>
+</data>
+
+<data name="EquipmentCreatedSuccessfully" xml:space="preserve">
+  <value>تمت إضافة المعدة بنجاح.</value>
+</data>
+
+<data name="EquipmentUpdatedSuccessfully" xml:space="preserve">
+  <value>تم تعديل المعدة بنجاح.</value>
+</data>
+
+<data name="EquipmentHasBorrowingRecords" xml:space="preserve">
+  <value>لا يمكن حذف المعدة لأنها مرتبطة بسجلات استعارة سابقة.</value>
+</data>
+
+<data name="EquipmentDeletedSuccessfully" xml:space="preserve">
+  <value>تم حذف المعدة وصورتها بنجاح.</value>
+</data>
+<data name="CategoryCreatedSuccessfully" xml:space="preserve">
+  <value>تمت إضافة التصنيف بنجاح.</value>
+</data>
+
+<data name="CategoryUpdatedSuccessfully" xml:space="preserve">
+  <value>تم تعديل التصنيف بنجاح.</value>
+</data>
+
+<data name="CategoryHasEquipment" xml:space="preserve">
+  <value>لا يمكن حذف التصنيف لأنه يحتوي على معدات.</value>
+</data>
+
+<data name="CategoryDeletedSuccessfully" xml:space="preserve">
+  <value>تم حذف التصنيف بنجاح.</value>
+</data>
+<data name="CategoryNameRequired" xml:space="preserve">
+  <value>اسم التصنيف مطلوب.</value>
+</data>
+
+<data name="CategoryDescriptionRequired" xml:space="preserve">
+  <value>وصف التصنيف مطلوب.</value>
+</data>
+<data name="EquipmentNameRequired" xml:space="preserve">
+  <value>اسم المعدة مطلوب.</value>
+</data>
+
+<data name="SerialNumberRequired" xml:space="preserve">
+  <value>الرقم التسلسلي مطلوب.</value>
+</data>
+
+<data name="EquipmentDescriptionRequired" xml:space="preserve">
+  <value>وصف المعدة مطلوب.</value>
+</data>
+
+<data name="PurchasePriceNonNegative" xml:space="preserve">
+  <value>يجب ألا يكون سعر الشراء أقل من صفر.</value>
+</data>
+
+<data name="CategoryRequired" xml:space="preserve">
+  <value>يرجى اختيار التصنيف.</value>
+</data>
+<data name="EquipmentRequired" xml:space="preserve">
+  <value>يرجى اختيار المعدة.</value>
+</data>
+
+<data name="EmployeeRequired" xml:space="preserve">
+  <value>يرجى اختيار الموظف.</value>
+</data>
+<data name="Error" xml:space="preserve">
+  <value>خطأ</value>
+</data>
+
+<data name="UnexpectedError" xml:space="preserve">
+  <value>حدث خطأ غير متوقع.</value>
+</data>
+
+<data name="UnexpectedErrorMessage" xml:space="preserve">
+  <value>تعذر إكمال طلبك حاليًا. يرجى المحاولة مرة أخرى لاحقًا.</value>
+</data>
+
+<data name="RequestId" xml:space="preserve">
+  <value>رقم تتبع الطلب</value>
+</data>
+<data name="PrivacyPolicy" xml:space="preserve">
+  <value>سياسة الخصوصية</value>
+</data>
+
+<data name="PrivacyIntroduction" xml:space="preserve">
+  <value>يحافظ نظام إدارة المعدات على بيانات المستخدمين وسجلات الاستعارة وفق صلاحيات الوصول المحددة.</value>
+</data>
+
+<data name="CollectedData" xml:space="preserve">
+  <value>البيانات التي نجمعها</value>
+</data>
+
+<data name="CollectedDataDescription" xml:space="preserve">
+  <value>يخزن النظام بيانات الموظف الأساسية، وبيانات المعدات، وسجلات عمليات الاستعارة والإرجاع.</value>
+</data>
+
+<data name="DataUsage" xml:space="preserve">
+  <value>استخدام البيانات</value>
+</data>
+
+<data name="DataUsageDescription" xml:space="preserve">
+  <value>تستخدم البيانات لإدارة المعدات ومتابعة حالتها وتوثيق عمليات الاستعارة والإرجاع.</value>
+</data>
+
+<data name="DataAccess" xml:space="preserve">
+  <value>الوصول إلى البيانات</value>
+</data>
+
+<data name="DataAccessDescription" xml:space="preserve">
+  <value>تُعرض البيانات للمستخدمين وفق أدوارهم وصلاحياتهم داخل النظام.</value>
+</data>
+<data name="HelloUser" xml:space="preserve">
+  <value>مرحبًا، {0}</value>
+</data>
+<data name="AccountLocked" xml:space="preserve">
+  <value>الحساب مقفل مؤقتًا</value>
+</data>
+
+<data name="AccountLockedMessage" xml:space="preserve">
+  <value>تم قفل هذا الحساب مؤقتًا بسبب محاولات دخول فاشلة متكررة. يرجى المحاولة لاحقًا.</value>
+</data>
+
+<data name="ReturnToLogin" xml:space="preserve">
+  <value>العودة إلى تسجيل الدخول</value>
+</data>
+<data name="PurchaseDateRequired" xml:space="preserve">
+  <value>تاريخ الشراء مطلوب.</value>
+</data>
+
+<data name="PurchasePriceRequired" xml:space="preserve">
+  <value>سعر الشراء مطلوب.</value>
+</data>
+</root>

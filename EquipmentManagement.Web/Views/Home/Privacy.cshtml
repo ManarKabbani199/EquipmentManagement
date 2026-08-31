@@ -1,6 +1,59 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
-<h1>@ViewData["Title"]</h1>
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
 
-<p>Use this page to detail your site's privacy policy.</p>
+@{
+    ViewData["Title"] =
+        Localizer["PrivacyPolicy"];
+}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header bg-dark text-white">
+
+                <h1 class="h4 mb-0">
+                    @Localizer["PrivacyPolicy"]
+                </h1>
+
+            </div>
+
+            <div class="card-body">
+
+                <p>
+                    @Localizer["PrivacyIntroduction"]
+                </p>
+
+                <h2 class="h5 mt-4">
+                    @Localizer["CollectedData"]
+                </h2>
+
+                <p>
+                    @Localizer["CollectedDataDescription"]
+                </p>
+
+                <h2 class="h5 mt-4">
+                    @Localizer["DataUsage"]
+                </h2>
+
+                <p>
+                    @Localizer["DataUsageDescription"]
+                </p>
+
+                <h2 class="h5 mt-4">
+                    @Localizer["DataAccess"]
+                </h2>
+
+                <p>
+                    @Localizer["DataAccessDescription"]
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

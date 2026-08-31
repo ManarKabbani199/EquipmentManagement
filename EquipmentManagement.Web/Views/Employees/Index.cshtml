@@ -1,14 +1,26 @@
 @model IEnumerable<EquipmentManagement.Domain.Entities.Employee>
 
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Localizer["Employees"];
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between
+            align-items-center mb-4">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    <h1>@Localizer["Employees"]</h1>
+
+    <a asp-action="Create"
+       class="btn btn-primary">
+
+        @Localizer["CreateNewEmployee"]
+
+    </a>
+
+</div>
+
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">
@@ -22,40 +34,87 @@
         @TempData["ErrorMessage"]
     </div>
 }
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Department)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Department)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        @Localizer["NoEmployees"]
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+
+        <table class="table table-bordered
+                      table-striped align-middle">
+
+            <thead class="table-dark">
+
+                <tr>
+                    <th>@Localizer["FullName"]</th>
+                    <th>@Localizer["Email"]</th>
+                    <th>@Localizer["Department"]</th>
+                    <th>@Localizer["Actions"]</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @item.FullName
+                        </td>
+
+                        <td>
+                            @item.Email
+                        </td>
+
+                        <td>
+                            @item.Department
+                        </td>
+
+                        <td>
+
+                            <div class="d-flex gap-2 flex-wrap">
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-warning btn-sm">
+
+                                    @Localizer["Edit"]
+
+                                </a>
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-info btn-sm">
+
+                                    @Localizer["Details"]
+
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-danger btn-sm">
+
+                                    @Localizer["Delete"]
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+}

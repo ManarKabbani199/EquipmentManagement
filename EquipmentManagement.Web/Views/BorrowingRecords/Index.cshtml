@@ -1,10 +1,34 @@
 @model IEnumerable<EquipmentManagement.Domain.Entities.BorrowingRecord>
 
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+
 @{
-    ViewData["Title"] = "سجلات الاستعارة";
+    ViewData["Title"] = Localizer["BorrowingRecords"];
+
+    var currentPage =
+        (int)(ViewData["CurrentPage"] ?? 1);
+
+    var totalPages =
+        (int)(ViewData["TotalPages"] ?? 0);
+
+    var confirmReturn =
+        Localizer["ConfirmReturnEquipment"].Value;
 }
 
-<h1>سجلات الاستعارة</h1>
+<div class="d-flex justify-content-between
+            align-items-center mb-4">
+
+    <h1>@Localizer["BorrowingRecords"]</h1>
+
+    <a asp-action="Create"
+       class="btn btn-primary">
+
+        @Localizer["BorrowEquipment"]
+
+    </a>
+
+</div>
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -20,265 +44,362 @@
     </div>
 }
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">
-        استعارة معدة
-    </a>
-    <form asp-action="Index" method="get" class="row g-3 mb-4">
+<div class="card shadow-sm mb-4">
 
-        <div class="col-md-5">
-            <label class="form-label">
-                البحث
-            </label>
+    <div class="card-body">
 
-            <input type="text" name="search" value="@ViewData["CurrentSearch"]" class="form-control"
-                   placeholder="اسم المعدة أو الموظف" />
-        </div>
-        @if (User.IsInRole("Admin"))
-        {
-            <div class="col-md-4">
-                
+        <form asp-action="Index"
+              method="get"
+              class="row g-3">
+
+            <div class="col-md-5">
+
                 <label class="form-label">
-                    الموظف
+                    @Localizer["Search"]
                 </label>
 
-                <select name="employeeId" class="form-select" asp-items="ViewBag.EmployeeId">
+                <input type="text"
+                       name="search"
+                       value="@ViewData["CurrentSearch"]"
+                       class="form-control"
+                       placeholder="@Localizer["BorrowingSearchPlaceholder"]" />
+
+            </div>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        @Localizer["Employee"]
+                    </label>
+
+                    <select name="employeeId"
+                            class="form-select"
+                            asp-items="ViewBag.EmployeeId">
+
+                        <option value="">
+                            @Localizer["AllEmployees"]
+                        </option>
+
+                    </select>
+
+                </div>
+            }
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    @Localizer["BorrowingStatus"]
+                </label>
+
+                <select name="status"
+                        class="form-select">
 
                     <option value="">
-                        جميع الموظفين
+                        @Localizer["AllStatuses"]
+                    </option>
+
+                    <option value="active"
+                            selected="@(ViewData["CurrentStatus"]?.ToString() == "active")">
+
+                        @Localizer["Active"]
+
+                    </option>
+
+                    <option value="returned"
+                            selected="@(ViewData["CurrentStatus"]?.ToString() == "returned")">
+
+                        @Localizer["Returned"]
+
+                    </option>
+
+                    <option value="overdue"
+                            selected="@(ViewData["CurrentStatus"]?.ToString() == "overdue")">
+
+                        @Localizer["Overdue"]
+
                     </option>
 
                 </select>
+
             </div>
-        }
 
-        <div class="col-md-4">
-            <label class="form-label">
-                حالة الاستعارة
-            </label>
+            <div class="col-md-3 d-flex
+                        align-items-end gap-2">
 
-            <select name="status" class="form-select">
+                <button type="submit"
+                        class="btn btn-primary">
 
-                <option value="">
-                    جميع الحالات
-                </option>
+                    @Localizer["Search"]
 
-                <option value="active" selected="@(ViewData["CurrentStatus"]?.ToString() == "active")">
-                    قيد الاستعارة
-                </option>
+                </button>
 
-                <option value="returned" selected="@(ViewData["CurrentStatus"]?.ToString() == "returned")">
-                    تم الإرجاع
-                </option>
+                <a asp-action="Index"
+                   class="btn btn-secondary">
 
-                <option value="overdue" selected="@(ViewData["CurrentStatus"]?.ToString() == "overdue")">
-                    متأخرة
-                </option>
+                    @Localizer["Reset"]
 
-            </select>
-        </div>
+                </a>
 
-        <div class="col-md-3 d-flex align-items-end gap-2">
+            </div>
 
-            <button type="submit" class="btn btn-primary">
-                بحث
-            </button>
+            <div class="col-12">
 
-            <a asp-action="Index" class="btn btn-secondary">
-                إلغاء
-            </a>
+                <p class="text-muted mb-0">
 
-        </div>
-        <p class="text-muted">
-    عدد النتائج:
-    <strong>@ViewData["TotalRecords"]</strong>
-</p>
+                    @Localizer["ResultsCount"]:
 
-    </form>
-</p>
+                    <strong>
+                        @(ViewData["TotalRecords"] ?? 0)
+                    </strong>
+
+                </p>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 
 @if (!Model.Any())
 {
     <div class="alert alert-info">
-        لا توجد سجلات استعارة حاليًا.
+        @Localizer["NoBorrowingRecords"]
     </div>
 }
 else
 {
     <div class="table-responsive">
-        <table class="table table-bordered table-striped align-middle">
+
+        <table class="table table-bordered
+                      table-striped align-middle">
 
             <thead class="table-dark">
+
                 <tr>
-                    <th>الصورة</th>
-                    <th>المعدة</th>
-                    <th>الموظف</th>
-                    <th>تاريخ الاستعارة</th>
-                    <th>تاريخ الإرجاع المتوقع</th>
-                    <th>تاريخ الإرجاع الفعلي</th>
-                    <th>الحالة</th>
-                    <th>العمليات</th>
+                    <th>@Localizer["Image"]</th>
+                    <th>@Localizer["Equipment"]</th>
+                    <th>@Localizer["Employee"]</th>
+                    <th>@Localizer["BorrowDate"]</th>
+                    <th>@Localizer["ExpectedReturnDate"]</th>
+                    <th>@Localizer["ActualReturnDate"]</th>
+                    <th>@Localizer["Status"]</th>
+                    <th>@Localizer["Actions"]</th>
                 </tr>
+
             </thead>
 
             <tbody>
+
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>
-    @if (!string.IsNullOrWhiteSpace(
-            item.Equipment?.ImagePath))
-    {
-        <a href="@item.Equipment.ImagePath"
-           target="_blank">
-
-            <img src="@item.Equipment.ImagePath"
-                 alt="صورة @item.Equipment.Name"
-                 class="img-thumbnail"
-                 style="width:90px;
-                        height:70px;
-                        object-fit:cover;" />
-        </a>
-    }
-    else
-    {
-        <span class="text-muted">
-            لا توجد صورة
-        </span>
-    }
-</td>
-                        <td>
-    <strong>
-        @item.Equipment.Name
-    </strong>
-
-    @if (!string.IsNullOrWhiteSpace(
-            item.Equipment.Description))
-    {
-        <div class="text-muted small">
-            @item.Equipment.Description
-        </div>
-    }
-</td>
 
                         <td>
-                            @item.Employee.FullName
+
+                            @if (!string.IsNullOrWhiteSpace(
+                                item.Equipment?.ImagePath))
+                            {
+                                <a href="@item.Equipment.ImagePath"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+
+                                    <img src="@item.Equipment.ImagePath"
+                                         alt="@Localizer[
+                                             "EquipmentImageAlt",
+                                             item.Equipment.Name
+                                         ]"
+                                         class="img-thumbnail"
+                                         style="width:90px;
+                                                height:70px;
+                                                object-fit:cover;" />
+
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    @Localizer["NoImage"]
+                                </span>
+                            }
+
                         </td>
 
                         <td>
-                            @item.BorrowDate.ToString("yyyy/MM/dd HH:mm")
+
+                            <strong>
+                                @(item.Equipment?.Name ?? "-")
+                            </strong>
+
+                            @if (!string.IsNullOrWhiteSpace(
+                                item.Equipment?.Description))
+                            {
+                                <div class="text-muted small">
+                                    @item.Equipment.Description
+                                </div>
+                            }
+
                         </td>
 
                         <td>
-                            @item.ExpectedReturnDate.ToString("yyyy/MM/dd HH:mm")
+                            @(item.Employee?.FullName ?? "-")
                         </td>
 
                         <td>
+                            @item.BorrowDate.ToString("g")
+                        </td>
+
+                        <td>
+                            @item.ExpectedReturnDate.ToString("g")
+                        </td>
+
+                        <td>
+
                             @if (item.ActualReturnDate.HasValue)
                             {
-                                @item.ActualReturnDate.Value.ToString("yyyy/MM/dd HH:mm")
+                                @item.ActualReturnDate.Value.ToString("g")
                             }
                             else
                             {
                                 <span>-</span>
                             }
+
                         </td>
 
                         <td>
+
                             @if (item.IsReturned)
                             {
                                 <span class="badge bg-success">
-                                    تم الإرجاع
+                                    @Localizer["Returned"]
                                 </span>
                             }
-                            else if (item.ExpectedReturnDate < DateTime.Now)
+                            else if (
+                                item.ExpectedReturnDate <
+                                DateTime.Now)
                             {
                                 <span class="badge bg-danger">
-                                    متأخرة
+                                    @Localizer["Overdue"]
                                 </span>
                             }
                             else
                             {
                                 <span class="badge bg-warning text-dark">
-                                    قيد الاستعارة
+                                    @Localizer["Active"]
                                 </span>
                             }
+
                         </td>
 
                         <td>
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
-                                التفاصيل
-                            </a>
 
-                            @if (User.IsInRole("Admin") && !item.IsReturned)
-                            {
-                                <form asp-action="ReturnEquipment" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <div class="d-flex gap-2 flex-wrap">
 
-                                    <button type="submit" class="btn btn-success btn-sm"
-                                            onclick="return confirm('هل تريدين تأكيد إرجاع هذه المعدة؟');">
-                                        إرجاع المعدة
-                                    </button>
-                                </form>
-                            }
+                                <a asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-info btn-sm">
+
+                                    @Localizer["Details"]
+
+                                </a>
+
+                                @if (User.IsInRole("Admin") &&
+                                     !item.IsReturned)
+                                {
+                                    <form asp-action="ReturnEquipment"
+                                          asp-route-id="@item.Id"
+                                          method="post"
+                                          class="d-inline"
+                                          onsubmit="return confirm('@confirmReturn');">
+
+                                        <button type="submit"
+                                                class="btn btn-success btn-sm">
+
+                                            @Localizer["ReturnEquipment"]
+
+                                        </button>
+
+                                    </form>
+                                }
+
+                            </div>
+
                         </td>
+
                     </tr>
-                    
                 }
+
             </tbody>
 
         </table>
-        @{
-    var currentPage = (int)(ViewData["CurrentPage"] ?? 1);
-    var totalPages = (int)(ViewData["TotalPages"] ?? 0);
-}
 
-@if (totalPages > 1)
-{
-    <nav class="mt-4">
-        <ul class="pagination justify-content-center">
-
-            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
-                <a class="page-link"
-                   asp-action="Index"
-                   asp-route-pageNumber="@(currentPage - 1)"
-                   asp-route-search="@ViewData["CurrentSearch"]"
-                   asp-route-status="@ViewData["CurrentStatus"]"
-                   asp-route-employeeId="@ViewData["CurrentEmployeeId"]">
-                    السابق
-                </a>
-            </li>
-
-            @for (var pageIndex = 1; pageIndex <= totalPages; pageIndex++)
-{
-    <li class="page-item @(pageIndex == currentPage ? "active" : "")">
-
-        <a class="page-link"
-           asp-action="Index"
-           asp-route-pageNumber="@pageIndex"
-           asp-route-search="@ViewData["CurrentSearch"]"
-           asp-route-status="@ViewData["CurrentStatus"]"
-           asp-route-employeeId="@ViewData["CurrentEmployeeId"]">
-
-            @pageIndex
-
-        </a>
-
-    </li>
-}
-
-            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
-                <a class="page-link"
-                   asp-action="Index"
-                   asp-route-pageNumber="@(currentPage + 1)"
-                   asp-route-search="@ViewData["CurrentSearch"]"
-                   asp-route-status="@ViewData["CurrentStatus"]"
-                   asp-route-employeeId="@ViewData["CurrentEmployeeId"]">
-                    التالي
-                </a>
-            </li>
-
-        </ul>
-    </nav>
-}
     </div>
+
+    @if (totalPages > 1)
+    {
+        <nav class="mt-4"
+             aria-label="@Localizer["Pagination"]">
+
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item
+                    @(currentPage == 1 ? "disabled" : "")">
+
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@(currentPage - 1)"
+                       asp-route-search="@ViewData["CurrentSearch"]"
+                       asp-route-status="@ViewData["CurrentStatus"]"
+                       asp-route-employeeId="@ViewData["CurrentEmployeeId"]">
+
+                        @Localizer["Previous"]
+
+                    </a>
+
+                </li>
+
+                @for (var pageIndex = 1;
+                      pageIndex <= totalPages;
+                      pageIndex++)
+                {
+                    <li class="page-item
+                        @(pageIndex == currentPage ? "active" : "")">
+
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-pageNumber="@pageIndex"
+                           asp-route-search="@ViewData["CurrentSearch"]"
+                           asp-route-status="@ViewData["CurrentStatus"]"
+                           asp-route-employeeId="@ViewData["CurrentEmployeeId"]">
+
+                            @pageIndex
+
+                        </a>
+
+                    </li>
+                }
+
+                <li class="page-item
+                    @(currentPage == totalPages ? "disabled" : "")">
+
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@(currentPage + 1)"
+                       asp-route-search="@ViewData["CurrentSearch"]"
+                       asp-route-status="@ViewData["CurrentStatus"]"
+                       asp-route-employeeId="@ViewData["CurrentEmployeeId"]">
+
+                        @Localizer["Next"]
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </nav>
+    }
 }

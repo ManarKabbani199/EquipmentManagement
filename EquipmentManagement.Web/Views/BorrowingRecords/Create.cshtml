@@ -1,8 +1,11 @@
 @model EquipmentManagement.Domain.Entities.BorrowingRecord
+
 @using System.Text.Json
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] = "استعارة معدة";
+    ViewData["Title"] = Localizer["BorrowEquipment"];
 
     var equipmentImages =
         ViewData["EquipmentImages"]
@@ -10,142 +13,157 @@
         ?? new Dictionary<int, string>();
 }
 
-<h1>استعارة معدة</h1>
+<div class="row justify-content-center">
 
-<hr />
+    <div class="col-md-8 col-lg-6">
 
-<div class="row">
+        <div class="card shadow-sm">
 
-    <div class="col-md-6 col-lg-5">
+            <div class="card-header bg-primary text-white">
 
-        <form asp-action="Create"
-              method="post">
-
-            @Html.AntiForgeryToken()
-
-            <div asp-validation-summary="ModelOnly"
-                 class="text-danger mb-3">
-            </div>
-
-            <!-- اختيار المعدة -->
-            <div class="form-group mb-3">
-
-                <label asp-for="EquipmentId"
-                       class="control-label">
-                    المعدة
-                </label>
-
-                <select asp-for="EquipmentId"
-                        class="form-select"
-                        asp-items="ViewBag.EquipmentId">
-
-                    <option value="">
-                        -- اختاري المعدة --
-                    </option>
-
-                </select>
-
-                <span asp-validation-for="EquipmentId"
-                      class="text-danger">
-                </span>
-
-                <!-- صورة المعدة المختارة -->
-                <div id="equipmentImageContainer"
-                     class="mt-3 text-center"
-                     style="display:none;">
-
-                    <label class="form-label d-block">
-                        صورة المعدة المختارة
-                    </label>
-
-                    <img id="equipmentImage"
-                         src=""
-                         alt="صورة المعدة المختارة"
-                         class="img-thumbnail"
-                         style="width:260px;
-                                height:200px;
-                                object-fit:contain;" />
-
-                </div>
-
-                <!-- تظهر عند عدم وجود صورة -->
-                <div id="equipmentNoImage"
-                     class="alert alert-secondary mt-3"
-                     style="display:none;">
-
-                    لا توجد صورة لهذه المعدة.
-
-                </div>
+                <h1 class="h4 mb-0">
+                    @Localizer["BorrowEquipment"]
+                </h1>
 
             </div>
 
-            <!-- يظهر اختيار الموظف للمدير فقط -->
-            @if (User.IsInRole("Admin"))
-            {
-                <div class="form-group mb-3">
+            <div class="card-body">
 
-                    <label asp-for="EmployeeId"
-                           class="control-label">
-                        الموظف
-                    </label>
+                <form asp-action="Create"
+                      method="post">
 
-                    <select asp-for="EmployeeId"
-                            class="form-select"
-                            asp-items="ViewBag.EmployeeId">
+                    @Html.AntiForgeryToken()
 
-                        <option value="">
-                            -- اختاري الموظف --
-                        </option>
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger">
+                    </div>
 
-                    </select>
+                    <div class="mb-3">
 
-                    <span asp-validation-for="EmployeeId"
-                          class="text-danger">
-                    </span>
+                        <label asp-for="EquipmentId"
+                               class="form-label">
 
-                </div>
-            }
-            else
-            {
-                <div class="alert alert-info">
-                    سيتم تسجيل الاستعارة باسم الموظف
-                    المسجل دخوله تلقائيًا.
-                </div>
-            }
+                            @Localizer["Equipment"]
 
-            <!-- تاريخ الإرجاع المتوقع -->
-            <div class="form-group mb-3">
+                        </label>
 
-                <label asp-for="ExpectedReturnDate"
-                       class="control-label">
-                    تاريخ الإرجاع المتوقع
-                </label>
+                        <select asp-for="EquipmentId"
+                                class="form-select"
+                                asp-items="ViewBag.EquipmentId">
 
-                <input asp-for="ExpectedReturnDate"
-                       class="form-control" />
+                            <option value="">
+                                @Localizer["SelectEquipment"]
+                            </option>
 
-                <span asp-validation-for="ExpectedReturnDate"
-                      class="text-danger">
-                </span>
+                        </select>
+
+                        <span asp-validation-for="EquipmentId"
+                              class="text-danger">
+                        </span>
+
+                        <div id="equipmentImageContainer"
+                             class="mt-3 text-center"
+                             style="display:none;">
+
+                            <label class="form-label d-block">
+                                @Localizer["SelectedEquipmentImage"]
+                            </label>
+
+                            <img id="equipmentImage"
+                                 src=""
+                                 alt="@Localizer["SelectedEquipmentImage"]"
+                                 class="img-thumbnail"
+                                 style="width:260px;
+                                        height:200px;
+                                        object-fit:contain;" />
+
+                        </div>
+
+                        <div id="equipmentNoImage"
+                             class="alert alert-secondary mt-3"
+                             style="display:none;">
+
+                            @Localizer["NoImageForEquipment"]
+
+                        </div>
+
+                    </div>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="mb-3">
+
+                            <label asp-for="EmployeeId"
+                                   class="form-label">
+
+                                @Localizer["Employee"]
+
+                            </label>
+
+                            <select asp-for="EmployeeId"
+                                    class="form-select"
+                                    asp-items="ViewBag.EmployeeId">
+
+                                <option value="">
+                                    @Localizer["SelectEmployee"]
+                                </option>
+
+                            </select>
+
+                            <span asp-validation-for="EmployeeId"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            @Localizer["CurrentEmployeeBorrowingNotice"]
+                        </div>
+                    }
+
+                    <div class="mb-3">
+
+                        <label asp-for="ExpectedReturnDate"
+                               class="form-label">
+
+                            @Localizer["ExpectedReturnDate"]
+
+                        </label>
+
+                        <input asp-for="ExpectedReturnDate"
+                               class="form-control" />
+
+                        <span asp-validation-for="ExpectedReturnDate"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="d-flex gap-2">
+
+                        <button type="submit"
+                                class="btn btn-primary">
+
+                            @Localizer["ConfirmBorrowing"]
+
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-secondary">
+
+                            @Localizer["BackToList"]
+
+                        </a>
+
+                    </div>
+
+                </form>
 
             </div>
 
-            <!-- أزرار النموذج -->
-            <div class="form-group d-flex gap-2">
-
-                <button type="submit"
-                        class="btn btn-primary">
-                    استعارة
-                </button>
-
-                <a asp-action="Index"
-                   class="btn btn-secondary">
-                    العودة إلى القائمة
-                </a>
-
-            </div>
-
-        </form>
+        </div>
 
     </div>
 
@@ -197,7 +215,6 @@
                     const imagePath =
                         equipmentImages[selectedId];
 
-                    // إخفاء العرض السابق
                     imageContainer.style.display =
                         "none";
 
@@ -208,12 +225,10 @@
                         "src"
                     );
 
-                    // لم يتم اختيار معدة
                     if (!selectedId) {
                         return;
                     }
 
-                    // المعدة لديها صورة
                     if (imagePath) {
                         equipmentImage.src =
                             imagePath;
@@ -222,20 +237,16 @@
                             "block";
                     }
                     else {
-                        // المعدة ليس لديها صورة
                         noImageMessage.style.display =
                             "block";
                     }
                 }
 
-                // تغيير الصورة عند تغيير المعدة
                 equipmentSelect.addEventListener(
                     "change",
                     updateEquipmentImage
                 );
 
-                // عرض الصورة عند إعادة الصفحة
-                // وفيها اختيار سابق
                 updateEquipmentImage();
             }
         );

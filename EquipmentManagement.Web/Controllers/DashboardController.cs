@@ -18,7 +18,7 @@ public class DashboardController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var today = DateTime.Today;
+        var now = DateTime.Now;
 
         var viewModel = new DashboardViewModel
         {
@@ -44,7 +44,7 @@ public class DashboardController : Controller
                 await _context.BorrowingRecords
                     .CountAsync(b =>
                         !b.IsReturned &&
-                        b.ExpectedReturnDate < today),
+                         b.ExpectedReturnDate < now),
 
             RecentBorrowings =
                 await _context.BorrowingRecords
