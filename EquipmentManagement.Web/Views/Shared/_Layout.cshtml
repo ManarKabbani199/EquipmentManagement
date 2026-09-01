@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using Microsoft.Extensions.Localization
+
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
@@ -8,11 +9,29 @@
             .TwoLetterISOLanguageName;
 
     var isArabic = culture == "ar";
-    var direction = isArabic ? "rtl" : "ltr";
+
+    var direction =
+        isArabic ? "rtl" : "ltr";
 
     var returnUrl =
         Context.Request.Path +
         Context.Request.QueryString;
+
+    var currentController =
+        ViewContext.RouteData
+            .Values["controller"]?
+            .ToString();
+
+    string ActiveLink(string controller)
+    {
+        return string.Equals(
+            currentController,
+            controller,
+            StringComparison.OrdinalIgnoreCase
+        )
+            ? "active"
+            : string.Empty;
+    }
 }
 
 <!DOCTYPE html>
@@ -20,6 +39,7 @@
 <html lang="@culture" dir="@direction">
 
 <head>
+
     <meta charset="utf-8" />
 
     <meta name="viewport"
@@ -49,155 +69,224 @@
     <link rel="stylesheet"
           href="~/EquipmentManagement.Web.styles.css"
           asp-append-version="true" />
+
 </head>
 
-<body>
+<body class="app-body">
 
 <header>
-    <nav class="navbar navbar-expand-sm navbar-light bg-white
-                border-bottom box-shadow mb-3">
 
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-xl navbar-dark
+                app-navbar sticky-top">
 
-            <a class="navbar-brand"
+        <div class="container">
+
+            <a class="navbar-brand app-brand"
                asp-controller="Home"
                asp-action="Index">
-                @Localizer["ApplicationName"]
+
+                <span class="brand-icon">
+                    EM
+                </span>
+
+                <span class="brand-text">
+                    @Localizer["ApplicationName"]
+                </span>
+
             </a>
 
             <button class="navbar-toggler"
                     type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target=".navbar-collapse"
-                    aria-controls="navbarSupportedContent"
+                    data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar"
                     aria-expanded="false"
-                    aria-label="Toggle navigation">
+                    aria-label="@Localizer["ToggleNavigation"]">
 
                 <span class="navbar-toggler-icon"></span>
+
             </button>
 
-            <div class="navbar-collapse collapse
-                        d-sm-inline-flex justify-content-between">
+            <div id="mainNavbar"
+                 class="collapse navbar-collapse">
 
-                <ul class="navbar-nav flex-grow-1">
+                <ul class="navbar-nav app-navigation">
 
                     <li class="nav-item">
-                        <a class="nav-link text-dark"
+
+                        <a class="nav-link @ActiveLink("Home")"
                            asp-controller="Home"
                            asp-action="Index">
+
                             @Localizer["Home"]
+
                         </a>
+
                     </li>
 
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark"
+
+                            <a class="nav-link @ActiveLink("Dashboard")"
                                asp-controller="Dashboard"
                                asp-action="Index">
+
                                 @Localizer["Dashboard"]
+
                             </a>
+
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark"
+
+                            <a class="nav-link @ActiveLink("Categories")"
                                asp-controller="Categories"
                                asp-action="Index">
+
                                 @Localizer["Categories"]
+
                             </a>
+
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark"
+
+                            <a class="nav-link @ActiveLink("Equipment")"
                                asp-controller="Equipment"
                                asp-action="Index">
+
                                 @Localizer["Equipment"]
+
                             </a>
+
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark"
+
+                            <a class="nav-link @ActiveLink("Employees")"
                                asp-controller="Employees"
                                asp-action="Index">
+
                                 @Localizer["Employees"]
+
                             </a>
+
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark"
+
+                            <a class="nav-link @ActiveLink("BorrowingRecords")"
                                asp-controller="BorrowingRecords"
                                asp-action="Index">
+
                                 @Localizer["ManageBorrowings"]
+
                             </a>
+
                         </li>
                     }
 
                     @if (User.IsInRole("Employee"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark"
+
+                            <a class="nav-link @ActiveLink("BorrowingRecords")"
                                asp-controller="BorrowingRecords"
                                asp-action="Index">
+
                                 @Localizer["MyBorrowings"]
+
                             </a>
+
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark"
+
+                            <a class="nav-link"
                                asp-controller="BorrowingRecords"
                                asp-action="Create">
+
                                 @Localizer["BorrowEquipment"]
+
                             </a>
+
                         </li>
                     }
 
                 </ul>
 
-                <div class="d-flex align-items-center gap-2">
+                <div class="navbar-actions">
 
-                    <a class="btn btn-sm btn-outline-primary"
-                       asp-controller="Localization"
-                       asp-action="SetLanguage"
-                       asp-route-culture="ar"
-                       asp-route-returnUrl="@returnUrl">
-                        العربية
-                    </a>
+                    <div class="language-switcher">
 
-                    <a class="btn btn-sm btn-outline-secondary"
-                       asp-controller="Localization"
-                       asp-action="SetLanguage"
-                       asp-route-culture="en"
-                       asp-route-returnUrl="@returnUrl">
-                        English
-                    </a>
+                        <a class="language-link
+                                  @(isArabic ? "active" : "")"
+                           asp-controller="Localization"
+                           asp-action="SetLanguage"
+                           asp-route-culture="ar"
+                           asp-route-returnUrl="@returnUrl">
 
-                    <partial name="_LoginPartial" />
+                            العربية
+
+                        </a>
+
+                        <a class="language-link
+                                  @(!isArabic ? "active" : "")"
+                           asp-controller="Localization"
+                           asp-action="SetLanguage"
+                           asp-route-culture="en"
+                           asp-route-returnUrl="@returnUrl">
+
+                            English
+
+                        </a>
+
+                    </div>
+
+                    <div class="account-navigation">
+                        <partial name="_LoginPartial" />
+                    </div>
 
                 </div>
 
             </div>
+
         </div>
+
     </nav>
+
 </header>
 
-<div class="container">
+<div class="app-page">
 
-    <main role="main" class="pb-3">
+    <main role="main"
+          class="container app-main">
+
         @RenderBody()
+
     </main>
 
 </div>
 
-<footer class="border-top footer text-muted">
+<footer class="app-footer">
 
     <div class="container">
 
-        &copy; 2026 - @Localizer["ApplicationName"] -
+        <div class="footer-content">
 
-        <a asp-controller="Home"
-           asp-action="Privacy">
-            @Localizer["Privacy"]
-        </a>
+            <span>
+                &copy; 2026 @Localizer["ApplicationName"]
+            </span>
+
+            <a asp-controller="Home"
+               asp-action="Privacy">
+
+                @Localizer["Privacy"]
+
+            </a>
+
+        </div>
 
     </div>
 
@@ -207,9 +296,14 @@
 
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/site.js"
+        asp-append-version="true">
+</script>
 
-@await RenderSectionAsync("Scripts", required: false)
+@await RenderSectionAsync(
+    "Scripts",
+    required: false
+)
 
 </body>
 

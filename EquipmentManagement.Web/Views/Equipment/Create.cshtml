@@ -7,51 +7,269 @@
     ViewData["Title"] = Localizer["CreateNewEquipment"];
 }
 
-<div class="row justify-content-center">
+<style>
+    .equipment-form-page {
+        --form-primary: #2563eb;
+    }
 
-    <div class="col-md-8 col-lg-7">
+    .form-page-header {
+        position: relative;
+        overflow: hidden;
+        padding: 1.75rem;
+        color: white;
+        background:
+            radial-gradient(
+                circle at top right,
+                rgba(255, 255, 255, 0.2),
+                transparent 35%
+            ),
+            linear-gradient(135deg, #0f172a, #1d4ed8);
+        border-radius: 1.2rem;
+        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
+    }
 
-        <div class="card shadow-sm">
+    .form-page-header-content {
+        position: relative;
+        z-index: 1;
+    }
 
-            <div class="card-header bg-primary text-white">
+    .form-page-title {
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 800;
+    }
 
-                <h1 class="h4 mb-0">
-                    @Localizer["CreateNewEquipment"]
-                </h1>
+    .equipment-form-card {
+        overflow: hidden;
+        background: white;
+        border: 0;
+        border-radius: 1.1rem;
+        box-shadow: 0 0.6rem 1.8rem rgba(15, 23, 42, 0.08);
+    }
+
+    .form-section {
+        padding: 1.5rem;
+    }
+
+    .form-section + .form-section {
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .form-section-title {
+        margin-bottom: 1.25rem;
+        color: #0f172a;
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+    .form-label {
+        color: #334155;
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    .form-control,
+    .form-select {
+        min-height: 2.8rem;
+        border-color: #cbd5e1;
+        border-radius: 0.7rem;
+    }
+
+    textarea.form-control {
+        min-height: 7rem;
+        resize: vertical;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--form-primary);
+        box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.14);
+    }
+
+    .form-control.input-validation-error,
+    .form-select.input-validation-error {
+        border-color: #dc2626;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    .image-upload-area {
+        padding: 1.25rem;
+        background: #f8fafc;
+        border: 1px dashed #94a3b8;
+        border-radius: 1rem;
+    }
+
+    .image-preview-container {
+        display: none;
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .image-preview {
+        width: 100%;
+        max-width: 25rem;
+        max-height: 18rem;
+        object-fit: contain;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.85rem;
+    }
+
+    .availability-box {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+        min-height: 3.2rem;
+        padding: 0.8rem 1rem;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 0.75rem;
+    }
+
+    .availability-box .form-check-input {
+        width: 1.2rem;
+        height: 1.2rem;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .availability-box .form-check-label {
+        color: #166534;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .form-actions {
+        padding: 1.25rem 1.5rem;
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    @@media (max-width: 575.98px) {
+        .form-page-header {
+            padding: 1.3rem;
+            border-radius: 1rem;
+        }
+
+        .form-page-header-content {
+            align-items: stretch !important;
+            flex-direction: column;
+        }
+
+        .form-page-header .btn {
+            width: 100%;
+        }
+
+        .form-section {
+            padding: 1.2rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .form-actions .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="equipment-form-page">
+
+    <!-- عنوان الصفحة -->
+    <section class="form-page-header mb-4">
+
+        <div class="form-page-header-content
+                    d-flex justify-content-between
+                    align-items-center gap-3">
+
+            <h1 class="form-page-title mb-0">
+                @Localizer["CreateNewEquipment"]
+            </h1>
+
+            <a asp-action="Index"
+               class="btn btn-light fw-semibold px-4">
+
+                @Localizer["BackToList"]
+            </a>
+
+        </div>
+
+    </section>
+
+    <form asp-action="Create"
+          method="post"
+          enctype="multipart/form-data">
+
+        <div class="equipment-form-card">
+
+            <!-- ملخص أخطاء التحقق -->
+            <div class="px-4 pt-4">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger mb-0"
+                     role="alert">
+                </div>
 
             </div>
 
-            <div class="card-body">
+            <!-- المعلومات الأساسية -->
+            <section class="form-section">
 
-                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <h2 class="form-section-title">
+                    @Localizer["Equipment"]
+                </h2>
 
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger">
-                    </div>
+                <div class="row g-4">
 
-                    <div class="mb-3">
+                    <div class="col-md-6">
 
-                        <label asp-for="Name" class="form-label">
+                        <label asp-for="Name"
+                               class="form-label">
 
                             @Localizer["EquipmentName"]
-
                         </label>
 
-                        <input asp-for="Name" class="form-control" />
+                        <input asp-for="Name"
+                               class="form-control" />
 
-                        <span asp-validation-for="Name" class="text-danger">
+                        <span asp-validation-for="Name"
+                              class="text-danger small">
                         </span>
 
                     </div>
 
-                    <div class="mb-3">
+                    <div class="col-md-6">
 
-                        <label asp-for="CategoryId" class="form-label">
+                        <label asp-for="SerialNumber"
+                               class="form-label">
 
-                            @Localizer["Category"]
-
+                            @Localizer["SerialNumber"]
                         </label>
 
-                        <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+                        <input asp-for="SerialNumber"
+                               class="form-control"
+                               dir="ltr" />
+
+                        <span asp-validation-for="SerialNumber"
+                              class="text-danger small">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label asp-for="CategoryId"
+                               class="form-label">
+
+                            @Localizer["Category"]
+                        </label>
+
+                        <select asp-for="CategoryId"
+                                class="form-select"
+                                asp-items="ViewBag.CategoryId">
 
                             <option value="">
                                 @Localizer["SelectCategory"]
@@ -59,143 +277,216 @@
 
                         </select>
 
-                        <span asp-validation-for="CategoryId" class="text-danger">
+                        <span asp-validation-for="CategoryId"
+                              class="text-danger small">
                         </span>
 
                     </div>
 
-                    <div class="mb-3">
+                    <div class="col-md-6">
 
-                        <label asp-for="SerialNumber" class="form-label">
-
-                            @Localizer["SerialNumber"]
-
-                        </label>
-
-                        <input asp-for="SerialNumber" class="form-control" />
-
-                        <span asp-validation-for="SerialNumber" class="text-danger">
-                        </span>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label asp-for="Description" class="form-label">
-
-                            @Localizer["Description"]
-
-                        </label>
-
-                        <textarea asp-for="Description" class="form-control" rows="3">
-                        </textarea>
-
-                        <span asp-validation-for="Description" class="text-danger">
-                        </span>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label asp-for="PurchaseDate" class="form-label">
+                        <label asp-for="PurchaseDate"
+                               class="form-label">
 
                             @Localizer["PurchaseDate"]
-
                         </label>
 
-                        <input asp-for="PurchaseDate" type="date" class="form-control" data-val="true"
+                        <input asp-for="PurchaseDate"
+                               type="date"
+                               class="form-control"
+                               data-val="true"
                                data-val-required="@Localizer["PurchaseDateRequired"]" />
 
-                        <span asp-validation-for="PurchaseDate" class="text-danger">
+                        <span asp-validation-for="PurchaseDate"
+                              class="text-danger small">
                         </span>
 
                     </div>
 
-                    <div class="mb-3">
+                    <div class="col-md-6">
 
-                        <label asp-for="PurchasePrice" class="form-label">
+                        <label asp-for="PurchasePrice"
+                               class="form-label">
 
                             @Localizer["PurchasePrice"]
-
                         </label>
 
-                        <input asp-for="PurchasePrice" type="number" step="0.01" min="0" class="form-control" />
+                        <input asp-for="PurchasePrice"
+                               type="number"
+                               step="0.01"
+                               min="0"
+                               class="form-control"
+                               dir="ltr" />
 
-                        <span asp-validation-for="PurchasePrice" class="text-danger">
+                        <span asp-validation-for="PurchasePrice"
+                              class="text-danger small">
                         </span>
 
                     </div>
 
-                    <div class="form-check mb-3">
+                    <div class="col-md-6">
 
-                        <input asp-for="IsAvailable" class="form-check-input" />
-
-                        <label asp-for="IsAvailable" class="form-check-label">
-
-                            @Localizer["AvailableForBorrowing"]
-
+                        <label class="form-label">
+                            @Localizer["Status"]
                         </label>
 
-                    </div>
+                        <div class="availability-box">
 
-                    <div class="mb-3">
+                            <input asp-for="IsAvailable"
+                                   class="form-check-input" />
 
-                        <label for="imageFile" class="form-label">
+                            <label asp-for="IsAvailable"
+                                   class="form-check-label">
 
-                            @Localizer["EquipmentImage"]
+                                @Localizer["AvailableForBorrowing"]
+                            </label>
 
-                        </label>
-
-                        <input type="file" id="imageFile" name="imageFile" class="form-control"
-                               accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
-
-                        <div class="form-text">
-                            @Localizer["ImageUploadRequirements"]
                         </div>
 
-                        @Html.ValidationMessage(
-                            "imageFile",
-                            null,
-                            new
-                            {
-                                @class = "text-danger"
-                            }
-                        )
+                    </div>
+
+                    <div class="col-12">
+
+                        <label asp-for="Description"
+                               class="form-label">
+
+                            @Localizer["Description"]
+                        </label>
+
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="4">
+                        </textarea>
+
+                        <span asp-validation-for="Description"
+                              class="text-danger small">
+                        </span>
 
                     </div>
 
-                    <div class="d-flex gap-2">
+                </div>
 
-                        <button type="submit" class="btn btn-primary">
+            </section>
 
-                            @Localizer["AddEquipment"]
+            <!-- صورة المعدة -->
+            <section class="form-section">
 
-                        </button>
+                <h2 class="form-section-title">
+                    @Localizer["EquipmentImage"]
+                </h2>
 
-                        <a asp-action="Index" class="btn btn-secondary">
+                <div class="image-upload-area">
 
-                            @Localizer["BackToList"]
+                    <label for="imageFile"
+                           class="form-label">
 
-                        </a>
+                        @Localizer["EquipmentImage"]
+                    </label>
+
+                    <input type="file"
+                           id="imageFile"
+                           name="imageFile"
+                           class="form-control"
+                           accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+
+                    <div class="form-text mt-2">
+                        @Localizer["ImageUploadRequirements"]
+                    </div>
+
+                    @Html.ValidationMessage(
+                        "imageFile",
+                        null,
+                        new
+                        {
+                            @class = "text-danger small"
+                        }
+                    )
+
+                    <!-- معاينة الصورة -->
+                    <div id="imagePreviewContainer"
+                         class="image-preview-container">
+
+                        <img id="imagePreview"
+                             class="image-preview"
+                             src=""
+                             alt="@Localizer["EquipmentImage"]" />
 
                     </div>
 
-                </form>
+                </div>
+
+            </section>
+
+            <!-- الأزرار -->
+            <div class="form-actions d-flex gap-2">
+
+                <button type="submit"
+                        class="btn btn-primary px-4">
+
+                    @Localizer["AddEquipment"]
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary px-4">
+
+                    @Localizer["BackToList"]
+                </a>
 
             </div>
 
         </div>
 
-    </div>
+    </form>
 
 </div>
 
 @section Scripts {
 
     @{
-        await Html.RenderPartialAsync(
-            "_ValidationScriptsPartial"
-        );
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const imageInput =
+                document.getElementById("imageFile");
+
+            const previewContainer =
+                document.getElementById("imagePreviewContainer");
+
+            const previewImage =
+                document.getElementById("imagePreview");
+
+            imageInput.addEventListener("change", function () {
+
+                const selectedFile = this.files[0];
+
+                if (!selectedFile) {
+                    previewImage.src = "";
+                    previewContainer.style.display = "none";
+                    return;
+                }
+
+                if (!selectedFile.type.startsWith("image/")) {
+                    previewImage.src = "";
+                    previewContainer.style.display = "none";
+                    return;
+                }
+
+                const imageUrl =
+                    URL.createObjectURL(selectedFile);
+
+                previewImage.src = imageUrl;
+                previewContainer.style.display = "block";
+
+                previewImage.onload = function () {
+                    URL.revokeObjectURL(imageUrl);
+                };
+
+            });
+
+        });
+    </script>
 
 }

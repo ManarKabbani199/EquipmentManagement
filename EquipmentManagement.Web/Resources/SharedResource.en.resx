@@ -754,4 +754,84 @@
 <data name="PurchasePriceRequired" xml:space="preserve">
   <value>Purchase price is required.</value>
 </data>
+<data name="ToggleNavigation" xml:space="preserve">
+  <value>Toggle navigation menu</value>
+</data>
+<data name="QuickActions" xml:space="preserve">
+  <value>Quick Actions</value>
+</data>
+<data name="EquipmentManagementSystem" xml:space="preserve">
+  <value>Equipment Management System</value>
+</data>
+
+<data name="WelcomeToEquipmentManagement" xml:space="preserve">
+  <value>Welcome to the Equipment Management System</value>
+</data>
+
+<data name="HomeSystemDescription" xml:space="preserve">
+  <value>An integrated system for managing equipment, employees, borrowing operations, and return schedules securely and efficiently.</value>
+</data>
+
+<data name="EquipmentManagementFeature" xml:space="preserve">
+  <value>Equipment Management</value>
+</data>
+
+<data name="EquipmentManagementFeatureDescription" xml:space="preserve">
+  <value>Add and categorize equipment while tracking its status and borrowing availability.</value>
+</data>
+
+<data name="BorrowingManagementFeature" xml:space="preserve">
+  <value>Borrowing Management</value>
+</data>
+
+<data name="BorrowingManagementFeatureDescription" xml:space="preserve">
+  <value>Record borrowing and return operations and monitor active and overdue borrowings.</value>
+</data>
+
+<data name="EmployeeManagementFeature" xml:space="preserve">
+  <value>Employee Management</value>
+</data>
+
+<data name="EmployeeManagementFeatureDescription" xml:space="preserve">
+  <value>Manage employee information, accounts, and system access permissions.</value>
+</data>
+
+<data name="DevelopedBy" xml:space="preserve">
+  <value>Developed by</value>
+</data>
+
+<data name="DeveloperProfessionalDescription" xml:space="preserve">
+  <value>Engineer Manar Kabbani, experienced in website management and software development using ASP.NET Core and Clean Architecture.</value>
+</data>
+<data name="AccountSecurity" xml:space="preserve">
+  <value>Account Security</value>
+</data>
+
+<data name="AccountSecurityDescription" xml:space="preserve">
+  <value>Accounts are protected using authentication and authorization. Passwords are stored securely and cannot be displayed as plain text.</value>
+</data>
+
+<data name="DataRetention" xml:space="preserve">
+  <value>Data Retention</value>
+</data>
+
+<data name="DataRetentionDescription" xml:space="preserve">
+  <value>The system retains equipment, employee, borrowing, and return records as required to manage and monitor operations.</value>
+</data>
+
+<data name="UserResponsibilities" xml:space="preserve">
+  <value>User Responsibilities</value>
+</data>
+
+<data name="UserResponsibilitiesDescription" xml:space="preserve">
+  <value>Users are responsible for protecting their login information, not sharing it, and signing out when using a shared device.</value>
+</data>
+
+<data name="PrivacyContact" xml:space="preserve">
+  <value>Privacy Contact</value>
+</data>
+
+<data name="PrivacyContactDescription" xml:space="preserve">
+  <value>For questions about this privacy policy or data stored in the system, please contact the system developer.</value>
+</data>
 </root>

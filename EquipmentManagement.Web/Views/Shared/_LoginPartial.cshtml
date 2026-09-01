@@ -1,51 +1,121 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Extensions.Localization
+
 @inject SignInManager<IdentityUser> SignInManager
 @inject IStringLocalizer<SharedResource> Localizer
 
-<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="d-flex align-items-center gap-2 flex-nowrap">
 
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
+        <div class="d-flex align-items-center gap-2"
+             style="
+                height:44px;
+                max-width:240px;
+                padding:0 14px;
+                color:#ffffff !important;
+                background-color:#2563eb !important;
+                border:1px solid #60a5fa;
+                border-radius:12px;
+                font-size:14px;
+                font-weight:700;
+                white-space:nowrap;
+                box-shadow:0 4px 10px rgba(15,23,42,.18);
+             ">
 
-            <span class="nav-link text-dark">
-                @Localizer[  "HelloUser", User.Identity?.Name ?? string.Empty ]
+            <span aria-hidden="true"
+                  style="
+                    color:#ffffff !important;
+                    font-size:17px;
+                    line-height:1;
+                  ">
+                ●
             </span>
 
-        </li>
+            <span title="@User.Identity?.Name"
+                  style="
+                    display:block;
+                    overflow:hidden;
+                    color:#ffffff !important;
+                    text-overflow:ellipsis;
+                    white-space:nowrap;
+                  ">
 
-        <li class="nav-item">
+                @Localizer[
+                    "HelloUser",
+                    User.Identity?.Name ?? string.Empty
+                ]
 
-            <form asp-area="Identity"
-                  asp-page="/Account/Logout"
-                  asp-route-returnUrl="@Url.Action("Index", "Home")"
-                  method="post">
+            </span>
 
-                <button type="submit"
-                        class="nav-link btn btn-link text-dark">
+        </div>
 
+        <form asp-area="Identity"
+              asp-page="/Account/Logout"
+              asp-route-returnUrl="@Url.Action("Index", "Home")"
+              method="post"
+              style="display:inline-flex; margin:0; padding:0;">
+
+            <button type="submit"
+                    style="
+                        display:inline-flex;
+                        height:44px;
+                        gap:6px;
+                        align-items:center;
+                        justify-content:center;
+                        padding:0 16px;
+                        color:#ffffff !important;
+                        background-color:#dc2626 !important;
+                        border:1px solid #ef4444 !important;
+                        border-radius:12px;
+                        font-size:14px;
+                        font-weight:700;
+                        line-height:1;
+                        white-space:nowrap;
+                        cursor:pointer;
+                        box-shadow:0 4px 10px rgba(127,29,29,.2);
+                    ">
+
+                <span aria-hidden="true"
+                      style="color:#ffffff !important;">
+                    ↪
+                </span>
+
+                <span style="color:#ffffff !important;">
                     @Localizer["Logout"]
+                </span>
 
-                </button>
+            </button>
 
-            </form>
+        </form>
 
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
+    </div>
+}
+else
+{
+    <a asp-area="Identity"
+       asp-page="/Account/Login"
+       style="
+            display:inline-flex;
+            height:44px;
+            gap:6px;
+            align-items:center;
+            justify-content:center;
+            padding:0 18px;
+            color:#082f49 !important;
+            background-color:#22d3ee !important;
+            border:1px solid #67e8f9;
+            border-radius:12px;
+            font-size:14px;
+            font-weight:700;
+            line-height:1;
+            text-decoration:none;
+            white-space:nowrap;
+            box-shadow:0 4px 10px rgba(15,23,42,.18);
+       ">
 
-            <a class="nav-link text-dark"
-               asp-area="Identity"
-               asp-page="/Account/Login">
+        <span aria-hidden="true">↪</span>
+        <span>@Localizer["Login"]</span>
 
-                @Localizer["Login"]
-
-            </a>
-
-        </li>
-    }
-
-</ul>
+    </a>
+}

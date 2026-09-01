@@ -5,48 +5,76 @@
 
 @{
     ViewData["Title"] = Localizer["Employees"];
+
+    var employees = Model.ToList();
 }
 
-<div class="d-flex justify-content-between
-            align-items-center mb-4">
+<div class="d-flex flex-column flex-sm-row
+            justify-content-between
+            align-items-sm-center gap-3 mb-4">
 
-    <h1>@Localizer["Employees"]</h1>
+    <h1 class="mb-0">
+        @Localizer["Employees"]
+    </h1>
 
     <a asp-action="Create"
        class="btn btn-primary">
 
         @Localizer["CreateNewEmployee"]
-
     </a>
 
 </div>
 
+<!-- رسالة النجاح -->
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-success">
+    <div class="alert alert-success
+                alert-dismissible fade show shadow-sm"
+         role="alert">
+
         @TempData["SuccessMessage"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="@Localizer["Cancel"]">
+        </button>
+
     </div>
 }
 
+<!-- رسالة الخطأ -->
 @if (TempData["ErrorMessage"] != null)
 {
-    <div class="alert alert-danger">
+    <div class="alert alert-danger
+                alert-dismissible fade show shadow-sm"
+         role="alert">
+
         @TempData["ErrorMessage"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="@Localizer["Cancel"]">
+        </button>
+
     </div>
 }
 
-@if (!Model.Any())
+@if (employees.Count == 0)
 {
-    <div class="alert alert-info">
+    <div class="alert alert-info shadow-sm">
         @Localizer["NoEmployees"]
     </div>
 }
 else
 {
-    <div class="table-responsive">
+    <div class="table-responsive
+                responsive-card-table-wrapper">
 
         <table class="table table-bordered
-                      table-striped align-middle">
+                      table-striped align-middle
+                      responsive-card-table mb-0">
 
             <thead class="table-dark">
 
@@ -61,32 +89,57 @@ else
 
             <tbody>
 
-                @foreach (var item in Model)
+                @foreach (var item in employees)
                 {
                     <tr>
 
-                        <td>
-                            @item.FullName
+                        <!-- اسم الموظف -->
+                        <td data-label="@Localizer["FullName"]">
+
+                            <span class="fw-semibold">
+                                @item.FullName
+                            </span>
+
                         </td>
 
-                        <td>
-                            @item.Email
+                        <!-- البريد الإلكتروني -->
+                        <td data-label="@Localizer["Email"]">
+
+                            @if (!string.IsNullOrWhiteSpace(item.Email))
+                            {
+                                <a href="mailto:@item.Email"
+                                   class="text-decoration-none"
+                                   dir="ltr">
+
+                                    @item.Email
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+
                         </td>
 
-                        <td>
-                            @item.Department
+                        <!-- القسم -->
+                        <td data-label="@Localizer["Department"]">
+
+                            @(string.IsNullOrWhiteSpace(item.Department)
+                                ? "-"
+                                : item.Department)
+
                         </td>
 
-                        <td>
+                        <!-- الإجراءات -->
+                        <td data-label="@Localizer["Actions"]">
 
-                            <div class="d-flex gap-2 flex-wrap">
+                            <div class="responsive-actions">
 
                                 <a asp-action="Edit"
                                    asp-route-id="@item.Id"
                                    class="btn btn-warning btn-sm">
 
                                     @Localizer["Edit"]
-
                                 </a>
 
                                 <a asp-action="Details"
@@ -94,7 +147,6 @@ else
                                    class="btn btn-info btn-sm">
 
                                     @Localizer["Details"]
-
                                 </a>
 
                                 <a asp-action="Delete"
@@ -102,7 +154,6 @@ else
                                    class="btn btn-danger btn-sm">
 
                                     @Localizer["Delete"]
-
                                 </a>
 
                             </div>
