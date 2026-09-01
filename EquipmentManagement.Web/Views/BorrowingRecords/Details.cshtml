@@ -1,37 +1,289 @@
 @model EquipmentManagement.Domain.Entities.BorrowingRecord
 
 @using Microsoft.Extensions.Localization
+@using System.Text.Json
+
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
     ViewData["Title"] =
         Localizer["BorrowingDetails"];
 
-    var confirmReturn =
-        Localizer["ConfirmReturnEquipment"].Value;
+    var isAdmin =
+        User.IsInRole("Admin");
+
+    var isOverdue =
+        !Model.IsReturned &&
+        Model.ExpectedReturnDate < DateTime.Now;
+
+    var confirmReturnJson =
+        JsonSerializer.Serialize(
+            Localizer["ConfirmReturnEquipment"].Value
+        );
 }
 
-<div class="row justify-content-center">
+<style>
+    .borrowing-details-header {
+        position: relative;
+        overflow: hidden;
+        padding: 1.75rem;
+        color: white;
+        background:
+            radial-gradient(
+                circle at top right,
+                rgba(255, 255, 255, 0.2),
+                transparent 35%
+            ),
+            linear-gradient(135deg, #0f172a, #0891b2);
+        border-radius: 1.2rem;
+        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
+    }
 
-    <div class="col-md-9 col-lg-7">
+    .borrowing-details-header-content {
+        position: relative;
+        z-index: 1;
+    }
 
-        <div class="card shadow-sm">
+    .borrowing-details-title {
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 800;
+    }
 
-            <div class="card-header bg-info">
+    .borrowing-details-card {
+        overflow: hidden;
+        background: white;
+        border: 0;
+        border-radius: 1.1rem;
+        box-shadow: 0 0.6rem 1.8rem rgba(15, 23, 42, 0.08);
+    }
 
-                <h1 class="h4 mb-0">
+    .borrowing-details-image-area {
+        display: flex;
+        min-height: 24rem;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        background: #f8fafc;
+        border-inline-end: 1px solid #e2e8f0;
+    }
+
+    .borrowing-details-image {
+        width: 100%;
+        max-width: 29rem;
+        max-height: 23rem;
+        object-fit: contain;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 1rem;
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .borrowing-details-image:hover {
+        transform: scale(1.02);
+        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.14);
+    }
+
+    .borrowing-image-placeholder {
+        text-align: center;
+        color: #64748b;
+    }
+
+    .borrowing-image-placeholder-icon {
+        display: inline-flex;
+        width: 5rem;
+        height: 5rem;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        color: #94a3b8;
+        background: #e2e8f0;
+        border-radius: 50%;
+    }
+
+    .borrowing-image-placeholder-icon svg {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .borrowing-details-information {
+        padding: 1.75rem;
+    }
+
+    .borrowing-equipment-name {
+        margin-bottom: 0.5rem;
+        color: #0f172a;
+        font-size: 1.6rem;
+        font-weight: 800;
+    }
+
+    .borrowing-employee-name {
+        margin-bottom: 1.25rem;
+        color: #64748b;
+    }
+
+    .borrowing-details-status {
+        display: inline-flex;
+        gap: 0.4rem;
+        align-items: center;
+        padding: 0.48rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .borrowing-details-status::before {
+        content: "";
+        width: 0.45rem;
+        height: 0.45rem;
+        background: currentColor;
+        border-radius: 50%;
+    }
+
+    .borrowing-details-status.returned {
+        color: #15803d;
+        background: #dcfce7;
+    }
+
+    .borrowing-details-status.overdue {
+        color: #b91c1c;
+        background: #fee2e2;
+    }
+
+    .borrowing-details-status.active {
+        color: #b45309;
+        background: #fef3c7;
+    }
+
+    .borrowing-details-list {
+        margin: 1.25rem 0 0;
+    }
+
+    .borrowing-details-row {
+        display: grid;
+        grid-template-columns: minmax(9rem, 0.9fr) 1.4fr;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .borrowing-details-row:last-child {
+        border-bottom: 0;
+    }
+
+    .borrowing-details-label {
+        margin: 0;
+        color: #64748b;
+        font-size: 0.88rem;
+        font-weight: 700;
+    }
+
+    .borrowing-details-value {
+        margin: 0;
+        color: #0f172a;
+        overflow-wrap: anywhere;
+    }
+
+    .borrowing-overdue-date {
+        color: #b91c1c;
+        font-weight: 700;
+    }
+
+    .borrowing-details-footer {
+        padding: 1.25rem 1.5rem;
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    @@media (max-width: 991.98px) {
+        .borrowing-details-image-area {
+            min-height: 19rem;
+            border-inline-end: 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .borrowing-details-header {
+            padding: 1.3rem;
+            border-radius: 1rem;
+        }
+
+        .borrowing-details-header-content {
+            align-items: stretch !important;
+            flex-direction: column;
+        }
+
+        .borrowing-details-header .btn {
+            width: 100%;
+        }
+
+        .borrowing-details-information {
+            padding: 1.25rem;
+        }
+
+        .borrowing-details-row {
+            grid-template-columns: 1fr;
+            gap: 0.35rem;
+        }
+
+        .borrowing-details-footer .d-flex {
+            flex-direction: column;
+        }
+
+        .borrowing-details-footer .btn,
+        .borrowing-details-footer form {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="borrowing-details-page">
+
+    <!-- عنوان الصفحة -->
+    <section class="borrowing-details-header mb-4">
+
+        <div class="borrowing-details-header-content
+                    d-flex justify-content-between
+                    align-items-center gap-3">
+
+            <div>
+
+                <h1 class="borrowing-details-title mb-1">
                     @Localizer["BorrowingDetails"]
                 </h1>
 
+                <p class="mb-0 text-white-50">
+                    @(Model.Equipment?.Name ?? "-")
+                </p>
+
             </div>
 
-            <div class="card-body">
+            <a asp-action="Index"
+               class="btn btn-light fw-semibold px-4">
 
-                @if (!string.IsNullOrWhiteSpace(
-                    Model.Equipment?.ImagePath))
-                {
-                    <div class="text-center mb-4">
+                @Localizer["BackToList"]
+            </a>
 
+        </div>
+
+    </section>
+
+    <!-- بطاقة التفاصيل -->
+    <section class="borrowing-details-card">
+
+        <div class="row g-0">
+
+            <!-- صورة المعدة -->
+            <div class="col-lg-6">
+
+                <div class="borrowing-details-image-area">
+
+                    @if (!string.IsNullOrWhiteSpace(
+                        Model.Equipment?.ImagePath))
+                    {
                         <a href="@Model.Equipment.ImagePath"
                            target="_blank"
                            rel="noopener noreferrer">
@@ -41,128 +293,203 @@
                                      "EquipmentImageAlt",
                                      Model.Equipment.Name
                                  ]"
-                                 class="img-thumbnail"
-                                 style="width:280px;
-                                        height:210px;
-                                        object-fit:contain;" />
+                                 class="borrowing-details-image" />
 
                         </a>
+                    }
+                    else
+                    {
+                        <div class="borrowing-image-placeholder">
 
-                    </div>
-                }
+                            <span class="borrowing-image-placeholder-icon">
 
-                <dl class="row mb-0">
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2">
 
-                    <dt class="col-sm-4">
-                        @Localizer["EquipmentName"]
-                    </dt>
+                                    <rect x="3"
+                                          y="3"
+                                          width="18"
+                                          height="18"
+                                          rx="2" />
 
-                    <dd class="col-sm-8">
-                        @(Model.Equipment?.Name ?? "-")
-                    </dd>
+                                    <circle cx="8.5"
+                                            cy="8.5"
+                                            r="1.5" />
 
-                    <dt class="col-sm-4">
-                        @Localizer["EmployeeName"]
-                    </dt>
+                                    <path d="m21 15-5-5L5 21" />
 
-                    <dd class="col-sm-8">
-                        @(Model.Employee?.FullName ?? "-")
-                    </dd>
+                                </svg>
 
-                    <dt class="col-sm-4">
-                        @Localizer["BorrowDate"]
-                    </dt>
+                            </span>
 
-                    <dd class="col-sm-8">
-                        @Model.BorrowDate.ToString("g")
-                    </dd>
+                            <p class="mb-0">
+                                @Localizer["NoImageForEquipment"]
+                            </p>
 
-                    <dt class="col-sm-4">
-                        @Localizer["ExpectedReturnDate"]
-                    </dt>
+                        </div>
+                    }
 
-                    <dd class="col-sm-8">
-                        @Model.ExpectedReturnDate.ToString("g")
-                    </dd>
+                </div>
 
-                    <dt class="col-sm-4">
-                        @Localizer["ActualReturnDate"]
-                    </dt>
+            </div>
 
-                    <dd class="col-sm-8">
+            <!-- بيانات الاستعارة -->
+            <div class="col-lg-6">
 
-                        @if (Model.ActualReturnDate.HasValue)
-                        {
-                            @Model.ActualReturnDate.Value.ToString("g")
-                        }
-                        else
-                        {
-                            <span>-</span>
-                        }
+                <div class="borrowing-details-information">
 
-                    </dd>
+                    <div class="d-flex justify-content-between
+                                align-items-start gap-3">
 
-                    <dt class="col-sm-4">
-                        @Localizer["BorrowingStatus"]
-                    </dt>
+                        <div>
 
-                    <dd class="col-sm-8">
+                            <h2 class="borrowing-equipment-name">
+                                @(Model.Equipment?.Name ?? "-")
+                            </h2>
+
+                            <p class="borrowing-employee-name">
+                                @(Model.Employee?.FullName ?? "-")
+                            </p>
+
+                        </div>
 
                         @if (Model.IsReturned)
                         {
-                            <span class="badge bg-success">
+                            <span class="borrowing-details-status returned">
                                 @Localizer["Returned"]
                             </span>
                         }
-                        else if (
-                            Model.ExpectedReturnDate <
-                            DateTime.Now)
+                        else if (isOverdue)
                         {
-                            <span class="badge bg-danger">
+                            <span class="borrowing-details-status overdue">
                                 @Localizer["Overdue"]
                             </span>
                         }
                         else
                         {
-                            <span class="badge bg-warning text-dark">
+                            <span class="borrowing-details-status active">
                                 @Localizer["Active"]
                             </span>
                         }
 
-                    </dd>
+                    </div>
 
-                </dl>
+                    <dl class="borrowing-details-list">
 
-            </div>
+                        <!-- اسم المعدة -->
+                        <div class="borrowing-details-row">
 
-            <div class="card-footer">
+                            <dt class="borrowing-details-label">
+                                @Localizer["EquipmentName"]
+                            </dt>
 
-                <div class="d-flex gap-2 flex-wrap">
+                            <dd class="borrowing-details-value fw-semibold">
+                                @(Model.Equipment?.Name ?? "-")
+                            </dd>
 
-                    <a asp-action="Index"
-                       class="btn btn-secondary">
+                        </div>
 
-                        @Localizer["BackToList"]
+                        <!-- الموظف -->
+                        <div class="borrowing-details-row">
 
-                    </a>
+                            <dt class="borrowing-details-label">
+                                @Localizer["EmployeeName"]
+                            </dt>
 
-                    @if (User.IsInRole("Admin") &&
-                         !Model.IsReturned)
-                    {
-                        <form asp-action="ReturnEquipment"
-                              asp-route-id="@Model.Id"
-                              method="post"
-                              onsubmit="return confirm('@confirmReturn');">
+                            <dd class="borrowing-details-value">
+                                @(Model.Employee?.FullName ?? "-")
+                            </dd>
 
-                            <button type="submit"
-                                    class="btn btn-success">
+                        </div>
 
-                                @Localizer["ReturnEquipment"]
+                        <!-- تاريخ الاستعارة -->
+                        <div class="borrowing-details-row">
 
-                            </button>
+                            <dt class="borrowing-details-label">
+                                @Localizer["BorrowDate"]
+                            </dt>
 
-                        </form>
-                    }
+                            <dd class="borrowing-details-value">
+                                @Model.BorrowDate.ToString("g")
+                            </dd>
+
+                        </div>
+
+                        <!-- تاريخ الإرجاع المتوقع -->
+                        <div class="borrowing-details-row">
+
+                            <dt class="borrowing-details-label">
+                                @Localizer["ExpectedReturnDate"]
+                            </dt>
+
+                            <dd class="borrowing-details-value
+                                       @(isOverdue
+                                           ? "borrowing-overdue-date"
+                                           : "")">
+
+                                @Model.ExpectedReturnDate.ToString("g")
+
+                            </dd>
+
+                        </div>
+
+                        <!-- تاريخ الإرجاع الفعلي -->
+                        <div class="borrowing-details-row">
+
+                            <dt class="borrowing-details-label">
+                                @Localizer["ActualReturnDate"]
+                            </dt>
+
+                            <dd class="borrowing-details-value">
+
+                                @if (Model.ActualReturnDate.HasValue)
+                                {
+                                    @Model.ActualReturnDate.Value.ToString("g")
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+
+                            </dd>
+
+                        </div>
+
+                        <!-- حالة الاستعارة -->
+                        <div class="borrowing-details-row">
+
+                            <dt class="borrowing-details-label">
+                                @Localizer["BorrowingStatus"]
+                            </dt>
+
+                            <dd class="borrowing-details-value">
+
+                                @if (Model.IsReturned)
+                                {
+                                    <span class="borrowing-details-status returned">
+                                        @Localizer["Returned"]
+                                    </span>
+                                }
+                                else if (isOverdue)
+                                {
+                                    <span class="borrowing-details-status overdue">
+                                        @Localizer["Overdue"]
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="borrowing-details-status active">
+                                        @Localizer["Active"]
+                                    </span>
+                                }
+
+                            </dd>
+
+                        </div>
+
+                    </dl>
 
                 </div>
 
@@ -170,6 +497,66 @@
 
         </div>
 
-    </div>
+        <!-- الأزرار -->
+        <div class="borrowing-details-footer">
+
+            <div class="d-flex gap-2 flex-wrap">
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary px-4">
+
+                    @Localizer["BackToList"]
+                </a>
+
+                @if (isAdmin && !Model.IsReturned)
+                {
+                    <form id="returnEquipmentForm"
+                          asp-action="ReturnEquipment"
+                          asp-route-id="@Model.Id"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="btn btn-success px-4">
+
+                            @Localizer["ReturnEquipment"]
+                        </button>
+
+                    </form>
+                }
+
+            </div>
+
+        </div>
+
+    </section>
 
 </div>
+
+@if (isAdmin && !Model.IsReturned)
+{
+    @section Scripts {
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const returnForm =
+                    document.getElementById("returnEquipmentForm");
+
+                const confirmationMessage =
+                    @Html.Raw(confirmReturnJson);
+
+                returnForm.addEventListener("submit", function (event) {
+
+                    if (!window.confirm(confirmationMessage)) {
+                        event.preventDefault();
+                    }
+
+                });
+
+            });
+        </script>
+
+    }
+}

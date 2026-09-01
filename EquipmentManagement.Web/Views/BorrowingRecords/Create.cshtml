@@ -2,10 +2,13 @@
 
 @using System.Text.Json
 @using Microsoft.Extensions.Localization
+
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
     ViewData["Title"] = Localizer["BorrowEquipment"];
+
+    var isAdmin = User.IsInRole("Admin");
 
     var equipmentImages =
         ViewData["EquipmentImages"]
@@ -13,242 +16,565 @@
         ?? new Dictionary<int, string>();
 }
 
-<div class="row justify-content-center">
+<style>
+    .borrowing-create-header {
+        position: relative;
+        overflow: hidden;
+        padding: 1.75rem;
+        color: white;
+        background:
+            radial-gradient(
+                circle at top right,
+                rgba(255, 255, 255, 0.2),
+                transparent 35%
+            ),
+            linear-gradient(135deg, #0f172a, #2563eb);
+        border-radius: 1.2rem;
+        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
+    }
 
-    <div class="col-md-8 col-lg-6">
+    .borrowing-create-header-content {
+        position: relative;
+        z-index: 1;
+    }
 
-        <div class="card shadow-sm">
+    .borrowing-create-title {
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 800;
+    }
 
-            <div class="card-header bg-primary text-white">
+    .borrowing-create-card {
+        overflow: hidden;
+        background: white;
+        border: 0;
+        border-radius: 1.1rem;
+        box-shadow: 0 0.6rem 1.8rem rgba(15, 23, 42, 0.08);
+    }
 
-                <h1 class="h4 mb-0">
+    .borrowing-form-section {
+        padding: 1.5rem;
+    }
+
+    .borrowing-form-section + .borrowing-form-section {
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .borrowing-section-title {
+        margin-bottom: 1.25rem;
+        color: #0f172a;
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+    .borrowing-create-card .form-label {
+        color: #334155;
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    .borrowing-create-card .form-control,
+    .borrowing-create-card .form-select {
+        min-height: 2.8rem;
+        border-color: #cbd5e1;
+        border-radius: 0.7rem;
+    }
+
+    .borrowing-create-card .form-control:focus,
+    .borrowing-create-card .form-select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.14);
+    }
+
+    .borrowing-create-card .input-validation-error {
+        border-color: #dc2626;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    .selected-equipment-area {
+        min-height: 17rem;
+        padding: 1.25rem;
+        background: #f8fafc;
+        border: 1px dashed #94a3b8;
+        border-radius: 1rem;
+    }
+
+    .selected-equipment-empty {
+        display: flex;
+        min-height: 14rem;
+        align-items: center;
+        justify-content: center;
+        color: #64748b;
+        text-align: center;
+    }
+
+    .selected-equipment-empty-icon {
+        display: inline-flex;
+        width: 4.5rem;
+        height: 4.5rem;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        color: #2563eb;
+        background: #dbeafe;
+        border-radius: 50%;
+    }
+
+    .selected-equipment-empty-icon svg {
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+
+    .selected-equipment-image-container {
+        display: none;
+        text-align: center;
+    }
+
+    .selected-equipment-image {
+        width: 100%;
+        max-width: 24rem;
+        max-height: 18rem;
+        object-fit: contain;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.9rem;
+        box-shadow: 0 0.4rem 1rem rgba(15, 23, 42, 0.08);
+    }
+
+    .selected-equipment-no-image {
+        display: none;
+        min-height: 14rem;
+        align-items: center;
+        justify-content: center;
+        color: #64748b;
+        text-align: center;
+    }
+
+    .current-employee-notice {
+        display: flex;
+        gap: 0.8rem;
+        align-items: flex-start;
+        padding: 1rem;
+        color: #075985;
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        border-radius: 0.8rem;
+    }
+
+    .current-employee-notice svg {
+        width: 1.4rem;
+        height: 1.4rem;
+        flex: 0 0 1.4rem;
+    }
+
+    .borrowing-form-actions {
+        padding: 1.25rem 1.5rem;
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    @@media (max-width: 575.98px) {
+        .borrowing-create-header {
+            padding: 1.3rem;
+            border-radius: 1rem;
+        }
+
+        .borrowing-create-header-content {
+            align-items: stretch !important;
+            flex-direction: column;
+        }
+
+        .borrowing-create-header .btn {
+            width: 100%;
+        }
+
+        .borrowing-form-section {
+            padding: 1.2rem;
+        }
+
+        .selected-equipment-area {
+            min-height: 13rem;
+        }
+
+        .selected-equipment-empty,
+        .selected-equipment-no-image {
+            min-height: 10rem;
+        }
+
+        .borrowing-form-actions {
+            flex-direction: column;
+        }
+
+        .borrowing-form-actions .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="borrowing-create-page">
+
+    <!-- عنوان الصفحة -->
+    <section class="borrowing-create-header mb-4">
+
+        <div class="borrowing-create-header-content
+                    d-flex justify-content-between
+                    align-items-center gap-3">
+
+            <div>
+
+                <h1 class="borrowing-create-title mb-1">
                     @Localizer["BorrowEquipment"]
                 </h1>
 
+                <p class="mb-0 text-white-50">
+                    @Localizer["BorrowingRecords"]
+                </p>
+
             </div>
 
-            <div class="card-body">
+            <a asp-action="Index"
+               class="btn btn-light fw-semibold px-4">
 
-                <form asp-action="Create"
-                      method="post">
+                @Localizer["BackToList"]
+            </a>
 
-                    @Html.AntiForgeryToken()
+        </div>
 
-                    <div asp-validation-summary="ModelOnly"
-                         class="alert alert-danger">
+    </section>
+
+    <form asp-action="Create"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div class="borrowing-create-card">
+
+            <!-- أخطاء النموذج -->
+            <div class="px-4 pt-4">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger mb-0"
+                     role="alert">
+                </div>
+
+            </div>
+
+            <section class="borrowing-form-section">
+
+                <h2 class="borrowing-section-title">
+                    @Localizer["BorrowEquipment"]
+                </h2>
+
+                <div class="row g-4">
+
+                    <!-- حقول الاستعارة -->
+                    <div class="col-lg-6">
+
+                        <div class="row g-4">
+
+                            <!-- اختيار المعدة -->
+                            <div class="col-12">
+
+                                <label asp-for="EquipmentId"
+                                       class="form-label">
+
+                                    @Localizer["Equipment"]
+                                </label>
+
+                                <select asp-for="EquipmentId"
+                                        class="form-select"
+                                        asp-items="ViewBag.EquipmentId">
+
+                                    <option value="">
+                                        @Localizer["SelectEquipment"]
+                                    </option>
+
+                                </select>
+
+                                <span asp-validation-for="EquipmentId"
+                                      class="text-danger small">
+                                </span>
+
+                            </div>
+
+                            <!-- اختيار الموظف: للمدير فقط -->
+                            @if (isAdmin)
+                            {
+                                <div class="col-12">
+
+                                    <label asp-for="EmployeeId"
+                                           class="form-label">
+
+                                        @Localizer["Employee"]
+                                    </label>
+
+                                    <select asp-for="EmployeeId"
+                                            class="form-select"
+                                            asp-items="ViewBag.EmployeeId">
+
+                                        <option value="">
+                                            @Localizer["SelectEmployee"]
+                                        </option>
+
+                                    </select>
+
+                                    <span asp-validation-for="EmployeeId"
+                                          class="text-danger small">
+                                    </span>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-12">
+
+                                    <div class="current-employee-notice">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2">
+
+                                            <circle cx="12"
+                                                    cy="12"
+                                                    r="9" />
+
+                                            <path d="M12 11v5" />
+                                            <path d="M12 8h.01" />
+
+                                        </svg>
+
+                                        <span>
+                                            @Localizer["CurrentEmployeeBorrowingNotice"]
+                                        </span>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                            <!-- تاريخ الإرجاع المتوقع -->
+                            <div class="col-12">
+
+                                <label asp-for="ExpectedReturnDate"
+                                       class="form-label">
+
+                                    @Localizer["ExpectedReturnDate"]
+                                </label>
+
+                                <input asp-for="ExpectedReturnDate"
+                                       class="form-control" />
+
+                                <span asp-validation-for="ExpectedReturnDate"
+                                      class="text-danger small">
+                                </span>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <div class="mb-3">
+                    <!-- معاينة صورة المعدة -->
+                    <div class="col-lg-6">
 
-                        <label asp-for="EquipmentId"
-                               class="form-label">
-
-                            @Localizer["Equipment"]
-
+                        <label class="form-label d-block">
+                            @Localizer["SelectedEquipmentImage"]
                         </label>
 
-                        <select asp-for="EquipmentId"
-                                class="form-select"
-                                asp-items="ViewBag.EquipmentId">
+                        <div class="selected-equipment-area">
 
-                            <option value="">
-                                @Localizer["SelectEquipment"]
-                            </option>
+                            <!-- قبل اختيار المعدة -->
+                            <div id="equipmentImageEmpty"
+                                 class="selected-equipment-empty">
 
-                        </select>
+                                <div>
 
-                        <span asp-validation-for="EquipmentId"
-                              class="text-danger">
-                        </span>
+                                    <span class="selected-equipment-empty-icon">
 
-                        <div id="equipmentImageContainer"
-                             class="mt-3 text-center"
-                             style="display:none;">
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2">
 
-                            <label class="form-label d-block">
-                                @Localizer["SelectedEquipmentImage"]
-                            </label>
+                                            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
 
-                            <img id="equipmentImage"
-                                 src=""
-                                 alt="@Localizer["SelectedEquipmentImage"]"
-                                 class="img-thumbnail"
-                                 style="width:260px;
-                                        height:200px;
-                                        object-fit:contain;" />
+                                        </svg>
 
-                        </div>
+                                    </span>
 
-                        <div id="equipmentNoImage"
-                             class="alert alert-secondary mt-3"
-                             style="display:none;">
+                                    <p class="mb-0">
+                                        @Localizer["SelectEquipment"]
+                                    </p>
 
-                            @Localizer["NoImageForEquipment"]
+                                </div>
+
+                            </div>
+
+                            <!-- صورة المعدة المختارة -->
+                            <div id="equipmentImageContainer"
+                                 class="selected-equipment-image-container">
+
+                                <a id="equipmentImageLink"
+                                   href="#"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+
+                                    <img id="equipmentImage"
+                                         src=""
+                                         alt="@Localizer["SelectedEquipmentImage"]"
+                                         class="selected-equipment-image" />
+
+                                </a>
+
+                            </div>
+
+                            <!-- لا توجد صورة -->
+                            <div id="equipmentNoImage"
+                                 class="selected-equipment-no-image">
+
+                                <div>
+
+                                    <span class="selected-equipment-empty-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2">
+
+                                            <rect x="3"
+                                                  y="3"
+                                                  width="18"
+                                                  height="18"
+                                                  rx="2" />
+
+                                            <path d="m3 3 18 18" />
+
+                                        </svg>
+
+                                    </span>
+
+                                    <p class="mb-0">
+                                        @Localizer["NoImageForEquipment"]
+                                    </p>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <div class="mb-3">
+                </div>
 
-                            <label asp-for="EmployeeId"
-                                   class="form-label">
+            </section>
 
-                                @Localizer["Employee"]
+            <!-- الأزرار -->
+            <div class="borrowing-form-actions d-flex gap-2">
 
-                            </label>
+                <button type="submit"
+                        class="btn btn-primary px-4">
 
-                            <select asp-for="EmployeeId"
-                                    class="form-select"
-                                    asp-items="ViewBag.EmployeeId">
+                    @Localizer["ConfirmBorrowing"]
+                </button>
 
-                                <option value="">
-                                    @Localizer["SelectEmployee"]
-                                </option>
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary px-4">
 
-                            </select>
-
-                            <span asp-validation-for="EmployeeId"
-                                  class="text-danger">
-                            </span>
-
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="alert alert-info">
-                            @Localizer["CurrentEmployeeBorrowingNotice"]
-                        </div>
-                    }
-
-                    <div class="mb-3">
-
-                        <label asp-for="ExpectedReturnDate"
-                               class="form-label">
-
-                            @Localizer["ExpectedReturnDate"]
-
-                        </label>
-
-                        <input asp-for="ExpectedReturnDate"
-                               class="form-control" />
-
-                        <span asp-validation-for="ExpectedReturnDate"
-                              class="text-danger">
-                        </span>
-
-                    </div>
-
-                    <div class="d-flex gap-2">
-
-                        <button type="submit"
-                                class="btn btn-primary">
-
-                            @Localizer["ConfirmBorrowing"]
-
-                        </button>
-
-                        <a asp-action="Index"
-                           class="btn btn-secondary">
-
-                            @Localizer["BackToList"]
-
-                        </a>
-
-                    </div>
-
-                </form>
+                    @Localizer["BackToList"]
+                </a>
 
             </div>
 
         </div>
 
-    </div>
+    </form>
 
 </div>
 
 @section Scripts {
 
     @{
-        await Html.RenderPartialAsync(
-            "_ValidationScriptsPartial"
-        );
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
     <script>
-        document.addEventListener(
-            "DOMContentLoaded",
-            function () {
-                const equipmentImages =
-                    @Html.Raw(
-                        JsonSerializer.Serialize(
-                            equipmentImages
-                        )
-                    );
+        document.addEventListener("DOMContentLoaded", function () {
 
-                const equipmentSelect =
-                    document.getElementById(
-                        "EquipmentId"
-                    );
-
-                const imageContainer =
-                    document.getElementById(
-                        "equipmentImageContainer"
-                    );
-
-                const equipmentImage =
-                    document.getElementById(
-                        "equipmentImage"
-                    );
-
-                const noImageMessage =
-                    document.getElementById(
-                        "equipmentNoImage"
-                    );
-
-                function updateEquipmentImage() {
-                    const selectedId =
-                        equipmentSelect.value;
-
-                    const imagePath =
-                        equipmentImages[selectedId];
-
-                    imageContainer.style.display =
-                        "none";
-
-                    noImageMessage.style.display =
-                        "none";
-
-                    equipmentImage.removeAttribute(
-                        "src"
-                    );
-
-                    if (!selectedId) {
-                        return;
-                    }
-
-                    if (imagePath) {
-                        equipmentImage.src =
-                            imagePath;
-
-                        imageContainer.style.display =
-                            "block";
-                    }
-                    else {
-                        noImageMessage.style.display =
-                            "block";
-                    }
-                }
-
-                equipmentSelect.addEventListener(
-                    "change",
-                    updateEquipmentImage
+            const equipmentImages =
+                @Html.Raw(
+                    JsonSerializer.Serialize(equipmentImages)
                 );
 
-                updateEquipmentImage();
+            const equipmentSelect =
+                document.getElementById("EquipmentId");
+
+            const emptyState =
+                document.getElementById("equipmentImageEmpty");
+
+            const imageContainer =
+                document.getElementById("equipmentImageContainer");
+
+            const equipmentImage =
+                document.getElementById("equipmentImage");
+
+            const equipmentImageLink =
+                document.getElementById("equipmentImageLink");
+
+            const noImageMessage =
+                document.getElementById("equipmentNoImage");
+
+            function hideAllImageStates() {
+
+                emptyState.style.display = "none";
+                imageContainer.style.display = "none";
+                noImageMessage.style.display = "none";
+
+                equipmentImage.removeAttribute("src");
+                equipmentImageLink.setAttribute("href", "#");
+
             }
-        );
+
+            function updateEquipmentImage() {
+
+                const selectedId =
+                    equipmentSelect.value;
+
+                const imagePath =
+                    equipmentImages[selectedId];
+
+                hideAllImageStates();
+
+                if (!selectedId) {
+                    emptyState.style.display = "flex";
+                    return;
+                }
+
+                if (imagePath) {
+
+                    equipmentImage.src = imagePath;
+                    equipmentImageLink.href = imagePath;
+
+                    imageContainer.style.display = "block";
+
+                    return;
+                }
+
+                noImageMessage.style.display = "flex";
+
+            }
+
+            equipmentSelect.addEventListener(
+                "change",
+                updateEquipmentImage
+            );
+
+            updateEquipmentImage();
+
+        });
     </script>
+
 }

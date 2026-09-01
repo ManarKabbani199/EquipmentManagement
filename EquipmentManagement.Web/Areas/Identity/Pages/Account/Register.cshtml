@@ -1,46 +1,127 @@
 @page
+@model RegisterModel
 
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<EquipmentManagement.Web.SharedResource> Localizer
 
 @{
-    ViewData["Title"] =
-        Localizer["RegistrationDisabled"];
+    ViewData["Title"] = Localizer["RegistrationDisabled"];
 }
 
-<div class="row justify-content-center">
+<style>
+    .registration-disabled-page {
+        min-height: calc(100vh - 15rem);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 0;
+    }
 
-    <div class="col-md-8 col-lg-6">
+    .registration-disabled-card {
+        overflow: hidden;
+        border: 0;
+        border-radius: 1.25rem;
+        box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.12);
+    }
 
-        <div class="card border-warning shadow-sm text-center">
+    .registration-disabled-header {
+        padding: 1.25rem;
+        color: #78350f;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    }
 
-            <div class="card-header bg-warning">
+    .registration-disabled-body {
+        padding: 3rem 2rem;
+    }
 
-                <h1 class="h4 mb-0">
-                    @Localizer["RegistrationDisabled"]
-                </h1>
+    .registration-disabled-icon {
+        display: inline-flex;
+        width: 5.5rem;
+        height: 5.5rem;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        color: #b45309;
+        background: #fef3c7;
+        border-radius: 50%;
+        font-size: 2.5rem;
+    }
 
-            </div>
+    .registration-disabled-message {
+        max-width: 28rem;
+        margin-right: auto;
+        margin-bottom: 1.5rem;
+        margin-left: auto;
+        color: #64748b;
+        line-height: 1.8;
+    }
 
-            <div class="card-body py-5">
+    .registration-login-button {
+        min-width: 9rem;
+        padding: 0.7rem 1.5rem;
+        font-weight: 700;
+        border-radius: 0.75rem;
+    }
 
-                <div class="mb-4"
-                     style="font-size:4rem; line-height:1;">
+    @@media (max-width: 575.98px) {
+        .registration-disabled-page {
+            min-height: auto;
+            padding: 1rem 0;
+        }
 
-                    🔒
+        .registration-disabled-card {
+            border-radius: 1rem;
+        }
+
+        .registration-disabled-body {
+            padding: 2.25rem 1.25rem;
+        }
+
+        .registration-login-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="registration-disabled-page">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-8 col-lg-6">
+
+                <div class="card registration-disabled-card text-center">
+
+                    <div class="registration-disabled-header">
+
+                        <h1 class="h4 fw-bold mb-0">
+                            @Localizer["RegistrationDisabled"]
+                        </h1>
+
+                    </div>
+
+                    <div class="card-body registration-disabled-body">
+
+                        <div class="registration-disabled-icon"
+                             aria-hidden="true">
+                            🔒
+                        </div>
+
+                        <p class="registration-disabled-message">
+                            @Localizer["RegistrationDisabledMessage"]
+                        </p>
+
+                        <a asp-page="./Login"
+                           class="btn btn-primary registration-login-button">
+
+                            @Localizer["Login"]
+
+                        </a>
+
+                    </div>
 
                 </div>
-
-                <p class="text-muted mb-4">
-                    @Localizer["RegistrationDisabledMessage"]
-                </p>
-
-                <a asp-page="./Login"
-                   class="btn btn-primary">
-
-                    @Localizer["Login"]
-
-                </a>
 
             </div>
 

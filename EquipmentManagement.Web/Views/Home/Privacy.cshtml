@@ -2,53 +2,355 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] =
-        Localizer["PrivacyPolicy"];
+    ViewData["Title"] = Localizer["PrivacyPolicy"];
 }
 
-<div class="row justify-content-center">
+<style>
+    .privacy-page {
+        --privacy-primary: #2563eb;
+        --privacy-dark: #0f172a;
+        --privacy-muted: #64748b;
+    }
 
-    <div class="col-lg-8">
+    .privacy-header {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(1.75rem, 5vw, 3rem);
+        color: #ffffff;
+        background:
+            radial-gradient(
+                circle at top right,
+                rgba(34, 211, 238, 0.25),
+                transparent 35%
+            ),
+            linear-gradient(135deg, #0f172a, #1d4ed8);
+        border-radius: 1.25rem;
+        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
+    }
 
-        <div class="card shadow-sm">
+    .privacy-header-icon {
+        display: inline-flex;
+        width: 4rem;
+        height: 4rem;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 1rem;
+        font-size: 2rem;
+    }
 
-            <div class="card-header bg-dark text-white">
+    .privacy-header-title {
+        margin-bottom: 0.6rem;
+        font-size: clamp(1.7rem, 4vw, 2.4rem);
+        font-weight: 900;
+    }
 
-                <h1 class="h4 mb-0">
-                    @Localizer["PrivacyPolicy"]
-                </h1>
+    .privacy-header-description {
+        max-width: 48rem;
+        margin-bottom: 0;
+        color: rgba(255, 255, 255, 0.82);
+        line-height: 1.8;
+    }
 
-            </div>
+    .privacy-content {
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 1.25rem;
+        box-shadow: 0 0.75rem 2rem rgba(15, 23, 42, 0.08);
+    }
 
-            <div class="card-body">
+    .privacy-section {
+        display: flex;
+        gap: 1rem;
+        padding: 1.5rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
 
-                <p>
-                    @Localizer["PrivacyIntroduction"]
-                </p>
+    .privacy-section:last-child {
+        border-bottom: 0;
+    }
 
-                <h2 class="h5 mt-4">
-                    @Localizer["CollectedData"]
+    .privacy-section-icon {
+        display: inline-flex;
+        width: 3rem;
+        height: 3rem;
+        flex: 0 0 3rem;
+        align-items: center;
+        justify-content: center;
+        color: #1d4ed8;
+        background: #dbeafe;
+        border-radius: 0.85rem;
+        font-size: 1.25rem;
+    }
+
+    .privacy-section-title {
+        margin-bottom: 0.5rem;
+        color: var(--privacy-dark);
+        font-size: 1.05rem;
+        font-weight: 800;
+    }
+
+    .privacy-section-description {
+        margin-bottom: 0;
+        color: var(--privacy-muted);
+        line-height: 1.8;
+    }
+
+    .privacy-contact {
+        padding: 1.5rem;
+        background: #f8fafc;
+        border-radius: 1rem;
+    }
+
+    .privacy-contact-links {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .privacy-contact-link {
+        display: inline-flex;
+        gap: 0.5rem;
+        align-items: center;
+        padding: 0.65rem 0.9rem;
+        color: #1d4ed8;
+        background: #ffffff;
+        border: 1px solid #bfdbfe;
+        border-radius: 0.7rem;
+        font-weight: 700;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+    }
+
+    .privacy-contact-link:hover {
+        color: #ffffff;
+        background: var(--privacy-primary);
+        border-color: var(--privacy-primary);
+    }
+
+    @@media (max-width: 575.98px) {
+        .privacy-header {
+            padding: 1.5rem 1.25rem;
+            border-radius: 1rem;
+        }
+
+        .privacy-section {
+            flex-direction: column;
+            padding: 1.25rem;
+        }
+
+        .privacy-contact-links {
+            flex-direction: column;
+        }
+
+        .privacy-contact-link {
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="privacy-page">
+
+    <section class="privacy-header mb-4">
+
+        <div class="privacy-header-icon"
+             aria-hidden="true">
+            🔐
+        </div>
+
+        <h1 class="privacy-header-title">
+            @Localizer["PrivacyPolicy"]
+        </h1>
+
+        <p class="privacy-header-description">
+            @Localizer["PrivacyIntroduction"]
+        </p>
+
+    </section>
+
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10">
+
+            <section class="privacy-content">
+
+                <div class="privacy-section">
+
+                    <span class="privacy-section-icon"
+                          aria-hidden="true">
+                        📋
+                    </span>
+
+                    <div>
+
+                        <h2 class="privacy-section-title">
+                            @Localizer["CollectedData"]
+                        </h2>
+
+                        <p class="privacy-section-description">
+                            @Localizer["CollectedDataDescription"]
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="privacy-section">
+
+                    <span class="privacy-section-icon"
+                          aria-hidden="true">
+                        ⚙️
+                    </span>
+
+                    <div>
+
+                        <h2 class="privacy-section-title">
+                            @Localizer["DataUsage"]
+                        </h2>
+
+                        <p class="privacy-section-description">
+                            @Localizer["DataUsageDescription"]
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="privacy-section">
+
+                    <span class="privacy-section-icon"
+                          aria-hidden="true">
+                        👤
+                    </span>
+
+                    <div>
+
+                        <h2 class="privacy-section-title">
+                            @Localizer["DataAccess"]
+                        </h2>
+
+                        <p class="privacy-section-description">
+                            @Localizer["DataAccessDescription"]
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="privacy-section">
+
+                    <span class="privacy-section-icon"
+                          aria-hidden="true">
+                        🛡️
+                    </span>
+
+                    <div>
+
+                        <h2 class="privacy-section-title">
+                            @Localizer["AccountSecurity"]
+                        </h2>
+
+                        <p class="privacy-section-description">
+                            @Localizer["AccountSecurityDescription"]
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="privacy-section">
+
+                    <span class="privacy-section-icon"
+                          aria-hidden="true">
+                        🗄️
+                    </span>
+
+                    <div>
+
+                        <h2 class="privacy-section-title">
+                            @Localizer["DataRetention"]
+                        </h2>
+
+                        <p class="privacy-section-description">
+                            @Localizer["DataRetentionDescription"]
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="privacy-section">
+
+                    <span class="privacy-section-icon"
+                          aria-hidden="true">
+                        ✓
+                    </span>
+
+                    <div>
+
+                        <h2 class="privacy-section-title">
+                            @Localizer["UserResponsibilities"]
+                        </h2>
+
+                        <p class="privacy-section-description">
+                            @Localizer["UserResponsibilitiesDescription"]
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="privacy-contact mt-4">
+
+                <h2 class="h5 fw-bold mb-2">
+                    @Localizer["PrivacyContact"]
                 </h2>
 
-                <p>
-                    @Localizer["CollectedDataDescription"]
+                <p class="text-muted mb-0">
+                    @Localizer["PrivacyContactDescription"]
                 </p>
 
-                <h2 class="h5 mt-4">
-                    @Localizer["DataUsage"]
-                </h2>
+                <div class="privacy-contact-links">
 
-                <p>
-                    @Localizer["DataUsageDescription"]
-                </p>
+                    <a href="tel:+96560955456"
+                       class="privacy-contact-link"
+                       dir="ltr">
 
-                <h2 class="h5 mt-4">
-                    @Localizer["DataAccess"]
-                </h2>
+                        <span aria-hidden="true">☎</span>
+                        <span>+965 60955456</span>
 
-                <p>
-                    @Localizer["DataAccessDescription"]
-                </p>
+                    </a>
+
+                    <a href="mailto:ManarKabbani2013@hotmail.com"
+                       class="privacy-contact-link"
+                       dir="ltr">
+
+                        <span aria-hidden="true">✉</span>
+                        <span>ManarKabbani2013@hotmail.com</span>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+            <div class="mt-4 text-center">
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="btn btn-primary px-4">
+
+                    @Localizer["ReturnHome"]
+
+                </a>
 
             </div>
 

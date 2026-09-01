@@ -7,148 +7,476 @@
     ViewData["Title"] = Localizer["EquipmentDetails"];
 }
 
-<div class="row justify-content-center">
+<style>
+    .equipment-details-page {
+        --details-primary: #2563eb;
+        --details-success: #15803d;
+        --details-warning: #b45309;
+    }
 
-    <div class="col-lg-9">
+    .details-header {
+        position: relative;
+        overflow: hidden;
+        padding: 1.75rem;
+        color: white;
+        background:
+            radial-gradient(
+                circle at top right,
+                rgba(255, 255, 255, 0.2),
+                transparent 35%
+            ),
+            linear-gradient(135deg, #0f172a, #1d4ed8);
+        border-radius: 1.2rem;
+        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
+    }
 
-        <div class="card shadow-sm">
+    .details-header-content {
+        position: relative;
+        z-index: 1;
+    }
 
-            <div class="card-header bg-info">
+    .details-title {
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 800;
+    }
 
-                <h1 class="h4 mb-0">
+    .details-subtitle {
+        color: rgba(255, 255, 255, 0.78);
+    }
+
+    .details-card {
+        overflow: hidden;
+        background: white;
+        border: 0;
+        border-radius: 1.1rem;
+        box-shadow: 0 0.6rem 1.8rem rgba(15, 23, 42, 0.08);
+    }
+
+    .details-image-area {
+        display: flex;
+        min-height: 25rem;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        background: #f8fafc;
+        border-inline-end: 1px solid #e2e8f0;
+    }
+
+    .details-image {
+        width: 100%;
+        max-width: 31rem;
+        max-height: 25rem;
+        object-fit: contain;
+        border-radius: 1rem;
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+    .details-image:hover {
+        transform: scale(1.02);
+        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.15);
+    }
+
+    .details-image-placeholder {
+        text-align: center;
+        color: #64748b;
+    }
+
+    .details-image-placeholder-icon {
+        display: inline-flex;
+        width: 5rem;
+        height: 5rem;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        color: #94a3b8;
+        background: #e2e8f0;
+        border-radius: 50%;
+    }
+
+    .details-image-placeholder-icon svg {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .details-information {
+        padding: 1.75rem;
+    }
+
+    .details-equipment-name {
+        margin-bottom: 0.5rem;
+        color: #0f172a;
+        font-size: 1.7rem;
+        font-weight: 800;
+    }
+
+    .details-status {
+        display: inline-flex;
+        gap: 0.4rem;
+        align-items: center;
+        padding: 0.45rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .details-status::before {
+        content: "";
+        width: 0.45rem;
+        height: 0.45rem;
+        background: currentColor;
+        border-radius: 50%;
+    }
+
+    .details-status.available {
+        color: var(--details-success);
+        background: #dcfce7;
+    }
+
+    .details-status.borrowed {
+        color: var(--details-warning);
+        background: #fef3c7;
+    }
+
+    .details-list {
+        margin-top: 1.5rem;
+        margin-bottom: 0;
+    }
+
+    .details-row {
+        display: grid;
+        grid-template-columns: minmax(8rem, 0.8fr) 1.5fr;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .details-row:last-child {
+        border-bottom: 0;
+    }
+
+    .details-label {
+        margin: 0;
+        color: #64748b;
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    .details-value {
+        margin: 0;
+        color: #0f172a;
+        overflow-wrap: anywhere;
+    }
+
+    .details-serial {
+        direction: ltr;
+        display: inline-block;
+        padding: 0.3rem 0.55rem;
+        background: #f1f5f9;
+        border-radius: 0.4rem;
+        font-family: monospace;
+    }
+
+    .details-category {
+        display: inline-flex;
+        padding: 0.4rem 0.7rem;
+        color: #4338ca;
+        background: #e0e7ff;
+        border-radius: 0.55rem;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .details-footer {
+        padding: 1.25rem 1.5rem;
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    @@media (max-width: 991.98px) {
+        .details-image-area {
+            min-height: 20rem;
+            border-inline-end: 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .details-header {
+            padding: 1.3rem;
+            border-radius: 1rem;
+        }
+
+        .details-header-content {
+            align-items: stretch !important;
+            flex-direction: column;
+        }
+
+        .details-header .btn {
+            width: 100%;
+        }
+
+        .details-information {
+            padding: 1.25rem;
+        }
+
+        .details-row {
+            grid-template-columns: 1fr;
+            gap: 0.35rem;
+        }
+
+        .details-footer .btn {
+            flex: 1;
+        }
+    }
+</style>
+
+<div class="equipment-details-page">
+
+    <!-- عنوان الصفحة -->
+    <section class="details-header mb-4">
+
+        <div class="details-header-content
+                    d-flex justify-content-between
+                    align-items-center gap-3">
+
+            <div>
+                <h1 class="details-title mb-1">
                     @Localizer["EquipmentDetails"]
                 </h1>
 
+                <p class="details-subtitle mb-0">
+                    @Model.Name
+                </p>
             </div>
 
-            <div class="card-body">
+            <a asp-action="Index"
+               class="btn btn-light fw-semibold px-4">
 
-                @if (!string.IsNullOrEmpty(Model.ImagePath))
-                {
-                    <div class="mb-4 text-center">
+                @Localizer["BackToList"]
+            </a>
 
-                        <a href="@Model.ImagePath"
-                           target="_blank"
-                           rel="noopener noreferrer">
+        </div>
 
-                            <img src="@Model.ImagePath"
-                                 alt="@Localizer["EquipmentImageAlt", Model.Name]"
-                                 class="img-fluid rounded shadow-sm"
-                                 style="max-width:450px;
-                                        max-height:350px;
-                                        object-fit:contain;" />
+    </section>
 
-                        </a>
+    <!-- بطاقة التفاصيل -->
+    <section class="details-card">
 
-                        <div class="text-muted mt-2">
-                            @Localizer["ClickImageForFullSize"]
+        <div class="row g-0">
+
+            <!-- صورة المعدة -->
+            <div class="col-lg-6">
+
+                <div class="details-image-area">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.ImagePath))
+                    {
+                        <div class="text-center">
+
+                            <a href="@Model.ImagePath"
+                               target="_blank"
+                               rel="noopener noreferrer">
+
+                                <img src="@Model.ImagePath"
+                                     alt="@Localizer["EquipmentImageAlt", Model.Name]"
+                                     class="details-image" />
+
+                            </a>
+
+                            <p class="text-muted small mt-3 mb-0">
+                                @Localizer["ClickImageForFullSize"]
+                            </p>
+
                         </div>
+                    }
+                    else
+                    {
+                        <div class="details-image-placeholder">
 
-                    </div>
-                }
-                else
-                {
-                    <div class="alert alert-secondary">
-                        @Localizer["NoImageForEquipment"]
-                    </div>
-                }
+                            <span class="details-image-placeholder-icon">
 
-                <dl class="row mb-0">
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2">
 
-                    <dt class="col-sm-4">
-                        @Localizer["EquipmentName"]
-                    </dt>
+                                    <rect x="3"
+                                          y="3"
+                                          width="18"
+                                          height="18"
+                                          rx="2" />
 
-                    <dd class="col-sm-8">
-                        @Model.Name
-                    </dd>
+                                    <circle cx="8.5"
+                                            cy="8.5"
+                                            r="1.5" />
 
-                    <dt class="col-sm-4">
-                        @Localizer["SerialNumber"]
-                    </dt>
+                                    <path d="m21 15-5-5L5 21" />
 
-                    <dd class="col-sm-8">
-                        @Model.SerialNumber
-                    </dd>
+                                </svg>
 
-                    <dt class="col-sm-4">
-                        @Localizer["Description"]
-                    </dt>
+                            </span>
 
-                    <dd class="col-sm-8">
-                        @Model.Description
-                    </dd>
+                            <p class="fw-semibold mb-0">
+                                @Localizer["NoImageForEquipment"]
+                            </p>
 
-                    <dt class="col-sm-4">
-                        @Localizer["PurchaseDate"]
-                    </dt>
+                        </div>
+                    }
 
-                    <dd class="col-sm-8">
-                        @Model.PurchaseDate.ToString("d")
-                    </dd>
+                </div>
 
-                    <dt class="col-sm-4">
-                        @Localizer["PurchasePrice"]
-                    </dt>
+            </div>
 
-                    <dd class="col-sm-8">
-                        @Model.PurchasePrice.ToString("N2")
-                    </dd>
+            <!-- معلومات المعدة -->
+            <div class="col-lg-6">
 
-                    <dt class="col-sm-4">
-                        @Localizer["Status"]
-                    </dt>
+                <div class="details-information">
 
-                    <dd class="col-sm-8">
+                    <div class="d-flex justify-content-between
+                                align-items-start gap-3">
+
+                        <div>
+                            <h2 class="details-equipment-name">
+                                @Model.Name
+                            </h2>
+
+                            <span class="details-serial">
+                                @Model.SerialNumber
+                            </span>
+                        </div>
 
                         @if (Model.IsAvailable)
                         {
-                            <span class="badge bg-success">
+                            <span class="details-status available">
                                 @Localizer["Available"]
                             </span>
                         }
                         else
                         {
-                            <span class="badge bg-warning text-dark">
+                            <span class="details-status borrowed">
                                 @Localizer["Borrowed"]
                             </span>
                         }
 
-                    </dd>
+                    </div>
 
-                    <dt class="col-sm-4">
-                        @Localizer["Category"]
-                    </dt>
+                    <dl class="details-list">
 
-                    <dd class="col-sm-8">
-                        @(Model.Category?.Name ?? "-")
-                    </dd>
+                        <div class="details-row">
 
-                </dl>
+                            <dt class="details-label">
+                                @Localizer["EquipmentName"]
+                            </dt>
 
-            </div>
+                            <dd class="details-value">
+                                @Model.Name
+                            </dd>
 
-            <div class="card-footer">
+                        </div>
 
-                <div class="d-flex gap-2">
+                        <div class="details-row">
 
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-action="Edit"
-                           asp-route-id="@Model.Id"
-                           class="btn btn-warning">
+                            <dt class="details-label">
+                                @Localizer["SerialNumber"]
+                            </dt>
 
-                            @Localizer["Edit"]
+                            <dd class="details-value">
+                                <span class="details-serial">
+                                    @Model.SerialNumber
+                                </span>
+                            </dd>
 
-                        </a>
-                    }
+                        </div>
 
-                    <a asp-action="Index"
-                       class="btn btn-secondary">
+                        <div class="details-row">
 
-                        @Localizer["BackToList"]
+                            <dt class="details-label">
+                                @Localizer["Category"]
+                            </dt>
 
-                    </a>
+                            <dd class="details-value">
+
+                                @if (Model.Category != null)
+                                {
+                                    <span class="details-category">
+                                        @Model.Category.Name
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+
+                            </dd>
+
+                        </div>
+
+                        <div class="details-row">
+
+                            <dt class="details-label">
+                                @Localizer["Description"]
+                            </dt>
+
+                            <dd class="details-value">
+                                @(string.IsNullOrWhiteSpace(Model.Description)
+                                    ? "-"
+                                    : Model.Description)
+                            </dd>
+
+                        </div>
+
+                        <div class="details-row">
+
+                            <dt class="details-label">
+                                @Localizer["PurchaseDate"]
+                            </dt>
+
+                            <dd class="details-value">
+                                @Model.PurchaseDate.ToString("d")
+                            </dd>
+
+                        </div>
+
+                        <div class="details-row">
+
+                            <dt class="details-label">
+                                @Localizer["PurchasePrice"]
+                            </dt>
+
+                            <dd class="details-value fw-bold">
+                                @Model.PurchasePrice.ToString("N2")
+                            </dd>
+
+                        </div>
+
+                        <div class="details-row">
+
+                            <dt class="details-label">
+                                @Localizer["Status"]
+                            </dt>
+
+                            <dd class="details-value">
+
+                                @if (Model.IsAvailable)
+                                {
+                                    <span class="details-status available">
+                                        @Localizer["Available"]
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="details-status borrowed">
+                                        @Localizer["Borrowed"]
+                                    </span>
+                                }
+
+                            </dd>
+
+                        </div>
+
+                    </dl>
 
                 </div>
 
@@ -156,6 +484,31 @@
 
         </div>
 
-    </div>
+        <!-- الأزرار -->
+        <div class="details-footer">
+
+            <div class="d-flex gap-2 flex-wrap">
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-warning">
+
+                        @Localizer["Edit"]
+                    </a>
+                }
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+
+                    @Localizer["BackToList"]
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </div>

@@ -4,65 +4,276 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] = Localizer["CategoryDetails"];
+    ViewData["Title"] =
+        Localizer["CategoryDetails"];
 }
 
-<div class="row justify-content-center">
+<style>
+    .category-details-header {
+        position: relative;
+        overflow: hidden;
+        padding: 1.75rem;
+        color: white;
+        background:
+            radial-gradient(
+                circle at top right,
+                rgba(255, 255, 255, 0.2),
+                transparent 35%
+            ),
+            linear-gradient(135deg, #0f172a, #0891b2);
+        border-radius: 1.2rem;
+        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
+    }
 
-    <div class="col-md-8 col-lg-6">
+    .category-details-header-content {
+        position: relative;
+        z-index: 1;
+    }
 
-        <div class="card shadow-sm">
+    .category-details-title {
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 800;
+    }
 
-            <div class="card-header bg-info">
+    .category-details-card {
+        overflow: hidden;
+        background: white;
+        border: 0;
+        border-radius: 1.1rem;
+        box-shadow: 0 0.6rem 1.8rem rgba(15, 23, 42, 0.08);
+    }
 
-                <h1 class="h4 mb-0">
+    .category-details-icon-area {
+        display: flex;
+        min-height: 18rem;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        color: #0891b2;
+        background: #ecfeff;
+        border-inline-end: 1px solid #e2e8f0;
+    }
+
+    .category-details-icon {
+        display: inline-flex;
+        width: 8rem;
+        height: 8rem;
+        align-items: center;
+        justify-content: center;
+        background: #cffafe;
+        border-radius: 2.2rem;
+    }
+
+    .category-details-icon svg {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .category-details-content {
+        padding: 1.75rem;
+    }
+
+    .category-name {
+        margin-bottom: 1.5rem;
+        color: #0f172a;
+        font-size: 1.65rem;
+        font-weight: 800;
+        overflow-wrap: anywhere;
+    }
+
+    .category-details-list {
+        margin: 0;
+    }
+
+    .category-details-row {
+        display: grid;
+        grid-template-columns: minmax(7rem, 0.7fr) 1.5fr;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .category-details-row:last-child {
+        border-bottom: 0;
+    }
+
+    .category-details-label {
+        margin: 0;
+        color: #64748b;
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    .category-details-value {
+        margin: 0;
+        color: #0f172a;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+        white-space: pre-line;
+    }
+
+    .category-details-footer {
+        padding: 1.25rem 1.5rem;
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    @@media (max-width: 767.98px) {
+        .category-details-icon-area {
+            min-height: 12rem;
+            border-inline-end: 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .category-details-icon {
+            width: 6rem;
+            height: 6rem;
+            border-radius: 1.6rem;
+        }
+
+        .category-details-icon svg {
+            width: 3rem;
+            height: 3rem;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .category-details-header {
+            padding: 1.3rem;
+            border-radius: 1rem;
+        }
+
+        .category-details-header-content {
+            align-items: stretch !important;
+            flex-direction: column;
+        }
+
+        .category-details-header .btn {
+            width: 100%;
+        }
+
+        .category-details-content {
+            padding: 1.25rem;
+        }
+
+        .category-details-row {
+            grid-template-columns: 1fr;
+            gap: 0.35rem;
+        }
+
+        .category-details-footer .d-flex {
+            flex-direction: column;
+        }
+
+        .category-details-footer .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="category-details-page">
+
+    <!-- عنوان الصفحة -->
+    <section class="category-details-header mb-4">
+
+        <div class="category-details-header-content
+                    d-flex justify-content-between
+                    align-items-center gap-3">
+
+            <div>
+
+                <h1 class="category-details-title mb-1">
                     @Localizer["CategoryDetails"]
                 </h1>
 
+                <p class="mb-0 text-white-50">
+                    @Model.Name
+                </p>
+
             </div>
 
-            <div class="card-body">
+            <a asp-action="Index"
+               class="btn btn-light fw-semibold px-4">
 
-                <dl class="row mb-0">
+                @Localizer["BackToList"]
+            </a>
 
-                    <dt class="col-sm-4">
-                        @Localizer["Name"]
-                    </dt>
+        </div>
 
-                    <dd class="col-sm-8">
+    </section>
+
+    <!-- تفاصيل التصنيف -->
+    <section class="category-details-card">
+
+        <div class="row g-0">
+
+            <!-- الأيقونة -->
+            <div class="col-md-4">
+
+                <div class="category-details-icon-area">
+
+                    <span class="category-details-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2">
+
+                            <path d="M4 4h6v6H4z" />
+                            <path d="M14 4h6v6h-6z" />
+                            <path d="M4 14h6v6H4z" />
+                            <path d="M14 14h6v6h-6z" />
+
+                        </svg>
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- البيانات -->
+            <div class="col-md-8">
+
+                <div class="category-details-content">
+
+                    <h2 class="category-name">
                         @Model.Name
-                    </dd>
+                    </h2>
 
-                    <dt class="col-sm-4">
-                        @Localizer["Description"]
-                    </dt>
+                    <dl class="category-details-list">
 
-                    <dd class="col-sm-8">
-                        @Model.Description
-                    </dd>
+                        <!-- الاسم -->
+                        <div class="category-details-row">
 
-                </dl>
+                            <dt class="category-details-label">
+                                @Localizer["Name"]
+                            </dt>
 
-            </div>
+                            <dd class="category-details-value fw-semibold">
+                                @Model.Name
+                            </dd>
 
-            <div class="card-footer">
+                        </div>
 
-                <div class="d-flex gap-2">
+                        <!-- الوصف -->
+                        <div class="category-details-row">
 
-                    <a asp-action="Edit"
-                       asp-route-id="@Model.Id"
-                       class="btn btn-warning">
+                            <dt class="category-details-label">
+                                @Localizer["Description"]
+                            </dt>
 
-                        @Localizer["Edit"]
+                            <dd class="category-details-value">
 
-                    </a>
+                                @(string.IsNullOrWhiteSpace(Model.Description)
+                                    ? "-"
+                                    : Model.Description)
 
-                    <a asp-action="Index"
-                       class="btn btn-secondary">
+                            </dd>
 
-                        @Localizer["BackToList"]
+                        </div>
 
-                    </a>
+                    </dl>
 
                 </div>
 
@@ -70,6 +281,28 @@
 
         </div>
 
-    </div>
+        <!-- الأزرار -->
+        <div class="category-details-footer">
+
+            <div class="d-flex gap-2">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-warning px-4">
+
+                    @Localizer["Edit"]
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary px-4">
+
+                    @Localizer["BackToList"]
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </div>

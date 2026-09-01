@@ -754,4 +754,84 @@
 <data name="PurchasePriceRequired" xml:space="preserve">
   <value>سعر الشراء مطلوب.</value>
 </data>
+<data name="ToggleNavigation" xml:space="preserve">
+  <value>فتح أو إغلاق قائمة التنقل</value>
+</data>
+<data name="QuickActions" xml:space="preserve">
+  <value>إجراءات سريعة</value>
+</data>
+<data name="EquipmentManagementSystem" xml:space="preserve">
+  <value>نظام إدارة المعدات</value>
+</data>
+
+<data name="WelcomeToEquipmentManagement" xml:space="preserve">
+  <value>مرحبًا بك في نظام إدارة المعدات</value>
+</data>
+
+<data name="HomeSystemDescription" xml:space="preserve">
+  <value>نظام متكامل لتنظيم المعدات والموظفين وعمليات الاستعارة ومتابعة مواعيد الإرجاع بسهولة وأمان.</value>
+</data>
+
+<data name="EquipmentManagementFeature" xml:space="preserve">
+  <value>إدارة المعدات</value>
+</data>
+
+<data name="EquipmentManagementFeatureDescription" xml:space="preserve">
+  <value>إضافة المعدات وتصنيفها ومتابعة حالتها وتوفرها للاستعارة.</value>
+</data>
+
+<data name="BorrowingManagementFeature" xml:space="preserve">
+  <value>إدارة الاستعارات</value>
+</data>
+
+<data name="BorrowingManagementFeatureDescription" xml:space="preserve">
+  <value>تسجيل عمليات الاستعارة والإرجاع ومتابعة الاستعارات النشطة والمتأخرة.</value>
+</data>
+
+<data name="EmployeeManagementFeature" xml:space="preserve">
+  <value>إدارة الموظفين</value>
+</data>
+
+<data name="EmployeeManagementFeatureDescription" xml:space="preserve">
+  <value>إدارة بيانات الموظفين وحساباتهم وصلاحيات الوصول إلى النظام.</value>
+</data>
+
+<data name="DevelopedBy" xml:space="preserve">
+  <value>تم تطوير النظام بواسطة</value>
+</data>
+
+<data name="DeveloperProfessionalDescription" xml:space="preserve">
+  <value>المهندسة منار قباني، متخصصة في إدارة المواقع وتطوير البرمجيات باستخدام ASP.NET Core وتطبيق مبادئ Clean Architecture.</value>
+</data>
+<data name="AccountSecurity" xml:space="preserve">
+  <value>أمان الحسابات</value>
+</data>
+
+<data name="AccountSecurityDescription" xml:space="preserve">
+  <value>تُحمى الحسابات باستخدام نظام تسجيل الدخول والصلاحيات، كما تُخزن كلمات المرور بصورة مشفرة ولا يمكن عرضها كنص واضح.</value>
+</data>
+
+<data name="DataRetention" xml:space="preserve">
+  <value>الاحتفاظ بالبيانات</value>
+</data>
+
+<data name="DataRetentionDescription" xml:space="preserve">
+  <value>يحتفظ النظام ببيانات المعدات والموظفين وسجلات الاستعارة والإرجاع للمدة اللازمة لإدارة العمل ومتابعة العمليات.</value>
+</data>
+
+<data name="UserResponsibilities" xml:space="preserve">
+  <value>مسؤوليات المستخدم</value>
+</data>
+
+<data name="UserResponsibilitiesDescription" xml:space="preserve">
+  <value>يتحمل المستخدم مسؤولية المحافظة على بيانات تسجيل الدخول وعدم مشاركتها، وتسجيل الخروج عند استخدام جهاز مشترك.</value>
+</data>
+
+<data name="PrivacyContact" xml:space="preserve">
+  <value>التواصل بخصوص الخصوصية</value>
+</data>
+
+<data name="PrivacyContactDescription" xml:space="preserve">
+  <value>للاستفسار عن سياسة الخصوصية أو البيانات المحفوظة في النظام، يمكن التواصل مع مطورة النظام.</value>
+</data>
 </root>
