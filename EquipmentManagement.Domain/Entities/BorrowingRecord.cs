@@ -1,10 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace EquipmentManagement.Domain.Entities;
 
 using System.ComponentModel.DataAnnotations;
-
-
 
 
 public class BorrowingRecord

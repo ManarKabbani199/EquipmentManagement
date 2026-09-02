@@ -4,199 +4,24 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] = Localizer["EditEquipment"];
+    ViewData["Title"] =
+        Localizer["EditEquipment"];
 
     var hasCurrentImage =
         !string.IsNullOrWhiteSpace(Model.ImagePath);
 }
 
-<style>
-    .edit-equipment-header {
-        position: relative;
-        overflow: hidden;
-        padding: 1.75rem;
-        color: white;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(255, 255, 255, 0.2),
-                transparent 35%
-            ),
-            linear-gradient(135deg, #0f172a, #d97706);
-        border-radius: 1.2rem;
-        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
-    }
+<div class="equipment-editor-page equipment-theme-edit">
 
-    .edit-equipment-header-content {
-        position: relative;
-        z-index: 1;
-    }
+    <section class="equipment-editor-header mb-4">
 
-    .edit-equipment-title {
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 800;
-    }
-
-    .edit-equipment-card {
-        overflow: hidden;
-        background: white;
-        border: 0;
-        border-radius: 1.1rem;
-        box-shadow: 0 0.6rem 1.8rem rgba(15, 23, 42, 0.08);
-    }
-
-    .edit-form-section {
-        padding: 1.5rem;
-    }
-
-    .edit-form-section + .edit-form-section {
-        border-top: 1px solid #e2e8f0;
-    }
-
-    .edit-section-title {
-        margin-bottom: 1.25rem;
-        color: #0f172a;
-        font-size: 1rem;
-        font-weight: 800;
-    }
-
-    .edit-equipment-card .form-label {
-        color: #334155;
-        font-size: 0.9rem;
-        font-weight: 700;
-    }
-
-    .edit-equipment-card .form-control,
-    .edit-equipment-card .form-select {
-        min-height: 2.8rem;
-        border-color: #cbd5e1;
-        border-radius: 0.7rem;
-    }
-
-    .edit-equipment-card textarea.form-control {
-        min-height: 7rem;
-        resize: vertical;
-    }
-
-    .edit-equipment-card .form-control:focus,
-    .edit-equipment-card .form-select:focus {
-        border-color: #d97706;
-        box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.14);
-    }
-
-    .edit-equipment-card .input-validation-error {
-        border-color: #dc2626;
-    }
-
-    .validation-summary-valid {
-        display: none;
-    }
-
-    .edit-availability-box {
-        display: flex;
-        gap: 0.8rem;
-        min-height: 3.2rem;
-        align-items: center;
-        padding: 0.8rem 1rem;
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        border-radius: 0.75rem;
-    }
-
-    .edit-availability-box .form-check-input {
-        width: 1.2rem;
-        height: 1.2rem;
-        margin: 0;
-        cursor: pointer;
-    }
-
-    .edit-availability-box .form-check-label {
-        color: #166534;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    .edit-image-area {
-        padding: 1.25rem;
-        background: #f8fafc;
-        border: 1px dashed #94a3b8;
-        border-radius: 1rem;
-    }
-
-    .edit-image-preview-container {
-        margin-bottom: 1.25rem;
-        text-align: center;
-    }
-
-    .edit-image-preview {
-        width: 100%;
-        max-width: 26rem;
-        max-height: 19rem;
-        object-fit: contain;
-        background: white;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.9rem;
-        box-shadow: 0 0.4rem 1rem rgba(15, 23, 42, 0.08);
-    }
-
-    .edit-no-image {
-        display: flex;
-        min-height: 10rem;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1.25rem;
-        color: #64748b;
-        background: #f1f5f9;
-        border-radius: 0.85rem;
-    }
-
-    .edit-form-actions {
-        padding: 1.25rem 1.5rem;
-        background: #f8fafc;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    @@media (max-width: 575.98px) {
-        .edit-equipment-header {
-            padding: 1.3rem;
-            border-radius: 1rem;
-        }
-
-        .edit-equipment-header-content {
-            align-items: stretch !important;
-            flex-direction: column;
-        }
-
-        .edit-equipment-header .btn {
-            width: 100%;
-        }
-
-        .edit-form-section {
-            padding: 1.2rem;
-        }
-
-        .edit-form-actions {
-            flex-direction: column;
-        }
-
-        .edit-form-actions .btn {
-            width: 100%;
-        }
-    }
-</style>
-
-<div class="edit-equipment-page">
-
-    <!-- عنوان الصفحة -->
-    <section class="edit-equipment-header mb-4">
-
-        <div class="edit-equipment-header-content
+        <div class="equipment-editor-header-content
                     d-flex justify-content-between
                     align-items-center gap-3">
 
             <div>
 
-                <h1 class="edit-equipment-title mb-1">
+                <h1 class="equipment-editor-title mb-1">
                     @Localizer["EditEquipment"]
                 </h1>
 
@@ -210,6 +35,7 @@
                class="btn btn-light fw-semibold px-4">
 
                 @Localizer["BackToList"]
+
             </a>
 
         </div>
@@ -220,13 +46,13 @@
           method="post"
           enctype="multipart/form-data">
 
-        <div class="edit-equipment-card">
+        @Html.AntiForgeryToken()
 
-            <!-- رقم المعدة -->
-            <input type="hidden"
-                   asp-for="Id" />
+        <input type="hidden"
+               asp-for="Id" />
 
-            <!-- أخطاء النموذج -->
+        <div class="equipment-editor-card">
+
             <div class="px-4 pt-4">
 
                 <div asp-validation-summary="ModelOnly"
@@ -236,26 +62,26 @@
 
             </div>
 
-            <!-- المعلومات الأساسية -->
-            <section class="edit-form-section">
+            <section class="equipment-editor-section">
 
-                <h2 class="edit-section-title">
+                <h2 class="equipment-editor-section-title">
                     @Localizer["Equipment"]
                 </h2>
 
                 <div class="row g-4">
 
-                    <!-- اسم المعدة -->
                     <div class="col-md-6">
 
                         <label asp-for="Name"
                                class="form-label">
 
                             @Localizer["EquipmentName"]
+
                         </label>
 
                         <input asp-for="Name"
-                               class="form-control" />
+                               class="form-control"
+                               autofocus />
 
                         <span asp-validation-for="Name"
                               class="text-danger small">
@@ -263,13 +89,13 @@
 
                     </div>
 
-                    <!-- الرقم التسلسلي -->
                     <div class="col-md-6">
 
                         <label asp-for="SerialNumber"
                                class="form-label">
 
                             @Localizer["SerialNumber"]
+
                         </label>
 
                         <input asp-for="SerialNumber"
@@ -282,13 +108,13 @@
 
                     </div>
 
-                    <!-- التصنيف -->
                     <div class="col-md-6">
 
                         <label asp-for="CategoryId"
                                class="form-label">
 
                             @Localizer["Category"]
+
                         </label>
 
                         <select asp-for="CategoryId"
@@ -302,13 +128,13 @@
 
                     </div>
 
-                    <!-- تاريخ الشراء -->
                     <div class="col-md-6">
 
                         <label asp-for="PurchaseDate"
                                class="form-label">
 
                             @Localizer["PurchaseDate"]
+
                         </label>
 
                         <input asp-for="PurchaseDate"
@@ -323,13 +149,13 @@
 
                     </div>
 
-                    <!-- سعر الشراء -->
                     <div class="col-md-6">
 
                         <label asp-for="PurchasePrice"
                                class="form-label">
 
                             @Localizer["PurchasePrice"]
+
                         </label>
 
                         <input asp-for="PurchasePrice"
@@ -345,14 +171,13 @@
 
                     </div>
 
-                    <!-- حالة المعدة -->
                     <div class="col-md-6">
 
                         <label class="form-label">
                             @Localizer["Status"]
                         </label>
 
-                        <div class="edit-availability-box">
+                        <div class="equipment-availability-box">
 
                             <input asp-for="IsAvailable"
                                    class="form-check-input" />
@@ -361,19 +186,20 @@
                                    class="form-check-label">
 
                                 @Localizer["AvailableForBorrowing"]
+
                             </label>
 
                         </div>
 
                     </div>
 
-                    <!-- الوصف -->
                     <div class="col-12">
 
                         <label asp-for="Description"
                                class="form-label">
 
                             @Localizer["Description"]
+
                         </label>
 
                         <textarea asp-for="Description"
@@ -391,18 +217,16 @@
 
             </section>
 
-            <!-- الصورة -->
-            <section class="edit-form-section">
+            <section class="equipment-editor-section">
 
-                <h2 class="edit-section-title">
+                <h2 class="equipment-editor-section-title">
                     @Localizer["EquipmentImage"]
                 </h2>
 
-                <div class="edit-image-area">
+                <div class="equipment-image-upload-area">
 
-                    <!-- الصورة الحالية أو الجديدة -->
                     <div id="imagePreviewContainer"
-                         class="edit-image-preview-container
+                         class="equipment-current-image
                                 @(hasCurrentImage ? "" : "d-none")">
 
                         <a id="imagePreviewLink"
@@ -413,7 +237,7 @@
                             <img id="imagePreview"
                                  src="@(hasCurrentImage ? Model.ImagePath : "")"
                                  alt="@Localizer["EquipmentImageAlt", Model.Name]"
-                                 class="edit-image-preview" />
+                                 class="equipment-image-preview" />
 
                         </a>
 
@@ -421,24 +245,24 @@
                            class="text-muted small mt-2 mb-0">
 
                             @Localizer["CurrentImage"]
+
                         </p>
 
                     </div>
 
-                    <!-- يظهر عند عدم وجود صورة -->
                     <div id="noImageMessage"
-                         class="edit-no-image
+                         class="equipment-no-image
                                 @(hasCurrentImage ? "d-none" : "")">
 
                         @Localizer["NoImageForEquipment"]
 
                     </div>
 
-                    <!-- اختيار صورة جديدة -->
                     <label for="imageFile"
                            class="form-label">
 
                         @Localizer["SelectNewImage"]
+
                     </label>
 
                     <input type="file"
@@ -464,13 +288,13 @@
 
             </section>
 
-            <!-- الأزرار -->
-            <div class="edit-form-actions d-flex gap-2">
+            <div class="equipment-editor-actions d-flex gap-2">
 
                 <button type="submit"
                         class="btn btn-warning px-4">
 
                     @Localizer["SaveChanges"]
+
                 </button>
 
                 <a asp-action="Details"
@@ -478,12 +302,14 @@
                    class="btn btn-outline-info px-4">
 
                     @Localizer["Details"]
+
                 </a>
 
                 <a asp-action="Index"
                    class="btn btn-outline-secondary px-4">
 
                     @Localizer["BackToList"]
+
                 </a>
 
             </div>
@@ -497,71 +323,113 @@
 @section Scripts {
 
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial"
+        );
     }
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+                const imageInput =
+                    document.getElementById("imageFile");
 
-            const imageInput =
-                document.getElementById("imageFile");
+                const previewContainer =
+                    document.getElementById(
+                        "imagePreviewContainer"
+                    );
 
-            const previewContainer =
-                document.getElementById("imagePreviewContainer");
+                const previewLink =
+                    document.getElementById(
+                        "imagePreviewLink"
+                    );
 
-            const previewLink =
-                document.getElementById("imagePreviewLink");
+                const previewImage =
+                    document.getElementById(
+                        "imagePreview"
+                    );
 
-            const previewImage =
-                document.getElementById("imagePreview");
+                const previewTitle =
+                    document.getElementById(
+                        "imagePreviewTitle"
+                    );
 
-            const previewTitle =
-                document.getElementById("imagePreviewTitle");
+                const noImageMessage =
+                    document.getElementById(
+                        "noImageMessage"
+                    );
 
-            const noImageMessage =
-                document.getElementById("noImageMessage");
-
-            let temporaryImageUrl = null;
-
-            imageInput.addEventListener("change", function () {
-
-                const selectedFile = this.files[0];
-
-                if (!selectedFile) {
+                if (
+                    !imageInput ||
+                    !previewContainer ||
+                    !previewLink ||
+                    !previewImage ||
+                    !previewTitle ||
+                    !noImageMessage
+                ) {
                     return;
                 }
 
-                if (!selectedFile.type.startsWith("image/")) {
-                    return;
-                }
+                let temporaryImageUrl = null;
 
-                if (temporaryImageUrl) {
-                    URL.revokeObjectURL(temporaryImageUrl);
-                }
+                imageInput.addEventListener(
+                    "change",
+                    function () {
+                        const selectedFile =
+                            this.files?.[0];
 
-                temporaryImageUrl =
-                    URL.createObjectURL(selectedFile);
+                        if (
+                            !selectedFile ||
+                            !selectedFile.type.startsWith(
+                                "image/"
+                            )
+                        ) {
+                            return;
+                        }
 
-                previewImage.src = temporaryImageUrl;
-                previewLink.href = temporaryImageUrl;
+                        if (temporaryImageUrl) {
+                            URL.revokeObjectURL(
+                                temporaryImageUrl
+                            );
+                        }
 
-                previewContainer.classList.remove("d-none");
-                noImageMessage.classList.add("d-none");
+                        temporaryImageUrl =
+                            URL.createObjectURL(
+                                selectedFile
+                            );
 
-                previewTitle.textContent =
-                    selectedFile.name;
+                        previewImage.src =
+                            temporaryImageUrl;
 
-            });
+                        previewLink.href =
+                            temporaryImageUrl;
 
-            window.addEventListener("beforeunload", function () {
+                        previewContainer.classList.remove(
+                            "d-none"
+                        );
 
-                if (temporaryImageUrl) {
-                    URL.revokeObjectURL(temporaryImageUrl);
-                }
+                        noImageMessage.classList.add(
+                            "d-none"
+                        );
 
-            });
+                        previewTitle.textContent =
+                            selectedFile.name;
+                    }
+                );
 
-        });
+                window.addEventListener(
+                    "beforeunload",
+                    function () {
+                        if (temporaryImageUrl) {
+                            URL.revokeObjectURL(
+                                temporaryImageUrl
+                            );
+                        }
+                    }
+                );
+            }
+        );
     </script>
 
 }

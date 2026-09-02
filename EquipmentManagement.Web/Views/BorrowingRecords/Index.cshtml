@@ -14,150 +14,21 @@
     var totalPages =
         (int)(ViewData["TotalPages"] ?? 0);
 
-    var confirmReturn =
-        Localizer["ConfirmReturnEquipment"].Value;
-
     var isAdmin = User.IsInRole("Admin");
 }
-
-<style>
-    .borrowing-image {
-        width: 5rem;
-        height: 4rem;
-        object-fit: cover;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.7rem;
-    }
-
-    .borrowing-image-placeholder {
-        display: inline-flex;
-        width: 5rem;
-        height: 4rem;
-        align-items: center;
-        justify-content: center;
-        color: #94a3b8;
-        background: #f1f5f9;
-        border: 1px dashed #cbd5e1;
-        border-radius: 0.7rem;
-    }
-
-    .borrowing-equipment-description {
-        display: block;
-        max-width: 14rem;
-        overflow: hidden;
-        color: #64748b;
-        font-size: 0.8rem;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .borrowing-filter-card {
-        border: 0;
-        border-radius: 1rem;
-        box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.07);
-    }
-
-    .borrowing-status {
-        display: inline-flex;
-        gap: 0.4rem;
-        align-items: center;
-        padding: 0.45rem 0.7rem;
-        border-radius: 999px;
-        font-size: 0.78rem;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .borrowing-status::before {
-        content: "";
-        width: 0.45rem;
-        height: 0.45rem;
-        background: currentColor;
-        border-radius: 50%;
-    }
-
-    .borrowing-status.returned {
-        color: #15803d;
-        background: #dcfce7;
-    }
-
-    .borrowing-status.overdue {
-        color: #b91c1c;
-        background: #fee2e2;
-    }
-
-    .borrowing-status.active {
-        color: #b45309;
-        background: #fef3c7;
-    }
-
-    .borrowing-pagination {
-        flex-wrap: wrap;
-        gap: 0.25rem;
-    }
-
-    .borrowing-pagination .page-link {
-        border-radius: 0.45rem;
-    }
-
-    @@media (max-width: 767.98px) {
-        .borrowing-image {
-            width: 7rem;
-            height: 6rem;
-        }
-
-        .borrowing-image-placeholder {
-            width: 7rem;
-            height: 6rem;
-        }
-
-        .borrowing-image-cell {
-            align-items: center !important;
-            flex-direction: column;
-            justify-content: center !important;
-            background: #f8fafc;
-        }
-
-        .borrowing-image-cell::before {
-            display: none;
-        }
-
-        .borrowing-equipment-description {
-            max-width: 55%;
-            overflow: visible;
-            text-align: end;
-            text-overflow: initial;
-            white-space: normal;
-        }
-
-        .borrowing-pagination .page-link {
-            padding: 0.45rem 0.7rem;
-            font-size: 0.85rem;
-        }
-    }
-
-    @@media (max-width: 380px) {
-        .borrowing-equipment-description {
-            max-width: 100%;
-            text-align: start;
-        }
-    }
-</style>
 
 <div>
 
     <!-- عنوان الصفحة -->
     <div class="d-flex flex-column flex-sm-row
-                justify-content-between
-                align-items-sm-center gap-3 mb-4">
+        justify-content-between
+        align-items-sm-center gap-3 mb-4">
 
         <h1 class="mb-0">
             @Localizer["BorrowingRecords"]
         </h1>
 
-        <a asp-action="Create"
-           class="btn btn-primary">
+        <a asp-action="Create" class="btn btn-primary">
 
             @Localizer["BorrowEquipment"]
         </a>
@@ -168,15 +39,11 @@
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success
-                    alert-dismissible fade show shadow-sm"
-             role="alert">
+            alert-dismissible fade show shadow-sm" role="alert">
 
             @TempData["SuccessMessage"]
 
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"
-                    aria-label="@Localizer["Cancel"]">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer["Cancel"]">
             </button>
 
         </div>
@@ -186,15 +53,11 @@
     @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger
-                    alert-dismissible fade show shadow-sm"
-             role="alert">
+            alert-dismissible fade show shadow-sm" role="alert">
 
             @TempData["ErrorMessage"]
 
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"
-                    aria-label="@Localizer["Cancel"]">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer["Cancel"]">
             </button>
 
         </div>
@@ -205,26 +68,19 @@
 
         <div class="card-body p-4">
 
-            <form asp-action="Index"
-                  method="get"
-                  class="row g-3">
+            <form asp-action="Index" method="get" class="row g-3">
 
                 <!-- البحث -->
                 <div class="@(isAdmin
-                                ? "col-lg-4 col-md-6"
-                                : "col-md-6")">
+                                                     ? "col-lg-4 col-md-6"
+                                                     : "col-md-6")">
 
-                    <label for="search"
-                           class="form-label">
+                    <label for="search" class="form-label">
 
                         @Localizer["Search"]
                     </label>
 
-                    <input type="text"
-                           id="search"
-                           name="search"
-                           value="@ViewData["CurrentSearch"]"
-                           class="form-control"
+                    <input type="text" id="search" name="search" value="@ViewData["CurrentSearch"]" class="form-control"
                            placeholder="@Localizer["BorrowingSearchPlaceholder"]" />
 
                 </div>
@@ -234,16 +90,12 @@
                 {
                     <div class="col-lg-3 col-md-6">
 
-                        <label for="employeeId"
-                               class="form-label">
+                        <label for="employeeId" class="form-label">
 
                             @Localizer["Employee"]
                         </label>
 
-                        <select id="employeeId"
-                                name="employeeId"
-                                class="form-select"
-                                asp-items="ViewBag.EmployeeId">
+                        <select id="employeeId" name="employeeId" class="form-select" asp-items="ViewBag.EmployeeId">
 
                             <option value="">
                                 @Localizer["AllEmployees"]
@@ -256,38 +108,32 @@
 
                 <!-- حالة الاستعارة -->
                 <div class="@(isAdmin
-                                ? "col-lg-3 col-md-6"
-                                : "col-md-6")">
+                                                     ? "col-lg-3 col-md-6"
+                                                     : "col-md-6")">
 
-                    <label for="status"
-                           class="form-label">
+                    <label for="status" class="form-label">
 
                         @Localizer["BorrowingStatus"]
 
                     </label>
 
-                    <select id="status"
-                            name="status"
-                            class="form-select">
+                    <select id="status" name="status" class="form-select">
 
                         <option value="">
                             @Localizer["AllStatuses"]
                         </option>
 
-                        <option value="active"
-                                selected="@(ViewData["CurrentStatus"]?.ToString() == "active")">
+                        <option value="active" selected="@(ViewData["CurrentStatus"]?.ToString() == "active")">
 
                             @Localizer["Active"]
                         </option>
 
-                        <option value="returned"
-                                selected="@(ViewData["CurrentStatus"]?.ToString() == "returned")">
+                        <option value="returned" selected="@(ViewData["CurrentStatus"]?.ToString() == "returned")">
 
                             @Localizer["Returned"]
                         </option>
 
-                        <option value="overdue"
-                                selected="@(ViewData["CurrentStatus"]?.ToString() == "overdue")">
+                        <option value="overdue" selected="@(ViewData["CurrentStatus"]?.ToString() == "overdue")">
 
                             @Localizer["Overdue"]
                         </option>
@@ -298,18 +144,16 @@
 
                 <!-- أزرار البحث -->
                 <div class="@(isAdmin
-                                ? "col-lg-2 col-md-6"
-                                : "col-12")
-                            d-flex align-items-end gap-2">
+                                                     ? "col-lg-2 col-md-6"
+                                                     : "col-12")
+                    d-flex align-items-end gap-2">
 
-                    <button type="submit"
-                            class="btn btn-primary flex-fill">
+                    <button type="submit" class="btn btn-primary flex-fill">
 
                         @Localizer["Search"]
                     </button>
 
-                    <a asp-action="Index"
-                       class="btn btn-secondary flex-fill">
+                    <a asp-action="Index" class="btn btn-secondary flex-fill">
 
                         @Localizer["Reset"]
                     </a>
@@ -348,11 +192,11 @@
     {
         <!-- جدول الاستعارات -->
         <div class="table-responsive
-                    responsive-card-table-wrapper">
+            responsive-card-table-wrapper">
 
             <table class="table table-bordered
-                          table-striped align-middle
-                          responsive-card-table mb-0">
+                table-striped align-middle
+                responsive-card-table mb-0">
 
                 <thead class="table-dark">
 
@@ -380,46 +224,30 @@
                         <tr>
 
                             <!-- صورة المعدة -->
-                            <td class="borrowing-image-cell"
-                                data-label="@Localizer["Image"]">
+                            <td class="borrowing-image-cell" data-label="@Localizer["Image"]">
 
                                 @if (!string.IsNullOrWhiteSpace(
                                     item.Equipment?.ImagePath))
                                 {
-                                    <a href="@item.Equipment.ImagePath"
-                                       target="_blank"
-                                       rel="noopener noreferrer">
+                                    <a href="@item.Equipment.ImagePath" target="_blank" rel="noopener noreferrer">
 
-                                        <img src="@item.Equipment.ImagePath"
-                                             alt="@Localizer[
-                                                 "EquipmentImageAlt",
-                                                 item.Equipment.Name
-                                             ]"
-                                             class="borrowing-image" />
+                                        <img src="@item.Equipment.ImagePath" alt="@Localizer[
+                                                                                              "EquipmentImageAlt",
+                                                                                              item.Equipment.Name
+                                                                                          ]" class="borrowing-image" />
 
                                     </a>
                                 }
                                 else
                                 {
-                                    <span class="borrowing-image-placeholder"
-                                          title="@Localizer["NoImage"]">
+                                    <span class="borrowing-image-placeholder" title="@Localizer["NoImage"]">
 
-                                        <svg viewBox="0 0 24 24"
-                                             width="28"
-                                             height="28"
-                                             fill="none"
-                                             stroke="currentColor"
+                                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor"
                                              stroke-width="2">
 
-                                            <rect x="3"
-                                                  y="3"
-                                                  width="18"
-                                                  height="18"
-                                                  rx="2" />
+                                            <rect x="3" y="3" width="18" height="18" rx="2" />
 
-                                            <circle cx="8.5"
-                                                    cy="8.5"
-                                                    r="1.5" />
+                                            <circle cx="8.5" cy="8.5" r="1.5" />
 
                                             <path d="m21 15-5-5L5 21" />
 
@@ -442,8 +270,7 @@
                                     @if (!string.IsNullOrWhiteSpace(
                                         item.Equipment?.Description))
                                     {
-                                        <span class="borrowing-equipment-description"
-                                              title="@item.Equipment.Description">
+                                        <span class="borrowing-equipment-description" title="@item.Equipment.Description">
 
                                             @item.Equipment.Description
                                         </span>
@@ -517,28 +344,22 @@
 
                                 <div class="responsive-actions">
 
-                                    <a asp-action="Details"
-                                       asp-route-id="@item.Id"
-                                       class="btn btn-info btn-sm">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
 
                                         @Localizer["Details"]
                                     </a>
 
                                     @if (isAdmin && !item.IsReturned)
                                     {
-                                        <form asp-action="ReturnEquipment"
-                                              asp-route-id="@item.Id"
-                                              method="post"
-                                              class="d-inline"
-                                              onsubmit="return confirm('@confirmReturn');">
+                                        <button type="button" class="btn btn-success btn-sm return-equipment-button"
+                                                data-bs-toggle="modal" data-bs-target="#returnEquipmentModal" data-return-url="@Url.Action(
+                                                                "ReturnEquipment",
+                                                                "BorrowingRecords",
+                                                                new { id = item.Id }
+                                                            )" data-equipment-name="@(item.Equipment?.Name ?? "-")">
 
-                                            <button type="submit"
-                                                    class="btn btn-success btn-sm">
-
-                                                @Localizer["ReturnEquipment"]
-                                            </button>
-
-                                        </form>
+                                            @Localizer["ReturnEquipment"]
+                                        </button>
                                     }
 
                                 </div>
@@ -557,24 +378,20 @@
         <!-- ترقيم الصفحات -->
         @if (totalPages > 1)
         {
-            <nav class="mt-4"
-                 aria-label="@Localizer["Pagination"]">
+            <nav class="mt-4" aria-label="@Localizer["Pagination"]">
 
                 <ul class="pagination borrowing-pagination
-                           justify-content-center">
+                    justify-content-center">
 
                     <!-- الصفحة السابقة -->
                     <li class="page-item
                         @(currentPage == 1 ? "disabled" : "")">
 
-                        <a class="page-link"
-                           asp-action="Index"
-                           asp-route-pageNumber="@(currentPage - 1)"
-                           asp-route-search="@ViewData["CurrentSearch"]"
-                           asp-route-status="@ViewData["CurrentStatus"]"
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@(currentPage - 1)"
+                           asp-route-search="@ViewData["CurrentSearch"]" asp-route-status="@ViewData["CurrentStatus"]"
                            asp-route-employeeId="@(isAdmin
-                               ? ViewData["CurrentEmployeeId"]
-                               : null)">
+                                                          ? ViewData["CurrentEmployeeId"]
+                                                      : null)">
 
                             @Localizer["Previous"]
                         </a>
@@ -591,45 +408,145 @@
                                 ? "active"
                                 : "")">
 
-                            <a class="page-link"
-                               asp-action="Index"
-                               asp-route-pageNumber="@pageIndex"
-                               asp-route-search="@ViewData["CurrentSearch"]"
-                               asp-route-status="@ViewData["CurrentStatus"]"
+                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@pageIndex"
+                               asp-route-search="@ViewData["CurrentSearch"]" asp-route-status="@ViewData["CurrentStatus"]"
                                asp-route-employeeId="@(isAdmin
-                                   ? ViewData["CurrentEmployeeId"]
-                                   : null)">
+                                                                  ? ViewData["CurrentEmployeeId"]
+                                                              : null)">
 
-                                @pageIndex
-                            </a>
+                    @pageIndex
+                </a>
 
-                        </li>
-                    }
+            </li>
+        }
 
-                    <!-- الصفحة التالية -->
-                    <li class="page-item
-                        @(currentPage == totalPages
-                            ? "disabled"
-                            : "")">
+        <!-- الصفحة التالية -->
+        <li class="page-item
+            @(currentPage == totalPages
+                ? "disabled"
+                : "")">
 
-                        <a class="page-link"
-                           asp-action="Index"
-                           asp-route-pageNumber="@(currentPage + 1)"
-                           asp-route-search="@ViewData["CurrentSearch"]"
-                           asp-route-status="@ViewData["CurrentStatus"]"
-                           asp-route-employeeId="@(isAdmin
-                               ? ViewData["CurrentEmployeeId"]
-                               : null)">
+            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(currentPage + 1)"
+               asp-route-search="@ViewData["CurrentSearch"]" asp-route-status="@ViewData["CurrentStatus"]"
+               asp-route-employeeId="@(isAdmin
+                                              ? ViewData["CurrentEmployeeId"]
+                                          : null)">
 
-                            @Localizer["Next"]
-                        </a>
+                @Localizer["Next"]
+            </a>
 
-                    </li>
+        </li>
 
-                </ul>
+    </ul>
 
-            </nav>
+</nav>
         }
     }
 
+    @if (isAdmin)
+{
+    <div class="modal fade" id="returnEquipmentModal" tabindex="-1" aria-labelledby="returnEquipmentModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content return-equipment-modal">
+
+                <div class="modal-body text-center">
+
+                    <div class="return-equipment-modal-icon" aria-hidden="true">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+                            <path d="M20 11a8.1 8.1 0 1 1-2.3-5.7" />
+                            <path d="M20 4v7h-7" />
+                            <path d="m9 12 2 2 4-4" />
+
+                        </svg>
+
+                    </div>
+
+                    <h2 id="returnEquipmentModalLabel" class="h4 fw-bold mb-3">
+
+                        @Localizer["ReturnEquipment"]
+                    </h2>
+
+                    <p class="text-muted mb-2">
+                        @Localizer["ConfirmReturnEquipment"]
+                    </p>
+
+                    <div id="returnEquipmentName" class="return-equipment-name">
+                    </div>
+
+                </div>
+
+                <div class="modal-footer
+                    justify-content-center gap-2">
+
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+
+                        @Localizer["Cancel"]
+                    </button>
+
+                    <form id="returnEquipmentForm" asp-action="ReturnEquipment" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit" class="btn btn-success px-4">
+
+                            @Localizer["ReturnEquipment"]
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
 </div>
+
+@section Scripts {
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const returnModal =
+                document.getElementById("returnEquipmentModal");
+
+            const returnForm =
+                document.getElementById("returnEquipmentForm");
+
+            const equipmentName =
+                document.getElementById("returnEquipmentName");
+
+            if (!returnModal || !returnForm || !equipmentName) {
+                return;
+            }
+
+            returnModal.addEventListener(
+                "show.bs.modal",
+                function (event) {
+
+                    const button = event.relatedTarget;
+
+                    if (!button) {
+                        return;
+                    }
+
+                    returnForm.action =
+                        button.dataset.returnUrl;
+
+                    equipmentName.textContent =
+                        button.dataset.equipmentName;
+                }
+            );
+
+        });
+    </script>
+
+}

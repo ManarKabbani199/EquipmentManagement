@@ -281,7 +281,7 @@ namespace EquipmentManagement.Web.Controllers
 
                 // الموظف لا يستطيع اختيار موظف آخر
                 borrowingRecord.EmployeeId = currentEmployee.Id;
-                ModelState.Remove(  nameof(BorrowingRecord.EmployeeId)  );
+                ModelState.Remove(nameof(BorrowingRecord.EmployeeId));
             }
 
             var equipment = await _context.Equipment

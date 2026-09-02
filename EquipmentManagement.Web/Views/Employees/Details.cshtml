@@ -8,230 +8,19 @@
         Localizer["EmployeeDetails"];
 }
 
-<style>
-    .employee-details-header {
-        position: relative;
-        overflow: hidden;
-        padding: 1.75rem;
-        color: white;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(255, 255, 255, 0.2),
-                transparent 35%
-            ),
-            linear-gradient(135deg, #0f172a, #0891b2);
-        border-radius: 1.2rem;
-        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
-    }
+<div class="employee-page
+            employee-theme-details
+            employee-read-page">
 
-    .employee-details-header-content {
-        position: relative;
-        z-index: 1;
-    }
+    <section class="employee-page-header mb-4">
 
-    .employee-details-title {
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 800;
-    }
-
-    .employee-details-card {
-        overflow: hidden;
-        background: white;
-        border: 0;
-        border-radius: 1.1rem;
-        box-shadow: 0 0.6rem 1.8rem rgba(15, 23, 42, 0.08);
-    }
-
-    .employee-profile-area {
-        display: flex;
-        min-height: 20rem;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        color: #0891b2;
-        background: #ecfeff;
-        border-inline-end: 1px solid #e2e8f0;
-        text-align: center;
-    }
-
-    .employee-profile-icon {
-        display: inline-flex;
-        width: 8rem;
-        height: 8rem;
-        align-items: center;
-        justify-content: center;
-        background: #cffafe;
-        border-radius: 50%;
-    }
-
-    .employee-profile-icon svg {
-        width: 4rem;
-        height: 4rem;
-    }
-
-    .employee-profile-name {
-        margin-top: 1rem;
-        margin-bottom: 0;
-        color: #0f172a;
-        font-size: 1.15rem;
-        font-weight: 800;
-        overflow-wrap: anywhere;
-    }
-
-    .employee-details-content {
-        padding: 1.75rem;
-    }
-
-    .employee-details-name {
-        margin-bottom: 1.25rem;
-        color: #0f172a;
-        font-size: 1.65rem;
-        font-weight: 800;
-        overflow-wrap: anywhere;
-    }
-
-    .employee-details-list {
-        margin: 0;
-    }
-
-    .employee-details-row {
-        display: grid;
-        grid-template-columns: minmax(8rem, 0.8fr) 1.5fr;
-        gap: 1rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid #f1f5f9;
-    }
-
-    .employee-details-row:last-child {
-        border-bottom: 0;
-    }
-
-    .employee-details-label {
-        margin: 0;
-        color: #64748b;
-        font-size: 0.9rem;
-        font-weight: 700;
-    }
-
-    .employee-details-value {
-        margin: 0;
-        color: #0f172a;
-        overflow-wrap: anywhere;
-    }
-
-    .employee-email {
-        direction: ltr;
-        display: inline-block;
-        color: #0369a1;
-        text-decoration: none;
-        overflow-wrap: anywhere;
-    }
-
-    .employee-email:hover {
-        text-decoration: underline;
-    }
-
-    .employee-department {
-        display: inline-flex;
-        padding: 0.4rem 0.7rem;
-        color: #4338ca;
-        background: #e0e7ff;
-        border-radius: 0.55rem;
-        font-size: 0.85rem;
-        font-weight: 700;
-    }
-
-    .employee-account-status {
-        display: inline-flex;
-        gap: 0.4rem;
-        align-items: center;
-        padding: 0.45rem 0.7rem;
-        color: #15803d;
-        background: #dcfce7;
-        border-radius: 999px;
-        font-size: 0.8rem;
-        font-weight: 700;
-    }
-
-    .employee-account-status::before {
-        content: "";
-        width: 0.45rem;
-        height: 0.45rem;
-        background: currentColor;
-        border-radius: 50%;
-    }
-
-    .employee-details-footer {
-        padding: 1.25rem 1.5rem;
-        background: #f8fafc;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    @@media (max-width: 767.98px) {
-        .employee-profile-area {
-            min-height: 14rem;
-            border-inline-end: 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .employee-profile-icon {
-            width: 6rem;
-            height: 6rem;
-        }
-
-        .employee-profile-icon svg {
-            width: 3rem;
-            height: 3rem;
-        }
-    }
-
-    @@media (max-width: 575.98px) {
-        .employee-details-header {
-            padding: 1.3rem;
-            border-radius: 1rem;
-        }
-
-        .employee-details-header-content {
-            align-items: stretch !important;
-            flex-direction: column;
-        }
-
-        .employee-details-header .btn {
-            width: 100%;
-        }
-
-        .employee-details-content {
-            padding: 1.25rem;
-        }
-
-        .employee-details-row {
-            grid-template-columns: 1fr;
-            gap: 0.35rem;
-        }
-
-        .employee-details-footer .d-flex {
-            flex-direction: column;
-        }
-
-        .employee-details-footer .btn {
-            width: 100%;
-        }
-    }
-</style>
-
-<div class="employee-details-page">
-
-    <!-- عنوان الصفحة -->
-    <section class="employee-details-header mb-4">
-
-        <div class="employee-details-header-content
+        <div class="employee-page-header-content
                     d-flex justify-content-between
                     align-items-center gap-3">
 
             <div>
 
-                <h1 class="employee-details-title mb-1">
+                <h1 class="employee-page-title mb-1">
                     @Localizer["EmployeeDetails"]
                 </h1>
 
@@ -245,21 +34,20 @@
                class="btn btn-light fw-semibold px-4">
 
                 @Localizer["BackToList"]
+
             </a>
 
         </div>
 
     </section>
 
-    <!-- بطاقة الموظف -->
-    <section class="employee-details-card">
+    <section class="employee-page-card">
 
         <div class="row g-0">
 
-            <!-- الملف الشخصي -->
             <div class="col-md-4">
 
-                <div class="employee-profile-area">
+                <div class="employee-page-profile">
 
                     <div>
 
@@ -268,7 +56,8 @@
                             <svg viewBox="0 0 24 24"
                                  fill="none"
                                  stroke="currentColor"
-                                 stroke-width="2">
+                                 stroke-width="2"
+                                 aria-hidden="true">
 
                                 <circle cx="12"
                                         cy="8"
@@ -290,25 +79,23 @@
 
             </div>
 
-            <!-- بيانات الموظف -->
             <div class="col-md-8">
 
-                <div class="employee-details-content">
+                <div class="employee-page-content">
 
-                    <h2 class="employee-details-name">
+                    <h2 class="employee-page-name">
                         @Model.FullName
                     </h2>
 
-                    <dl class="employee-details-list">
+                    <dl class="employee-page-list">
 
-                        <!-- الاسم -->
-                        <div class="employee-details-row">
+                        <div class="employee-page-row">
 
-                            <dt class="employee-details-label">
+                            <dt class="employee-page-label">
                                 @Localizer["FullName"]
                             </dt>
 
-                            <dd class="employee-details-value fw-semibold">
+                            <dd class="employee-page-value fw-semibold">
 
                                 @(string.IsNullOrWhiteSpace(Model.FullName)
                                     ? "-"
@@ -318,14 +105,13 @@
 
                         </div>
 
-                        <!-- البريد -->
-                        <div class="employee-details-row">
+                        <div class="employee-page-row">
 
-                            <dt class="employee-details-label">
+                            <dt class="employee-page-label">
                                 @Localizer["Email"]
                             </dt>
 
-                            <dd class="employee-details-value">
+                            <dd class="employee-page-value">
 
                                 @if (!string.IsNullOrWhiteSpace(Model.Email))
                                 {
@@ -333,6 +119,7 @@
                                        class="employee-email">
 
                                         @Model.Email
+
                                     </a>
                                 }
                                 else
@@ -344,16 +131,16 @@
 
                         </div>
 
-                        <!-- القسم -->
-                        <div class="employee-details-row">
+                        <div class="employee-page-row">
 
-                            <dt class="employee-details-label">
+                            <dt class="employee-page-label">
                                 @Localizer["Department"]
                             </dt>
 
-                            <dd class="employee-details-value">
+                            <dd class="employee-page-value">
 
-                                @if (!string.IsNullOrWhiteSpace(Model.Department))
+                                @if (!string.IsNullOrWhiteSpace(
+                                    Model.Department))
                                 {
                                     <span class="employee-department">
                                         @Model.Department
@@ -368,14 +155,13 @@
 
                         </div>
 
-                        <!-- حالة حساب الدخول -->
-                        <div class="employee-details-row">
+                        <div class="employee-page-row">
 
-                            <dt class="employee-details-label">
+                            <dt class="employee-page-label">
                                 @Localizer["Login"]
                             </dt>
 
-                            <dd class="employee-details-value">
+                            <dd class="employee-page-value">
 
                                 @if (!string.IsNullOrWhiteSpace(
                                     Model.IdentityUserId))
@@ -401,8 +187,7 @@
 
         </div>
 
-        <!-- الأزرار -->
-        <div class="employee-details-footer">
+        <div class="employee-page-actions">
 
             <div class="d-flex gap-2">
 
@@ -411,12 +196,14 @@
                    class="btn btn-warning px-4">
 
                     @Localizer["Edit"]
+
                 </a>
 
                 <a asp-action="Index"
                    class="btn btn-outline-secondary px-4">
 
                     @Localizer["BackToList"]
+
                 </a>
 
             </div>

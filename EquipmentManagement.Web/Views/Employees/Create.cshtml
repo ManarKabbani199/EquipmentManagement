@@ -8,175 +8,17 @@
         Localizer["CreateNewEmployee"];
 }
 
-<style>
-    .employee-create-header {
-        position: relative;
-        overflow: hidden;
-        padding: 1.75rem;
-        color: white;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(255, 255, 255, 0.2),
-                transparent 35%
-            ),
-            linear-gradient(135deg, #0f172a, #0891b2);
-        border-radius: 1.2rem;
-        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
-    }
+<div class="employee-page employee-theme-create">
 
-    .employee-create-header-content {
-        position: relative;
-        z-index: 1;
-    }
+    <section class="employee-page-header mb-4">
 
-    .employee-create-title {
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 800;
-    }
-
-    .employee-create-card {
-        overflow: hidden;
-        background: white;
-        border: 0;
-        border-radius: 1.1rem;
-        box-shadow: 0 0.6rem 1.8rem rgba(15, 23, 42, 0.08);
-    }
-
-    .employee-form-section {
-        padding: 1.5rem;
-    }
-
-    .employee-form-section + .employee-form-section {
-        border-top: 1px solid #e2e8f0;
-    }
-
-    .employee-section-heading {
-        display: flex;
-        gap: 0.8rem;
-        align-items: center;
-        margin-bottom: 1.25rem;
-    }
-
-    .employee-section-icon {
-        display: inline-flex;
-        width: 2.8rem;
-        height: 2.8rem;
-        flex: 0 0 2.8rem;
-        align-items: center;
-        justify-content: center;
-        color: #0891b2;
-        background: #cffafe;
-        border-radius: 0.8rem;
-    }
-
-    .employee-section-icon.account {
-        color: #7c3aed;
-        background: #ede9fe;
-    }
-
-    .employee-section-icon svg {
-        width: 1.4rem;
-        height: 1.4rem;
-    }
-
-    .employee-section-title {
-        margin: 0;
-        color: #0f172a;
-        font-size: 1rem;
-        font-weight: 800;
-    }
-
-    .employee-create-card .form-label {
-        color: #334155;
-        font-size: 0.9rem;
-        font-weight: 700;
-    }
-
-    .employee-create-card .form-control {
-        min-height: 2.8rem;
-        border-color: #cbd5e1;
-        border-radius: 0.7rem;
-    }
-
-    .employee-create-card .form-control:focus {
-        border-color: #0891b2;
-        box-shadow: 0 0 0 0.2rem rgba(8, 145, 178, 0.14);
-    }
-
-    .employee-create-card .input-validation-error {
-        border-color: #dc2626;
-    }
-
-    .validation-summary-valid {
-        display: none;
-    }
-
-    .employee-account-notice {
-        display: flex;
-        gap: 0.8rem;
-        align-items: flex-start;
-        margin-bottom: 1.25rem;
-        padding: 1rem;
-        color: #5b21b6;
-        background: #f5f3ff;
-        border: 1px solid #ddd6fe;
-        border-radius: 0.8rem;
-    }
-
-    .employee-account-notice svg {
-        width: 1.4rem;
-        height: 1.4rem;
-        flex: 0 0 1.4rem;
-    }
-
-    .employee-form-actions {
-        padding: 1.25rem 1.5rem;
-        background: #f8fafc;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    @@media (max-width: 575.98px) {
-        .employee-create-header {
-            padding: 1.3rem;
-            border-radius: 1rem;
-        }
-
-        .employee-create-header-content {
-            align-items: stretch !important;
-            flex-direction: column;
-        }
-
-        .employee-create-header .btn {
-            width: 100%;
-        }
-
-        .employee-form-section {
-            padding: 1.2rem;
-        }
-
-        .employee-form-actions {
-            flex-direction: column;
-        }
-
-        .employee-form-actions .btn {
-            width: 100%;
-        }
-    }
-</style>
-
-<div class="employee-create-page">
-
-    <!-- عنوان الصفحة -->
-    <section class="employee-create-header mb-4">
-
-        <div class="employee-create-header-content
+        <div class="employee-page-header-content
                     d-flex justify-content-between
                     align-items-center gap-3">
 
             <div>
 
-                <h1 class="employee-create-title mb-1">
+                <h1 class="employee-page-title mb-1">
                     @Localizer["CreateNewEmployee"]
                 </h1>
 
@@ -190,6 +32,7 @@
                class="btn btn-light fw-semibold px-4">
 
                 @Localizer["BackToList"]
+
             </a>
 
         </div>
@@ -201,9 +44,8 @@
 
         @Html.AntiForgeryToken()
 
-        <div class="employee-create-card">
+        <div class="employee-page-card">
 
-            <!-- أخطاء النموذج -->
             <div class="px-4 pt-4">
 
                 <div asp-validation-summary="ModelOnly"
@@ -213,7 +55,6 @@
 
             </div>
 
-            <!-- بيانات الموظف -->
             <section class="employee-form-section">
 
                 <div class="employee-section-heading">
@@ -223,12 +64,10 @@
                         <svg viewBox="0 0 24 24"
                              fill="none"
                              stroke="currentColor"
-                             stroke-width="2">
+                             stroke-width="2"
+                             aria-hidden="true">
 
-                            <circle cx="12"
-                                    cy="8"
-                                    r="4" />
-
+                            <circle cx="12" cy="8" r="4" />
                             <path d="M4 21v-2a8 8 0 0 1 16 0v2" />
 
                         </svg>
@@ -243,13 +82,13 @@
 
                 <div class="row g-4">
 
-                    <!-- الاسم الكامل -->
                     <div class="col-md-6">
 
                         <label asp-for="FullName"
                                class="form-label">
 
                             @Localizer["FullName"]
+
                         </label>
 
                         <input asp-for="FullName"
@@ -263,13 +102,13 @@
 
                     </div>
 
-                    <!-- القسم -->
                     <div class="col-md-6">
 
                         <label asp-for="Department"
                                class="form-label">
 
                             @Localizer["Department"]
+
                         </label>
 
                         <input asp-for="Department"
@@ -285,7 +124,6 @@
 
             </section>
 
-            <!-- بيانات الحساب -->
             <section class="employee-form-section">
 
                 <div class="employee-section-heading">
@@ -295,7 +133,8 @@
                         <svg viewBox="0 0 24 24"
                              fill="none"
                              stroke="currentColor"
-                             stroke-width="2">
+                             stroke-width="2"
+                             aria-hidden="true">
 
                             <rect x="3"
                                   y="11"
@@ -320,12 +159,10 @@
                     <svg viewBox="0 0 24 24"
                          fill="none"
                          stroke="currentColor"
-                         stroke-width="2">
+                         stroke-width="2"
+                         aria-hidden="true">
 
-                        <circle cx="12"
-                                cy="12"
-                                r="9" />
-
+                        <circle cx="12" cy="12" r="9" />
                         <path d="M12 11v5" />
                         <path d="M12 8h.01" />
 
@@ -339,13 +176,13 @@
 
                 <div class="row g-4">
 
-                    <!-- البريد الإلكتروني -->
                     <div class="col-12">
 
                         <label asp-for="Email"
                                class="form-label">
 
                             @Localizer["Email"]
+
                         </label>
 
                         <input asp-for="Email"
@@ -360,13 +197,13 @@
 
                     </div>
 
-                    <!-- كلمة المرور -->
                     <div class="col-md-6">
 
                         <label asp-for="Password"
                                class="form-label">
 
                             @Localizer["Password"]
+
                         </label>
 
                         <input asp-for="Password"
@@ -381,13 +218,13 @@
 
                     </div>
 
-                    <!-- تأكيد كلمة المرور -->
                     <div class="col-md-6">
 
                         <label asp-for="ConfirmPassword"
                                class="form-label">
 
                             @Localizer["ConfirmPassword"]
+
                         </label>
 
                         <input asp-for="ConfirmPassword"
@@ -406,19 +243,20 @@
 
             </section>
 
-            <!-- الأزرار -->
-            <div class="employee-form-actions d-flex gap-2">
+            <div class="employee-page-actions d-flex gap-2">
 
                 <button type="submit"
                         class="btn btn-primary px-4">
 
                     @Localizer["CreateEmployeeAndAccount"]
+
                 </button>
 
                 <a asp-action="Index"
                    class="btn btn-outline-secondary px-4">
 
                     @Localizer["BackToList"]
+
                 </a>
 
             </div>

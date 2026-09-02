@@ -1,268 +1,29 @@
 @model EquipmentManagement.Domain.Entities.Equipment
 
 @using Microsoft.Extensions.Localization
-@using System.Text.Json
-
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] = Localizer["DeleteEquipment"];
-
-    var deleteConfirmationJson =
-        JsonSerializer.Serialize(
-            Localizer["DeleteConfirmation"].Value
-        );
+    ViewData["Title"] =
+        Localizer["DeleteEquipment"];
 }
 
-<style>
-    .delete-equipment-header {
-        position: relative;
-        overflow: hidden;
-        padding: 1.75rem;
-        color: white;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(255, 255, 255, 0.18),
-                transparent 35%
-            ),
-            linear-gradient(135deg, #450a0a, #dc2626);
-        border-radius: 1.2rem;
-        box-shadow: 0 1rem 2rem rgba(127, 29, 29, 0.16);
-    }
+<div class="equipment-record-page
+            equipment-theme-delete">
 
-    .delete-equipment-header-content {
-        position: relative;
-        z-index: 1;
-    }
+    <section class="equipment-record-header mb-4">
 
-    .delete-equipment-title {
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 800;
-    }
-
-    .delete-equipment-card {
-        overflow: hidden;
-        background: white;
-        border: 1px solid #fecaca;
-        border-radius: 1.1rem;
-        box-shadow: 0 0.6rem 1.8rem rgba(127, 29, 29, 0.09);
-    }
-
-    .delete-warning {
-        display: flex;
-        gap: 1rem;
-        align-items: flex-start;
-        padding: 1.25rem;
-        color: #991b1b;
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        border-radius: 0.9rem;
-    }
-
-    .delete-warning-icon {
-        display: inline-flex;
-        width: 3rem;
-        height: 3rem;
-        flex: 0 0 3rem;
-        align-items: center;
-        justify-content: center;
-        color: #dc2626;
-        background: #fee2e2;
-        border-radius: 50%;
-    }
-
-    .delete-warning-icon svg {
-        width: 1.5rem;
-        height: 1.5rem;
-    }
-
-    .delete-equipment-image-area {
-        display: flex;
-        min-height: 20rem;
-        align-items: center;
-        justify-content: center;
-        padding: 1.5rem;
-        background: #f8fafc;
-        border-inline-end: 1px solid #e2e8f0;
-    }
-
-    .delete-equipment-image {
-        width: 100%;
-        max-width: 25rem;
-        max-height: 20rem;
-        object-fit: contain;
-        background: white;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.9rem;
-    }
-
-    .delete-image-placeholder {
-        display: inline-flex;
-        width: 5rem;
-        height: 5rem;
-        align-items: center;
-        justify-content: center;
-        color: #94a3b8;
-        background: #e2e8f0;
-        border-radius: 50%;
-    }
-
-    .delete-image-placeholder svg {
-        width: 2.5rem;
-        height: 2.5rem;
-    }
-
-    .delete-equipment-information {
-        padding: 1.5rem;
-    }
-
-    .delete-equipment-name {
-        color: #0f172a;
-        font-size: 1.5rem;
-        font-weight: 800;
-    }
-
-    .delete-details-list {
-        margin: 1rem 0 0;
-    }
-
-    .delete-details-row {
-        display: grid;
-        grid-template-columns: minmax(8rem, 0.8fr) 1.5fr;
-        gap: 1rem;
-        padding: 0.9rem 0;
-        border-bottom: 1px solid #f1f5f9;
-    }
-
-    .delete-details-row:last-child {
-        border-bottom: 0;
-    }
-
-    .delete-details-label {
-        margin: 0;
-        color: #64748b;
-        font-size: 0.88rem;
-        font-weight: 700;
-    }
-
-    .delete-details-value {
-        margin: 0;
-        color: #0f172a;
-        overflow-wrap: anywhere;
-    }
-
-    .delete-serial {
-        direction: ltr;
-        display: inline-block;
-        padding: 0.3rem 0.55rem;
-        background: #f1f5f9;
-        border-radius: 0.4rem;
-        font-family: monospace;
-    }
-
-    .delete-status {
-        display: inline-flex;
-        gap: 0.4rem;
-        align-items: center;
-        padding: 0.4rem 0.7rem;
-        border-radius: 999px;
-        font-size: 0.78rem;
-        font-weight: 700;
-    }
-
-    .delete-status::before {
-        content: "";
-        width: 0.45rem;
-        height: 0.45rem;
-        background: currentColor;
-        border-radius: 50%;
-    }
-
-    .delete-status.available {
-        color: #15803d;
-        background: #dcfce7;
-    }
-
-    .delete-status.borrowed {
-        color: #b45309;
-        background: #fef3c7;
-    }
-
-    .delete-category {
-        display: inline-flex;
-        padding: 0.4rem 0.7rem;
-        color: #4338ca;
-        background: #e0e7ff;
-        border-radius: 0.55rem;
-        font-size: 0.82rem;
-        font-weight: 700;
-    }
-
-    .delete-equipment-footer {
-        padding: 1.25rem 1.5rem;
-        background: #f8fafc;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    @@media (max-width: 991.98px) {
-        .delete-equipment-image-area {
-            min-height: 16rem;
-            border-inline-end: 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-    }
-
-    @@media (max-width: 575.98px) {
-        .delete-equipment-header {
-            padding: 1.3rem;
-            border-radius: 1rem;
-        }
-
-        .delete-equipment-header-content {
-            align-items: stretch !important;
-            flex-direction: column;
-        }
-
-        .delete-equipment-header .btn {
-            width: 100%;
-        }
-
-        .delete-warning {
-            flex-direction: column;
-        }
-
-        .delete-details-row {
-            grid-template-columns: 1fr;
-            gap: 0.35rem;
-        }
-
-        .delete-equipment-footer .d-flex {
-            flex-direction: column;
-        }
-
-        .delete-equipment-footer .btn {
-            width: 100%;
-        }
-    }
-</style>
-
-<div class="delete-equipment-page">
-
-    <!-- عنوان الصفحة -->
-    <section class="delete-equipment-header mb-4">
-
-        <div class="delete-equipment-header-content
+        <div class="equipment-record-header-content
                     d-flex justify-content-between
                     align-items-center gap-3">
 
             <div>
 
-                <h1 class="delete-equipment-title mb-1">
+                <h1 class="equipment-record-title mb-1">
                     @Localizer["DeleteEquipment"]
                 </h1>
 
-                <p class="mb-0 text-white-50">
+                <p class="equipment-record-subtitle mb-0">
                     @Model.Name
                 </p>
 
@@ -272,21 +33,22 @@
                class="btn btn-light fw-semibold px-4">
 
                 @Localizer["BackToList"]
+
             </a>
 
         </div>
 
     </section>
 
-    <!-- رسالة التحذير -->
-    <div class="delete-warning mb-4">
+    <div class="equipment-delete-warning mb-4">
 
-        <span class="delete-warning-icon">
+        <span class="equipment-delete-warning-icon">
 
             <svg viewBox="0 0 24 24"
                  fill="none"
                  stroke="currentColor"
-                 stroke-width="2">
+                 stroke-width="2"
+                 aria-hidden="true">
 
                 <path d="M10.3 2.9 1.8 17a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 2.9a2 2 0 0 0-3.4 0Z" />
                 <path d="M12 9v4" />
@@ -310,38 +72,41 @@
 
     </div>
 
-    <!-- معلومات المعدة -->
-    <section class="delete-equipment-card">
+    <section class="equipment-record-card">
 
         <div class="row g-0">
 
-            <!-- صورة المعدة -->
             <div class="col-lg-6">
 
-                <div class="delete-equipment-image-area">
+                <div class="equipment-record-image-area">
 
-                    @if (!string.IsNullOrWhiteSpace(Model.ImagePath))
+                    @if (!string.IsNullOrWhiteSpace(
+                        Model.ImagePath))
                     {
                         <a href="@Model.ImagePath"
                            target="_blank"
                            rel="noopener noreferrer">
 
                             <img src="@Model.ImagePath"
-                                 alt="@Localizer["EquipmentImageAlt", Model.Name]"
-                                 class="delete-equipment-image" />
+                                 alt="@Localizer[
+                                     "EquipmentImageAlt",
+                                     Model.Name
+                                 ]"
+                                 class="equipment-record-image" />
 
                         </a>
                     }
                     else
                     {
-                        <div class="text-center">
+                        <div class="equipment-record-placeholder">
 
-                            <span class="delete-image-placeholder">
+                            <span class="equipment-record-placeholder-icon">
 
                                 <svg viewBox="0 0 24 24"
                                      fill="none"
                                      stroke="currentColor"
-                                     stroke-width="2">
+                                     stroke-width="2"
+                                     aria-hidden="true">
 
                                     <rect x="3"
                                           y="3"
@@ -359,7 +124,7 @@
 
                             </span>
 
-                            <p class="text-muted mt-3 mb-0">
+                            <p class="text-muted mt-2 mb-0">
                                 @Localizer["NoImageForEquipment"]
                             </p>
 
@@ -370,26 +135,25 @@
 
             </div>
 
-            <!-- التفاصيل -->
             <div class="col-lg-6">
 
-                <div class="delete-equipment-information">
+                <div class="equipment-record-information">
 
-                    <h2 class="delete-equipment-name">
+                    <h2 class="equipment-record-name">
                         @Model.Name
                     </h2>
 
-                    <dl class="delete-details-list">
+                    <dl class="equipment-record-list">
 
-                        <div class="delete-details-row">
+                        <div class="equipment-record-row">
 
-                            <dt class="delete-details-label">
+                            <dt class="equipment-record-label">
                                 @Localizer["SerialNumber"]
                             </dt>
 
-                            <dd class="delete-details-value">
+                            <dd class="equipment-record-value">
 
-                                <span class="delete-serial">
+                                <span class="equipment-record-serial">
                                     @Model.SerialNumber
                                 </span>
 
@@ -397,15 +161,16 @@
 
                         </div>
 
-                        <div class="delete-details-row">
+                        <div class="equipment-record-row">
 
-                            <dt class="delete-details-label">
+                            <dt class="equipment-record-label">
                                 @Localizer["Description"]
                             </dt>
 
-                            <dd class="delete-details-value">
+                            <dd class="equipment-record-value">
 
-                                @(string.IsNullOrWhiteSpace(Model.Description)
+                                @(string.IsNullOrWhiteSpace(
+                                    Model.Description)
                                     ? "-"
                                     : Model.Description)
 
@@ -413,47 +178,47 @@
 
                         </div>
 
-                        <div class="delete-details-row">
+                        <div class="equipment-record-row">
 
-                            <dt class="delete-details-label">
+                            <dt class="equipment-record-label">
                                 @Localizer["PurchaseDate"]
                             </dt>
 
-                            <dd class="delete-details-value">
+                            <dd class="equipment-record-value">
                                 @Model.PurchaseDate.ToString("d")
                             </dd>
 
                         </div>
 
-                        <div class="delete-details-row">
+                        <div class="equipment-record-row">
 
-                            <dt class="delete-details-label">
+                            <dt class="equipment-record-label">
                                 @Localizer["PurchasePrice"]
                             </dt>
 
-                            <dd class="delete-details-value fw-bold">
+                            <dd class="equipment-record-value fw-bold">
                                 @Model.PurchasePrice.ToString("N2")
                             </dd>
 
                         </div>
 
-                        <div class="delete-details-row">
+                        <div class="equipment-record-row">
 
-                            <dt class="delete-details-label">
+                            <dt class="equipment-record-label">
                                 @Localizer["Status"]
                             </dt>
 
-                            <dd class="delete-details-value">
+                            <dd class="equipment-record-value">
 
                                 @if (Model.IsAvailable)
                                 {
-                                    <span class="delete-status available">
+                                    <span class="equipment-record-status available">
                                         @Localizer["Available"]
                                     </span>
                                 }
                                 else
                                 {
-                                    <span class="delete-status borrowed">
+                                    <span class="equipment-record-status borrowed">
                                         @Localizer["Borrowed"]
                                     </span>
                                 }
@@ -462,17 +227,17 @@
 
                         </div>
 
-                        <div class="delete-details-row">
+                        <div class="equipment-record-row">
 
-                            <dt class="delete-details-label">
+                            <dt class="equipment-record-label">
                                 @Localizer["Category"]
                             </dt>
 
-                            <dd class="delete-details-value">
+                            <dd class="equipment-record-value">
 
                                 @if (Model.Category != null)
                                 {
-                                    <span class="delete-category">
+                                    <span class="equipment-record-category">
                                         @Model.Category.Name
                                     </span>
                                 }
@@ -493,42 +258,35 @@
 
         </div>
 
-        <!-- نموذج الحذف -->
-        <div class="delete-equipment-footer">
+        <div class="equipment-record-footer">
 
-            <form id="deleteEquipmentForm"
-                  asp-action="Delete"
-                  method="post">
+            <div class="d-flex gap-2">
 
-                @Html.AntiForgeryToken()
+                <button type="button"
+                        class="btn btn-danger px-4"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteEquipmentModal">
 
-                <input type="hidden"
-                       asp-for="Id" />
+                    @Localizer["ConfirmDelete"]
 
-                <div class="d-flex gap-2">
+                </button>
 
-                    <button type="submit"
-                            class="btn btn-danger px-4">
+                <a asp-action="Details"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-outline-info px-4">
 
-                        @Localizer["ConfirmDelete"]
-                    </button>
+                    @Localizer["Details"]
 
-                    <a asp-action="Details"
-                       asp-route-id="@Model.Id"
-                       class="btn btn-outline-info px-4">
+                </a>
 
-                        @Localizer["Details"]
-                    </a>
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary px-4">
 
-                    <a asp-action="Index"
-                       class="btn btn-outline-secondary px-4">
+                    @Localizer["Cancel"]
 
-                        @Localizer["Cancel"]
-                    </a>
+                </a>
 
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
@@ -536,26 +294,94 @@
 
 </div>
 
-@section Scripts {
+<!-- نافذة تأكيد حذف المعدة -->
+<div class="modal fade"
+     id="deleteEquipmentModal"
+     tabindex="-1"
+     aria-labelledby="deleteEquipmentModalLabel"
+     aria-hidden="true">
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+    <div class="modal-dialog modal-dialog-centered">
 
-            const deleteForm =
-                document.getElementById("deleteEquipmentForm");
+        <form asp-action="Delete"
+              method="post"
+              class="modal-content equipment-delete-modal">
 
-            const confirmationMessage =
-                @Html.Raw(deleteConfirmationJson);
+            @Html.AntiForgeryToken()
 
-            deleteForm.addEventListener("submit", function (event) {
+            <input type="hidden"
+                   asp-for="Id" />
 
-                if (!window.confirm(confirmationMessage)) {
-                    event.preventDefault();
-                }
+            <div class="modal-header equipment-delete-modal-header">
 
-            });
+                <h2 class="modal-title h5 mb-0"
+                    id="deleteEquipmentModalLabel">
 
-        });
-    </script>
+                    @Localizer["DeleteEquipment"]
 
-}
+                </h2>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="@Localizer["Cancel"]">
+                </button>
+
+            </div>
+
+            <div class="modal-body p-4 text-center">
+
+                <span class="equipment-delete-modal-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         aria-hidden="true">
+
+                        <path d="M10.3 2.9 1.8 17a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 2.9a2 2 0 0 0-3.4 0Z" />
+                        <path d="M12 9v4" />
+                        <path d="M12 17h.01" />
+
+                    </svg>
+
+                </span>
+
+                <h3 class="h5 fw-bold mb-3">
+                    @Localizer["DeleteConfirmation"]
+                </h3>
+
+                <p class="text-muted mb-3">
+                    @Localizer["DeleteEquipmentWarning"]
+                </p>
+
+                <div class="equipment-delete-modal-name">
+                    @Model.Name
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-outline-secondary px-4"
+                        data-bs-dismiss="modal">
+
+                    @Localizer["Cancel"]
+
+                </button>
+
+                <button type="submit"
+                        class="btn btn-danger px-4">
+
+                    @Localizer["ConfirmDelete"]
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

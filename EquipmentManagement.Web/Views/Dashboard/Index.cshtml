@@ -10,335 +10,6 @@
     var hasOverdueBorrowings = overdueCount > 0;
 }
 
-<style>
-    .quick-action-link {
-        display: flex;
-        gap: 0.9rem;
-        min-height: 5rem;
-        align-items: center;
-        padding: 1rem;
-        color: #0f172a;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.9rem;
-        text-decoration: none;
-        transition:
-            transform 0.2s ease,
-            border-color 0.2s ease,
-            box-shadow 0.2s ease;
-    }
-
-    .quick-action-link:hover {
-        color: #0f172a;
-        border-color: #93c5fd;
-        transform: translateY(-3px);
-        box-shadow: 0 0.6rem 1.2rem rgba(15, 23, 42, 0.1);
-    }
-
-    .quick-action-icon {
-        display: inline-flex;
-        width: 3rem;
-        height: 3rem;
-        flex: 0 0 3rem;
-        align-items: center;
-        justify-content: center;
-        border-radius: 0.85rem;
-    }
-
-    .quick-action-icon svg {
-        width: 1.5rem;
-        height: 1.5rem;
-    }
-
-    .equipment-action {
-        color: #2563eb;
-        background: #dbeafe;
-    }
-
-    .employee-action {
-        color: #0891b2;
-        background: #cffafe;
-    }
-
-    .borrowing-action {
-        color: #d97706;
-        background: #fef3c7;
-    }
-
-    .category-action {
-        color: #7c3aed;
-        background: #ede9fe;
-    }
-
-    .dashboard-page {
-        --dashboard-primary: #2563eb;
-        --dashboard-success: #16a34a;
-        --dashboard-warning: #f59e0b;
-        --dashboard-info: #0891b2;
-        --dashboard-secondary: #64748b;
-        --dashboard-danger: #dc2626;
-    }
-
-    .dashboard-hero {
-        position: relative;
-        overflow: hidden;
-        padding: 2rem;
-        color: white;
-        border-radius: 1.25rem;
-        background:
-            radial-gradient(circle at top right,
-                rgba(255, 255, 255, 0.22),
-                transparent 35%),
-            linear-gradient(135deg, #0f172a, #1d4ed8);
-        box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.14);
-    }
-
-    .dashboard-hero::after {
-        content: "";
-        position: absolute;
-        inset-inline-end: -4rem;
-        bottom: -6rem;
-        width: 15rem;
-        height: 15rem;
-        border: 2.5rem solid rgba(255, 255, 255, 0.06);
-        border-radius: 50%;
-    }
-
-    .dashboard-hero-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    .dashboard-title {
-        font-size: clamp(1.65rem, 3vw, 2.35rem);
-        font-weight: 800;
-    }
-
-    .dashboard-subtitle {
-        max-width: 45rem;
-        color: rgba(255, 255, 255, 0.82);
-    }
-
-    .dashboard-stat-card {
-        position: relative;
-        overflow: hidden;
-        height: 100%;
-        background: white;
-        border: 0;
-        border-radius: 1.1rem;
-        box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.07);
-        transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
-    }
-
-    .dashboard-stat-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
-    }
-
-    .dashboard-stat-card::before {
-        content: "";
-        position: absolute;
-        inset-block: 0;
-        inset-inline-start: 0;
-        width: 0.3rem;
-        background: var(--card-color);
-    }
-
-    .dashboard-stat-card.primary {
-        --card-color: var(--dashboard-primary);
-        --icon-bg: #dbeafe;
-    }
-
-    .dashboard-stat-card.success {
-        --card-color: var(--dashboard-success);
-        --icon-bg: #dcfce7;
-    }
-
-    .dashboard-stat-card.warning {
-        --card-color: var(--dashboard-warning);
-        --icon-bg: #fef3c7;
-    }
-
-    .dashboard-stat-card.info {
-        --card-color: var(--dashboard-info);
-        --icon-bg: #cffafe;
-    }
-
-    .dashboard-stat-card.secondary {
-        --card-color: var(--dashboard-secondary);
-        --icon-bg: #e2e8f0;
-    }
-
-    .dashboard-stat-card.danger {
-        --card-color: var(--dashboard-danger);
-        --icon-bg: #fee2e2;
-    }
-
-    .stat-icon {
-        display: inline-flex;
-        width: 3.25rem;
-        height: 3.25rem;
-        align-items: center;
-        justify-content: center;
-        color: var(--card-color);
-        background: var(--icon-bg);
-        border-radius: 1rem;
-    }
-
-    .stat-icon svg {
-        width: 1.65rem;
-        height: 1.65rem;
-    }
-
-    .stat-label {
-        margin-bottom: 0.35rem;
-        color: #64748b;
-        font-size: 0.92rem;
-        font-weight: 600;
-    }
-
-    .stat-value {
-        margin: 0;
-        color: #0f172a;
-        font-size: 2.15rem;
-        font-weight: 800;
-        line-height: 1;
-    }
-
-    .stat-link {
-        color: var(--card-color);
-        font-size: 0.9rem;
-        font-weight: 700;
-        text-decoration: none;
-    }
-
-    .stat-link:hover {
-        color: var(--card-color);
-        text-decoration: underline;
-    }
-
-    .dashboard-section {
-        overflow: hidden;
-        background: white;
-        border: 0;
-        border-radius: 1.1rem;
-        box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.07);
-    }
-
-    .dashboard-section-header {
-        padding: 1.15rem 1.25rem;
-        background: white;
-        border-bottom: 1px solid #e2e8f0;
-    }
-
-
-    .dashboard-table thead th {
-        padding: 1rem;
-        color: #475569;
-        background: #f8fafc;
-        border-bottom-width: 1px;
-        font-size: 0.85rem;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .dashboard-table tbody td {
-        padding: 1rem;
-        vertical-align: middle;
-    }
-
-    .dashboard-table tbody tr {
-        transition: background-color 0.2s ease;
-    }
-
-    .dashboard-table tbody tr:hover {
-        background: #f8fafc;
-    }
-
-    .equipment-name {
-        color: #0f172a;
-        font-weight: 700;
-    }
-
-    .status-badge {
-        display: inline-flex;
-        gap: 0.4rem;
-        align-items: center;
-        padding: 0.45rem 0.7rem;
-        border-radius: 999px;
-        font-size: 0.78rem;
-        font-weight: 700;
-    }
-
-    .status-badge::before {
-        content: "";
-        width: 0.45rem;
-        height: 0.45rem;
-        background: currentColor;
-        border-radius: 50%;
-    }
-
-    .status-badge.overdue {
-        color: #b91c1c;
-        background: #fee2e2;
-    }
-
-    .status-badge.on-time {
-        color: #15803d;
-        background: #dcfce7;
-    }
-
-    .overdue-row {
-        background: rgba(254, 226, 226, 0.35);
-    }
-
-    .empty-dashboard-state {
-        padding: 3rem 1rem;
-        color: #64748b;
-        text-align: center;
-    }
-
-    .empty-dashboard-icon {
-        display: inline-flex;
-        width: 4rem;
-        height: 4rem;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        color: #0891b2;
-        background: #cffafe;
-        border-radius: 50%;
-    }
-
-    .empty-dashboard-icon svg {
-        width: 2rem;
-        height: 2rem;
-    }
-
-    @@media (max-width: 767.98px) {
-        .dashboard-hero {
-            padding: 1.4rem;
-            border-radius: 1rem;
-        }
-
-        .dashboard-section-header {
-            align-items: stretch !important;
-            flex-direction: column;
-            gap: 0.85rem;
-        }
-
-        .dashboard-section-header .btn {
-            width: 100%;
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
-        }
-    }
-</style>
-
 <div class="dashboard-page">
 
     <!-- عنوان لوحة التحكم -->
@@ -347,9 +18,11 @@
         <div class="dashboard-hero-content">
 
             <div class="d-flex flex-column flex-lg-row
-                justify-content-between align-items-lg-center gap-3">
+                        justify-content-between
+                        align-items-lg-center gap-3">
 
                 <div>
+
                     <h1 class="dashboard-title mb-2">
                         @Localizer["Dashboard"]
                     </h1>
@@ -357,9 +30,12 @@
                     <p class="dashboard-subtitle mb-0">
                         @Localizer["DashboardSummary"]
                     </p>
+
                 </div>
 
-                <a asp-controller="BorrowingRecords" asp-action="Index" class="btn btn-light fw-semibold px-4">
+                <a asp-controller="BorrowingRecords"
+                   asp-action="Index"
+                   class="btn btn-light fw-semibold px-4">
 
                     @Localizer["ViewAllBorrowings"]
                 </a>
@@ -381,9 +57,10 @@
                 <div class="card-body p-4">
 
                     <div class="d-flex justify-content-between
-                        align-items-start gap-3">
+                                align-items-start gap-3">
 
                         <div>
+
                             <p class="stat-label">
                                 @Localizer["TotalEquipment"]
                             </p>
@@ -391,14 +68,17 @@
                             <p class="stat-value">
                                 @Model.TotalEquipment
                             </p>
+
                         </div>
 
                         <span class="stat-icon">
 
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
 
-                                <path
-                                d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+                                <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
                                 <path d="m3.3 7 8.7 5 8.7-5" />
                                 <path d="M12 22V12" />
 
@@ -410,9 +90,12 @@
 
                 </div>
 
-                <div class="card-footer bg-transparent border-0 px-4 pb-4">
+                <div class="card-footer
+                            bg-transparent border-0 px-4 pb-4">
 
-                    <a asp-controller="Equipment" asp-action="Index" class="stat-link">
+                    <a asp-controller="Equipment"
+                       asp-action="Index"
+                       class="stat-link">
 
                         @Localizer["ViewEquipment"] ←
                     </a>
@@ -431,9 +114,10 @@
                 <div class="card-body p-4">
 
                     <div class="d-flex justify-content-between
-                        align-items-start gap-3">
+                                align-items-start gap-3">
 
                         <div>
+
                             <p class="stat-label">
                                 @Localizer["AvailableEquipment"]
                             </p>
@@ -441,11 +125,15 @@
                             <p class="stat-value">
                                 @Model.AvailableEquipment
                             </p>
+
                         </div>
 
                         <span class="stat-icon">
 
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
 
                                 <path d="M20 6 9 17l-5-5" />
 
@@ -469,9 +157,10 @@
                 <div class="card-body p-4">
 
                     <div class="d-flex justify-content-between
-                        align-items-start gap-3">
+                                align-items-start gap-3">
 
                         <div>
+
                             <p class="stat-label">
                                 @Localizer["BorrowedEquipment"]
                             </p>
@@ -479,11 +168,15 @@
                             <p class="stat-value">
                                 @Model.BorrowedEquipment
                             </p>
+
                         </div>
 
                         <span class="stat-icon">
 
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
 
                                 <path d="M7 7h11l-3-3" />
                                 <path d="m18 7-3 3" />
@@ -510,9 +203,10 @@
                 <div class="card-body p-4">
 
                     <div class="d-flex justify-content-between
-                        align-items-start gap-3">
+                                align-items-start gap-3">
 
                         <div>
+
                             <p class="stat-label">
                                 @Localizer["TotalEmployees"]
                             </p>
@@ -520,14 +214,20 @@
                             <p class="stat-value">
                                 @Model.TotalEmployees
                             </p>
+
                         </div>
 
                         <span class="stat-icon">
 
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
 
                                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                                <circle cx="9" cy="7" r="4" />
+                                <circle cx="9"
+                                        cy="7"
+                                        r="4" />
                                 <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
 
@@ -539,9 +239,12 @@
 
                 </div>
 
-                <div class="card-footer bg-transparent border-0 px-4 pb-4">
+                <div class="card-footer
+                            bg-transparent border-0 px-4 pb-4">
 
-                    <a asp-controller="Employees" asp-action="Index" class="stat-link">
+                    <a asp-controller="Employees"
+                       asp-action="Index"
+                       class="stat-link">
 
                         @Localizer["ViewEmployees"] ←
                     </a>
@@ -560,9 +263,10 @@
                 <div class="card-body p-4">
 
                     <div class="d-flex justify-content-between
-                        align-items-start gap-3">
+                                align-items-start gap-3">
 
                         <div>
+
                             <p class="stat-label">
                                 @Localizer["ActiveBorrowings"]
                             </p>
@@ -570,13 +274,19 @@
                             <p class="stat-value">
                                 @Model.ActiveBorrowings
                             </p>
+
                         </div>
 
                         <span class="stat-icon">
 
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
 
-                                <circle cx="12" cy="12" r="9" />
+                                <circle cx="12"
+                                        cy="12"
+                                        r="9" />
                                 <path d="M12 7v5l3 2" />
 
                             </svg>
@@ -587,9 +297,12 @@
 
                 </div>
 
-                <div class="card-footer bg-transparent border-0 px-4 pb-4">
+                <div class="card-footer
+                            bg-transparent border-0 px-4 pb-4">
 
-                    <a asp-controller="BorrowingRecords" asp-action="Index" class="stat-link">
+                    <a asp-controller="BorrowingRecords"
+                       asp-action="Index"
+                       class="stat-link">
 
                         @Localizer["ViewBorrowings"] ←
                     </a>
@@ -608,9 +321,10 @@
                 <div class="card-body p-4">
 
                     <div class="d-flex justify-content-between
-                        align-items-start gap-3">
+                                align-items-start gap-3">
 
                         <div>
+
                             <p class="stat-label">
                                 @Localizer["OverdueBorrowings"]
                             </p>
@@ -618,14 +332,17 @@
                             <p class="stat-value">
                                 @Model.OverdueBorrowings
                             </p>
+
                         </div>
 
                         <span class="stat-icon">
 
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
 
-                                <path
-                                d="M10.3 2.9 1.8 17a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 2.9a2 2 0 0 0-3.4 0Z" />
+                                <path d="M10.3 2.9 1.8 17a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 2.9a2 2 0 0 0-3.4 0Z" />
                                 <path d="M12 9v4" />
                                 <path d="M12 17h.01" />
 
@@ -637,7 +354,8 @@
 
                 </div>
 
-                <div class="card-footer bg-transparent border-0 px-4 pb-4">
+                <div class="card-footer
+                            bg-transparent border-0 px-4 pb-4">
 
                     @if (hasOverdueBorrowings)
                     {
@@ -660,15 +378,16 @@
 
     </div>
 
+    <!-- الإجراءات السريعة للمدير -->
     @if (User.IsInRole("Admin"))
     {
         <section class="dashboard-section mt-5">
 
             <div class="dashboard-section-header">
 
-                <h5 class="fw-bold mb-0">
+                <h2 class="h5 fw-bold mb-0">
                     @Localizer["QuickActions"]
-                </h5>
+                </h2>
 
             </div>
 
@@ -679,14 +398,18 @@
                     <!-- إضافة معدة -->
                     <div class="col-sm-6 col-xl-3">
 
-                        <a asp-controller="Equipment" asp-action="Create" class="quick-action-link">
+                        <a asp-controller="Equipment"
+                           asp-action="Create"
+                           class="quick-action-link">
 
                             <span class="quick-action-icon equipment-action">
 
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2">
 
-                                    <path
-                                    d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+                                    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
                                     <path d="M12 8v8" />
                                     <path d="M8 12h8" />
 
@@ -705,13 +428,20 @@
                     <!-- إضافة موظف -->
                     <div class="col-sm-6 col-xl-3">
 
-                        <a asp-controller="Employees" asp-action="Create" class="quick-action-link">
+                        <a asp-controller="Employees"
+                           asp-action="Create"
+                           class="quick-action-link">
 
                             <span class="quick-action-icon employee-action">
 
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2">
 
-                                    <circle cx="9" cy="7" r="4" />
+                                    <circle cx="9"
+                                            cy="7"
+                                            r="4" />
                                     <path d="M3 21v-2a6 6 0 0 1 12 0v2" />
                                     <path d="M19 8v6" />
                                     <path d="M16 11h6" />
@@ -731,11 +461,16 @@
                     <!-- تسجيل استعارة -->
                     <div class="col-sm-6 col-xl-3">
 
-                        <a asp-controller="BorrowingRecords" asp-action="Create" class="quick-action-link">
+                        <a asp-controller="BorrowingRecords"
+                           asp-action="Create"
+                           class="quick-action-link">
 
                             <span class="quick-action-icon borrowing-action">
 
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2">
 
                                     <path d="M7 7h11l-3-3" />
                                     <path d="m18 7-3 3" />
@@ -757,11 +492,16 @@
                     <!-- إضافة تصنيف -->
                     <div class="col-sm-6 col-xl-3">
 
-                        <a asp-controller="Categories" asp-action="Create" class="quick-action-link">
+                        <a asp-controller="Categories"
+                           asp-action="Create"
+                           class="quick-action-link">
 
                             <span class="quick-action-icon category-action">
 
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2">
 
                                     <path d="M4 4h6v6H4z" />
                                     <path d="M14 4h6v6h-6z" />
@@ -791,19 +531,24 @@
     <section class="dashboard-section mt-5">
 
         <div class="dashboard-section-header
-            d-flex justify-content-between align-items-center">
+                    d-flex justify-content-between
+                    align-items-center">
 
             <div>
-                <h5 class="fw-bold mb-1">
+
+                <h2 class="h5 fw-bold mb-1">
                     @Localizer["RecentActiveBorrowings"]
-                </h5>
+                </h2>
 
                 <small class="text-muted">
                     @Localizer["DashboardSummary"]
                 </small>
+
             </div>
 
-            <a asp-controller="BorrowingRecords" asp-action="Index" class="btn btn-primary btn-sm px-3">
+            <a asp-controller="BorrowingRecords"
+               asp-action="Index"
+               class="btn btn-primary btn-sm px-3">
 
                 @Localizer["ViewAllBorrowings"]
             </a>
@@ -816,7 +561,10 @@
 
                 <span class="empty-dashboard-icon">
 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2">
 
                         <path d="M20 6 9 17l-5-5" />
 
@@ -832,10 +580,12 @@
         }
         else
         {
-            <div class="table-responsive responsive-card-table-wrapper">
+            <div class="table-responsive
+                        responsive-card-table-wrapper">
 
                 <table class="table dashboard-table
-                    responsive-card-table mb-0">
+                              responsive-card-table mb-0">
+
                     <thead>
 
                         <tr>
@@ -844,12 +594,14 @@
                             <th>@Localizer["BorrowDate"]</th>
                             <th>@Localizer["ExpectedReturnDate"]</th>
                             <th>@Localizer["Status"]</th>
+
                             <th class="text-center">
                                 @Localizer["Details"]
                             </th>
                         </tr>
 
                     </thead>
+
                     <tbody>
 
                         @foreach (var item in Model.RecentBorrowings)
@@ -858,7 +610,9 @@
                                 item.ExpectedReturnDate.Date <
                                 DateTime.Today;
 
-                            <tr class="@(isOverdue ? "overdue-row" : "")">
+                            <tr class="@(isOverdue
+                                    ? "overdue-row"
+                                    : "")">
 
                                 <td data-label="@Localizer["Equipment"]">
 
@@ -869,21 +623,15 @@
                                 </td>
 
                                 <td data-label="@Localizer["Employee"]">
-
                                     @(item.Employee?.FullName ?? "-")
-
                                 </td>
 
                                 <td data-label="@Localizer["BorrowDate"]">
-
                                     @item.BorrowDate.ToString("yyyy/MM/dd")
-
                                 </td>
 
                                 <td data-label="@Localizer["ExpectedReturnDate"]">
-
                                     @item.ExpectedReturnDate.ToString("yyyy/MM/dd")
-
                                 </td>
 
                                 <td data-label="@Localizer["Status"]">
@@ -907,7 +655,9 @@
 
                                     <div class="responsive-actions">
 
-                                        <a asp-controller="BorrowingRecords" asp-action="Details" asp-route-id="@item.Id"
+                                        <a asp-controller="BorrowingRecords"
+                                           asp-action="Details"
+                                           asp-route-id="@item.Id"
                                            class="btn btn-outline-primary btn-sm">
 
                                             @Localizer["Details"]
@@ -921,6 +671,7 @@
                         }
 
                     </tbody>
+
                 </table>
 
             </div>

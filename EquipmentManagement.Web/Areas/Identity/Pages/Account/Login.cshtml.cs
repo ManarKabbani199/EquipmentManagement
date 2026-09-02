@@ -67,20 +67,20 @@ namespace EquipmentManagement.Web.Areas.Identity.Pages.Account
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public class InputModel
-{
-    [Required(ErrorMessage = "EmailRequired")]
-    [EmailAddress(ErrorMessage = "InvalidEmail")]
-    [Display(Name = "Email")]
-    public string Email { get; set; }
+        {
+            [Required(ErrorMessage = "EmailRequired")]
+            [EmailAddress(ErrorMessage = "InvalidEmail")]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
 
-    [Required(ErrorMessage = "PasswordRequired")]
-    [DataType(DataType.Password)]
-    [Display(Name = "Password")]
-    public string Password { get; set; }
+            [Required(ErrorMessage = "PasswordRequired")]
+            [DataType(DataType.Password)]
+            [Display(Name = "Password")]
+            public string Password { get; set; }
 
-    [Display(Name = "RememberMe")]
-    public bool RememberMe { get; set; }
-}
+            [Display(Name = "RememberMe")]
+            public bool RememberMe { get; set; }
+        }
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))

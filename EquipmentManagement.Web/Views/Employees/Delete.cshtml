@@ -1,18 +1,11 @@
 @model EquipmentManagement.Domain.Entities.Employee
 
 @using Microsoft.Extensions.Localization
-@using System.Text.Json
-
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
     ViewData["Title"] =
         Localizer["DeleteEmployee"];
-
-    var deleteConfirmationJson =
-        JsonSerializer.Serialize(
-            Localizer["DeleteConfirmation"].Value
-        );
 
     var hasIdentityAccount =
         !string.IsNullOrWhiteSpace(
@@ -20,258 +13,19 @@
         );
 }
 
-<style>
-    .employee-delete-header {
-        position: relative;
-        overflow: hidden;
-        padding: 1.75rem;
-        color: white;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(255, 255, 255, 0.18),
-                transparent 35%
-            ),
-            linear-gradient(135deg, #450a0a, #dc2626);
-        border-radius: 1.2rem;
-        box-shadow: 0 1rem 2rem rgba(127, 29, 29, 0.16);
-    }
+<div class="employee-page
+            employee-theme-delete
+            employee-read-page">
 
-    .employee-delete-header-content {
-        position: relative;
-        z-index: 1;
-    }
+    <section class="employee-page-header mb-4">
 
-    .employee-delete-title {
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 800;
-    }
-
-    .employee-delete-warning {
-        display: flex;
-        gap: 1rem;
-        align-items: flex-start;
-        padding: 1.25rem;
-        color: #991b1b;
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        border-radius: 1rem;
-    }
-
-    .employee-delete-warning-icon {
-        display: inline-flex;
-        width: 3rem;
-        height: 3rem;
-        flex: 0 0 3rem;
-        align-items: center;
-        justify-content: center;
-        color: #dc2626;
-        background: #fee2e2;
-        border-radius: 50%;
-    }
-
-    .employee-delete-warning-icon svg {
-        width: 1.5rem;
-        height: 1.5rem;
-    }
-
-    .employee-delete-card {
-        overflow: hidden;
-        background: white;
-        border: 1px solid #fecaca;
-        border-radius: 1.1rem;
-        box-shadow: 0 0.6rem 1.8rem rgba(127, 29, 29, 0.09);
-    }
-
-    .employee-delete-profile {
-        display: flex;
-        min-height: 20rem;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        color: #dc2626;
-        background: #fef2f2;
-        border-inline-end: 1px solid #fecaca;
-        text-align: center;
-    }
-
-    .employee-delete-profile-icon {
-        display: inline-flex;
-        width: 8rem;
-        height: 8rem;
-        align-items: center;
-        justify-content: center;
-        background: #fee2e2;
-        border-radius: 50%;
-    }
-
-    .employee-delete-profile-icon svg {
-        width: 4rem;
-        height: 4rem;
-    }
-
-    .employee-delete-profile-name {
-        margin-top: 1rem;
-        margin-bottom: 0;
-        color: #0f172a;
-        font-size: 1.1rem;
-        font-weight: 800;
-        overflow-wrap: anywhere;
-    }
-
-    .employee-delete-content {
-        padding: 1.75rem;
-    }
-
-    .employee-delete-name {
-        margin-bottom: 1.25rem;
-        color: #0f172a;
-        font-size: 1.6rem;
-        font-weight: 800;
-        overflow-wrap: anywhere;
-    }
-
-    .employee-delete-list {
-        margin: 0;
-    }
-
-    .employee-delete-row {
-        display: grid;
-        grid-template-columns: minmax(8rem, 0.8fr) 1.5fr;
-        gap: 1rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid #f1f5f9;
-    }
-
-    .employee-delete-row:last-child {
-        border-bottom: 0;
-    }
-
-    .employee-delete-label {
-        margin: 0;
-        color: #64748b;
-        font-size: 0.9rem;
-        font-weight: 700;
-    }
-
-    .employee-delete-value {
-        margin: 0;
-        color: #0f172a;
-        overflow-wrap: anywhere;
-    }
-
-    .employee-delete-email {
-        direction: ltr;
-        display: inline-block;
-        color: #0369a1;
-        text-decoration: none;
-        overflow-wrap: anywhere;
-    }
-
-    .employee-delete-department {
-        display: inline-flex;
-        padding: 0.4rem 0.7rem;
-        color: #4338ca;
-        background: #e0e7ff;
-        border-radius: 0.55rem;
-        font-size: 0.85rem;
-        font-weight: 700;
-    }
-
-    .employee-account-badge {
-        display: inline-flex;
-        gap: 0.4rem;
-        align-items: center;
-        padding: 0.45rem 0.7rem;
-        color: #15803d;
-        background: #dcfce7;
-        border-radius: 999px;
-        font-size: 0.8rem;
-        font-weight: 700;
-    }
-
-    .employee-account-badge::before {
-        content: "";
-        width: 0.45rem;
-        height: 0.45rem;
-        background: currentColor;
-        border-radius: 50%;
-    }
-
-    .employee-delete-footer {
-        padding: 1.25rem 1.5rem;
-        background: #f8fafc;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    @@media (max-width: 767.98px) {
-        .employee-delete-profile {
-            min-height: 14rem;
-            border-inline-end: 0;
-            border-bottom: 1px solid #fecaca;
-        }
-
-        .employee-delete-profile-icon {
-            width: 6rem;
-            height: 6rem;
-        }
-
-        .employee-delete-profile-icon svg {
-            width: 3rem;
-            height: 3rem;
-        }
-    }
-
-    @@media (max-width: 575.98px) {
-        .employee-delete-header {
-            padding: 1.3rem;
-            border-radius: 1rem;
-        }
-
-        .employee-delete-header-content {
-            align-items: stretch !important;
-            flex-direction: column;
-        }
-
-        .employee-delete-header .btn {
-            width: 100%;
-        }
-
-        .employee-delete-warning {
-            flex-direction: column;
-        }
-
-        .employee-delete-content {
-            padding: 1.25rem;
-        }
-
-        .employee-delete-row {
-            grid-template-columns: 1fr;
-            gap: 0.35rem;
-        }
-
-        .employee-delete-footer .d-flex {
-            flex-direction: column;
-        }
-
-        .employee-delete-footer .btn {
-            width: 100%;
-        }
-    }
-</style>
-
-<div class="employee-delete-page">
-
-    <!-- عنوان الصفحة -->
-    <section class="employee-delete-header mb-4">
-
-        <div class="employee-delete-header-content
+        <div class="employee-page-header-content
                     d-flex justify-content-between
                     align-items-center gap-3">
 
             <div>
 
-                <h1 class="employee-delete-title mb-1">
+                <h1 class="employee-page-title mb-1">
                     @Localizer["DeleteEmployee"]
                 </h1>
 
@@ -285,13 +39,13 @@
                class="btn btn-light fw-semibold px-4">
 
                 @Localizer["BackToList"]
+
             </a>
 
         </div>
 
     </section>
 
-    <!-- رسالة التحذير -->
     <div class="employee-delete-warning mb-4">
 
         <span class="employee-delete-warning-icon">
@@ -299,7 +53,8 @@
             <svg viewBox="0 0 24 24"
                  fill="none"
                  stroke="currentColor"
-                 stroke-width="2">
+                 stroke-width="2"
+                 aria-hidden="true">
 
                 <path d="M10.3 2.9 1.8 17a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 2.9a2 2 0 0 0-3.4 0Z" />
                 <path d="M12 9v4" />
@@ -323,24 +78,23 @@
 
     </div>
 
-    <!-- بيانات الموظف -->
-    <section class="employee-delete-card">
+    <section class="employee-page-card">
 
         <div class="row g-0">
 
-            <!-- صورة رمزية -->
             <div class="col-md-4">
 
-                <div class="employee-delete-profile">
+                <div class="employee-page-profile">
 
                     <div>
 
-                        <span class="employee-delete-profile-icon">
+                        <span class="employee-profile-icon">
 
                             <svg viewBox="0 0 24 24"
                                  fill="none"
                                  stroke="currentColor"
-                                 stroke-width="2">
+                                 stroke-width="2"
+                                 aria-hidden="true">
 
                                 <circle cx="10"
                                         cy="8"
@@ -354,7 +108,7 @@
 
                         </span>
 
-                        <p class="employee-delete-profile-name">
+                        <p class="employee-profile-name">
                             @Model.FullName
                         </p>
 
@@ -364,25 +118,23 @@
 
             </div>
 
-            <!-- التفاصيل -->
             <div class="col-md-8">
 
-                <div class="employee-delete-content">
+                <div class="employee-page-content">
 
-                    <h2 class="employee-delete-name">
+                    <h2 class="employee-page-name">
                         @Model.FullName
                     </h2>
 
-                    <dl class="employee-delete-list">
+                    <dl class="employee-page-list">
 
-                        <!-- الاسم -->
-                        <div class="employee-delete-row">
+                        <div class="employee-page-row">
 
-                            <dt class="employee-delete-label">
+                            <dt class="employee-page-label">
                                 @Localizer["FullName"]
                             </dt>
 
-                            <dd class="employee-delete-value fw-semibold">
+                            <dd class="employee-page-value fw-semibold">
 
                                 @(string.IsNullOrWhiteSpace(Model.FullName)
                                     ? "-"
@@ -392,21 +144,21 @@
 
                         </div>
 
-                        <!-- البريد -->
-                        <div class="employee-delete-row">
+                        <div class="employee-page-row">
 
-                            <dt class="employee-delete-label">
+                            <dt class="employee-page-label">
                                 @Localizer["Email"]
                             </dt>
 
-                            <dd class="employee-delete-value">
+                            <dd class="employee-page-value">
 
                                 @if (!string.IsNullOrWhiteSpace(Model.Email))
                                 {
                                     <a href="mailto:@Model.Email"
-                                       class="employee-delete-email">
+                                       class="employee-email">
 
                                         @Model.Email
+
                                     </a>
                                 }
                                 else
@@ -418,18 +170,18 @@
 
                         </div>
 
-                        <!-- القسم -->
-                        <div class="employee-delete-row">
+                        <div class="employee-page-row">
 
-                            <dt class="employee-delete-label">
+                            <dt class="employee-page-label">
                                 @Localizer["Department"]
                             </dt>
 
-                            <dd class="employee-delete-value">
+                            <dd class="employee-page-value">
 
-                                @if (!string.IsNullOrWhiteSpace(Model.Department))
+                                @if (!string.IsNullOrWhiteSpace(
+                                    Model.Department))
                                 {
-                                    <span class="employee-delete-department">
+                                    <span class="employee-department">
                                         @Model.Department
                                     </span>
                                 }
@@ -442,18 +194,17 @@
 
                         </div>
 
-                        <!-- حالة الربط -->
-                        <div class="employee-delete-row">
+                        <div class="employee-page-row">
 
-                            <dt class="employee-delete-label">
+                            <dt class="employee-page-label">
                                 @Localizer["Login"]
                             </dt>
 
-                            <dd class="employee-delete-value">
+                            <dd class="employee-page-value">
 
                                 @if (hasIdentityAccount)
                                 {
-                                    <span class="employee-account-badge">
+                                    <span class="employee-account-status">
                                         @Localizer["Employee"]
                                     </span>
                                 }
@@ -474,42 +225,35 @@
 
         </div>
 
-        <!-- نموذج الحذف -->
-        <div class="employee-delete-footer">
+        <div class="employee-page-actions">
 
-            <form id="deleteEmployeeForm"
-                  asp-action="Delete"
-                  method="post">
+            <div class="d-flex gap-2">
 
-                @Html.AntiForgeryToken()
+                <button type="button"
+                        class="btn btn-danger px-4"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteEmployeeModal">
 
-                <input type="hidden"
-                       asp-for="Id" />
+                    @Localizer["ConfirmDelete"]
 
-                <div class="d-flex gap-2">
+                </button>
 
-                    <button type="submit"
-                            class="btn btn-danger px-4">
+                <a asp-action="Details"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-outline-info px-4">
 
-                        @Localizer["ConfirmDelete"]
-                    </button>
+                    @Localizer["Details"]
 
-                    <a asp-action="Details"
-                       asp-route-id="@Model.Id"
-                       class="btn btn-outline-info px-4">
+                </a>
 
-                        @Localizer["Details"]
-                    </a>
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary px-4">
 
-                    <a asp-action="Index"
-                       class="btn btn-outline-secondary px-4">
+                    @Localizer["Cancel"]
 
-                        @Localizer["Cancel"]
-                    </a>
+                </a>
 
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
@@ -517,26 +261,94 @@
 
 </div>
 
-@section Scripts {
+<!-- نافذة تأكيد حذف الموظف -->
+<div class="modal fade"
+     id="deleteEmployeeModal"
+     tabindex="-1"
+     aria-labelledby="deleteEmployeeModalLabel"
+     aria-hidden="true">
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+    <div class="modal-dialog modal-dialog-centered">
 
-            const deleteForm =
-                document.getElementById("deleteEmployeeForm");
+        <form asp-action="Delete"
+              method="post"
+              class="modal-content employee-delete-modal">
 
-            const confirmationMessage =
-                @Html.Raw(deleteConfirmationJson);
+            @Html.AntiForgeryToken()
 
-            deleteForm.addEventListener("submit", function (event) {
+            <input type="hidden"
+                   asp-for="Id" />
 
-                if (!window.confirm(confirmationMessage)) {
-                    event.preventDefault();
-                }
+            <div class="modal-header employee-delete-modal-header">
 
-            });
+                <h2 class="modal-title h5 mb-0"
+                    id="deleteEmployeeModalLabel">
 
-        });
-    </script>
+                    @Localizer["DeleteEmployee"]
 
-}
+                </h2>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="@Localizer["Cancel"]">
+                </button>
+
+            </div>
+
+            <div class="modal-body p-4 text-center">
+
+                <span class="employee-delete-modal-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         aria-hidden="true">
+
+                        <path d="M10.3 2.9 1.8 17a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 2.9a2 2 0 0 0-3.4 0Z" />
+                        <path d="M12 9v4" />
+                        <path d="M12 17h.01" />
+
+                    </svg>
+
+                </span>
+
+                <h3 class="h5 fw-bold mb-3">
+                    @Localizer["DeleteConfirmation"]
+                </h3>
+
+                <p class="text-muted mb-3">
+                    @Localizer["DeleteEmployeeWarning"]
+                </p>
+
+                <div class="employee-delete-modal-name">
+                    @Model.FullName
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-outline-secondary px-4"
+                        data-bs-dismiss="modal">
+
+                    @Localizer["Cancel"]
+
+                </button>
+
+                <button type="submit"
+                        class="btn btn-danger px-4">
+
+                    @Localizer["ConfirmDelete"]
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
