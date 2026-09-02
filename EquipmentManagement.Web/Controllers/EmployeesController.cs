@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-
 namespace EquipmentManagement.Web.Controllers;
 
 [Authorize(Roles = "Admin")]
@@ -308,14 +307,19 @@ public class EmployeesController : Controller
 
         if (hasBorrowingRecords)
         {
-            TempData["ErrorMessage"] = _localizer[ "EmployeeHasBorrowingRecords" ].Value;
+            TempData["ErrorMessage"] = _localizer["EmployeeHasBorrowingRecords"].Value;
 
             return RedirectToAction(nameof(Index));
         }
 
-        var identityUser = await _userManager.FindByIdAsync(
-            employee.IdentityUserId
-        );
+        IdentityUser? identityUser = null;
+
+        if (!string.IsNullOrWhiteSpace(employee.IdentityUserId))
+        {
+            identityUser = await _userManager.FindByIdAsync(
+                employee.IdentityUserId
+            );
+        }
 
         await using var transaction =
             await _context.Database.BeginTransactionAsync();
@@ -332,16 +336,16 @@ public class EmployeesController : Controller
 
                 if (!deleteResult.Succeeded)
                 {
-                  throw new InvalidOperationException(
-                 _localizer[
-                 "IdentityAccountDeleteFailed"
-                 ] );
+                    throw new InvalidOperationException(
+                   _localizer[
+                   "IdentityAccountDeleteFailed"
+                   ]);
                 }
             }
 
             await transaction.CommitAsync();
 
-            TempData["SuccessMessage"] =  _localizer[ "EmployeeDeletedSuccessfully"].Value;
+            TempData["SuccessMessage"] = _localizer["EmployeeDeletedSuccessfully"].Value;
         }
         catch
         {

@@ -1,8 +1,6 @@
 @model EquipmentManagement.Domain.Entities.BorrowingRecord
 
 @using Microsoft.Extensions.Localization
-@using System.Text.Json
-
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
@@ -15,230 +13,7 @@
     var isOverdue =
         !Model.IsReturned &&
         Model.ExpectedReturnDate < DateTime.Now;
-
-    var confirmReturnJson =
-        JsonSerializer.Serialize(
-            Localizer["ConfirmReturnEquipment"].Value
-        );
 }
-
-<style>
-    .borrowing-details-header {
-        position: relative;
-        overflow: hidden;
-        padding: 1.75rem;
-        color: white;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(255, 255, 255, 0.2),
-                transparent 35%
-            ),
-            linear-gradient(135deg, #0f172a, #0891b2);
-        border-radius: 1.2rem;
-        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
-    }
-
-    .borrowing-details-header-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    .borrowing-details-title {
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 800;
-    }
-
-    .borrowing-details-card {
-        overflow: hidden;
-        background: white;
-        border: 0;
-        border-radius: 1.1rem;
-        box-shadow: 0 0.6rem 1.8rem rgba(15, 23, 42, 0.08);
-    }
-
-    .borrowing-details-image-area {
-        display: flex;
-        min-height: 24rem;
-        align-items: center;
-        justify-content: center;
-        padding: 1.5rem;
-        background: #f8fafc;
-        border-inline-end: 1px solid #e2e8f0;
-    }
-
-    .borrowing-details-image {
-        width: 100%;
-        max-width: 29rem;
-        max-height: 23rem;
-        object-fit: contain;
-        background: white;
-        border: 1px solid #e2e8f0;
-        border-radius: 1rem;
-        transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
-    }
-
-    .borrowing-details-image:hover {
-        transform: scale(1.02);
-        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.14);
-    }
-
-    .borrowing-image-placeholder {
-        text-align: center;
-        color: #64748b;
-    }
-
-    .borrowing-image-placeholder-icon {
-        display: inline-flex;
-        width: 5rem;
-        height: 5rem;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        color: #94a3b8;
-        background: #e2e8f0;
-        border-radius: 50%;
-    }
-
-    .borrowing-image-placeholder-icon svg {
-        width: 2.5rem;
-        height: 2.5rem;
-    }
-
-    .borrowing-details-information {
-        padding: 1.75rem;
-    }
-
-    .borrowing-equipment-name {
-        margin-bottom: 0.5rem;
-        color: #0f172a;
-        font-size: 1.6rem;
-        font-weight: 800;
-    }
-
-    .borrowing-employee-name {
-        margin-bottom: 1.25rem;
-        color: #64748b;
-    }
-
-    .borrowing-details-status {
-        display: inline-flex;
-        gap: 0.4rem;
-        align-items: center;
-        padding: 0.48rem 0.75rem;
-        border-radius: 999px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .borrowing-details-status::before {
-        content: "";
-        width: 0.45rem;
-        height: 0.45rem;
-        background: currentColor;
-        border-radius: 50%;
-    }
-
-    .borrowing-details-status.returned {
-        color: #15803d;
-        background: #dcfce7;
-    }
-
-    .borrowing-details-status.overdue {
-        color: #b91c1c;
-        background: #fee2e2;
-    }
-
-    .borrowing-details-status.active {
-        color: #b45309;
-        background: #fef3c7;
-    }
-
-    .borrowing-details-list {
-        margin: 1.25rem 0 0;
-    }
-
-    .borrowing-details-row {
-        display: grid;
-        grid-template-columns: minmax(9rem, 0.9fr) 1.4fr;
-        gap: 1rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid #f1f5f9;
-    }
-
-    .borrowing-details-row:last-child {
-        border-bottom: 0;
-    }
-
-    .borrowing-details-label {
-        margin: 0;
-        color: #64748b;
-        font-size: 0.88rem;
-        font-weight: 700;
-    }
-
-    .borrowing-details-value {
-        margin: 0;
-        color: #0f172a;
-        overflow-wrap: anywhere;
-    }
-
-    .borrowing-overdue-date {
-        color: #b91c1c;
-        font-weight: 700;
-    }
-
-    .borrowing-details-footer {
-        padding: 1.25rem 1.5rem;
-        background: #f8fafc;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    @@media (max-width: 991.98px) {
-        .borrowing-details-image-area {
-            min-height: 19rem;
-            border-inline-end: 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-    }
-
-    @@media (max-width: 575.98px) {
-        .borrowing-details-header {
-            padding: 1.3rem;
-            border-radius: 1rem;
-        }
-
-        .borrowing-details-header-content {
-            align-items: stretch !important;
-            flex-direction: column;
-        }
-
-        .borrowing-details-header .btn {
-            width: 100%;
-        }
-
-        .borrowing-details-information {
-            padding: 1.25rem;
-        }
-
-        .borrowing-details-row {
-            grid-template-columns: 1fr;
-            gap: 0.35rem;
-        }
-
-        .borrowing-details-footer .d-flex {
-            flex-direction: column;
-        }
-
-        .borrowing-details-footer .btn,
-        .borrowing-details-footer form {
-            width: 100%;
-        }
-    }
-</style>
 
 <div class="borrowing-details-page">
 
@@ -378,7 +153,6 @@
 
                     <dl class="borrowing-details-list">
 
-                        <!-- اسم المعدة -->
                         <div class="borrowing-details-row">
 
                             <dt class="borrowing-details-label">
@@ -391,7 +165,6 @@
 
                         </div>
 
-                        <!-- الموظف -->
                         <div class="borrowing-details-row">
 
                             <dt class="borrowing-details-label">
@@ -404,7 +177,6 @@
 
                         </div>
 
-                        <!-- تاريخ الاستعارة -->
                         <div class="borrowing-details-row">
 
                             <dt class="borrowing-details-label">
@@ -417,7 +189,6 @@
 
                         </div>
 
-                        <!-- تاريخ الإرجاع المتوقع -->
                         <div class="borrowing-details-row">
 
                             <dt class="borrowing-details-label">
@@ -435,7 +206,6 @@
 
                         </div>
 
-                        <!-- تاريخ الإرجاع الفعلي -->
                         <div class="borrowing-details-row">
 
                             <dt class="borrowing-details-label">
@@ -457,7 +227,6 @@
 
                         </div>
 
-                        <!-- حالة الاستعارة -->
                         <div class="borrowing-details-row">
 
                             <dt class="borrowing-details-label">
@@ -497,7 +266,7 @@
 
         </div>
 
-        <!-- الأزرار -->
+        <!-- أزرار الصفحة -->
         <div class="borrowing-details-footer">
 
             <div class="d-flex gap-2 flex-wrap">
@@ -510,20 +279,13 @@
 
                 @if (isAdmin && !Model.IsReturned)
                 {
-                    <form id="returnEquipmentForm"
-                          asp-action="ReturnEquipment"
-                          asp-route-id="@Model.Id"
-                          method="post">
+                    <button type="button"
+                            class="btn btn-success px-4"
+                            data-bs-toggle="modal"
+                            data-bs-target="#returnEquipmentModal">
 
-                        @Html.AntiForgeryToken()
-
-                        <button type="submit"
-                                class="btn btn-success px-4">
-
-                            @Localizer["ReturnEquipment"]
-                        </button>
-
-                    </form>
+                        @Localizer["ReturnEquipment"]
+                    </button>
                 }
 
             </div>
@@ -536,27 +298,83 @@
 
 @if (isAdmin && !Model.IsReturned)
 {
-    @section Scripts {
+    <!-- نافذة تأكيد استرجاع المعدة -->
+    <div class="modal fade"
+         id="returnEquipmentModal"
+         tabindex="-1"
+         aria-labelledby="returnEquipmentModalLabel"
+         aria-describedby="returnEquipmentModalDescription"
+         aria-hidden="true">
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
+        <div class="modal-dialog modal-dialog-centered">
 
-                const returnForm =
-                    document.getElementById("returnEquipmentForm");
+            <div class="modal-content return-equipment-modal">
 
-                const confirmationMessage =
-                    @Html.Raw(confirmReturnJson);
+                <div class="modal-body text-center">
 
-                returnForm.addEventListener("submit", function (event) {
+                    <div class="return-equipment-modal-icon"
+                         aria-hidden="true">
 
-                    if (!window.confirm(confirmationMessage)) {
-                        event.preventDefault();
-                    }
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2">
 
-                });
+                            <path d="M20 11a8.1 8.1 0 1 1-2.3-5.7" />
+                            <path d="M20 4v7h-7" />
+                            <path d="m9 12 2 2 4-4" />
 
-            });
-        </script>
+                        </svg>
 
-    }
+                    </div>
+
+                    <h2 id="returnEquipmentModalLabel"
+                        class="h4 fw-bold mb-3">
+
+                        @Localizer["ReturnEquipment"]
+                    </h2>
+
+                    <p id="returnEquipmentModalDescription"
+                       class="text-muted mb-2">
+
+                        @Localizer["ConfirmReturnEquipment"]
+                    </p>
+
+                    <div class="return-equipment-name">
+                        @(Model.Equipment?.Name ?? "-")
+                    </div>
+
+                </div>
+
+                <div class="modal-footer
+                            justify-content-center gap-2">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary px-4"
+                            data-bs-dismiss="modal">
+
+                        @Localizer["Cancel"]
+                    </button>
+
+                    <form asp-action="ReturnEquipment"
+                          asp-route-id="@Model.Id"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="btn btn-success px-4">
+
+                            @Localizer["ReturnEquipment"]
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 }

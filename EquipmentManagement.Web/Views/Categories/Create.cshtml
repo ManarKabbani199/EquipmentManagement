@@ -8,167 +8,17 @@
         Localizer["CreateNewCategory"];
 }
 
-<style>
-    .category-create-header {
-        position: relative;
-        overflow: hidden;
-        padding: 1.75rem;
-        color: white;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(255, 255, 255, 0.2),
-                transparent 35%
-            ),
-            linear-gradient(135deg, #0f172a, #7c3aed);
-        border-radius: 1.2rem;
-        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
-    }
+<div class="category-page category-theme-create">
 
-    .category-create-header-content {
-        position: relative;
-        z-index: 1;
-    }
+    <section class="category-page-header mb-4">
 
-    .category-create-title {
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 800;
-    }
-
-    .category-create-card {
-        overflow: hidden;
-        background: white;
-        border: 0;
-        border-radius: 1.1rem;
-        box-shadow: 0 0.6rem 1.8rem rgba(15, 23, 42, 0.08);
-    }
-
-    .category-form-content {
-        padding: 1.5rem;
-    }
-
-    .category-form-icon-area {
-        display: flex;
-        min-height: 100%;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        color: #7c3aed;
-        background: #f5f3ff;
-        border-inline-end: 1px solid #e2e8f0;
-    }
-
-    .category-form-icon {
-        display: inline-flex;
-        width: 7rem;
-        height: 7rem;
-        align-items: center;
-        justify-content: center;
-        background: #ede9fe;
-        border-radius: 2rem;
-    }
-
-    .category-form-icon svg {
-        width: 3.5rem;
-        height: 3.5rem;
-    }
-
-    .category-create-card .form-label {
-        color: #334155;
-        font-size: 0.9rem;
-        font-weight: 700;
-    }
-
-    .category-create-card .form-control {
-        min-height: 2.8rem;
-        border-color: #cbd5e1;
-        border-radius: 0.7rem;
-    }
-
-    .category-create-card textarea.form-control {
-        min-height: 9rem;
-        resize: vertical;
-    }
-
-    .category-create-card .form-control:focus {
-        border-color: #7c3aed;
-        box-shadow: 0 0 0 0.2rem rgba(124, 58, 237, 0.14);
-    }
-
-    .category-create-card .input-validation-error {
-        border-color: #dc2626;
-    }
-
-    .validation-summary-valid {
-        display: none;
-    }
-
-    .category-form-actions {
-        padding: 1.25rem 1.5rem;
-        background: #f8fafc;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    @@media (max-width: 767.98px) {
-        .category-form-icon-area {
-            min-height: 11rem;
-            border-inline-end: 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .category-form-icon {
-            width: 5rem;
-            height: 5rem;
-            border-radius: 1.4rem;
-        }
-
-        .category-form-icon svg {
-            width: 2.5rem;
-            height: 2.5rem;
-        }
-    }
-
-    @@media (max-width: 575.98px) {
-        .category-create-header {
-            padding: 1.3rem;
-            border-radius: 1rem;
-        }
-
-        .category-create-header-content {
-            align-items: stretch !important;
-            flex-direction: column;
-        }
-
-        .category-create-header .btn {
-            width: 100%;
-        }
-
-        .category-form-content {
-            padding: 1.2rem;
-        }
-
-        .category-form-actions {
-            flex-direction: column;
-        }
-
-        .category-form-actions .btn {
-            width: 100%;
-        }
-    }
-</style>
-
-<div class="category-create-page">
-
-    <!-- عنوان الصفحة -->
-    <section class="category-create-header mb-4">
-
-        <div class="category-create-header-content
+        <div class="category-page-header-content
                     d-flex justify-content-between
                     align-items-center gap-3">
 
             <div>
 
-                <h1 class="category-create-title mb-1">
+                <h1 class="category-page-title mb-1">
                     @Localizer["CreateNewCategory"]
                 </h1>
 
@@ -182,6 +32,7 @@
                class="btn btn-light fw-semibold px-4">
 
                 @Localizer["BackToList"]
+
             </a>
 
         </div>
@@ -193,21 +44,21 @@
 
         @Html.AntiForgeryToken()
 
-        <div class="category-create-card">
+        <div class="category-page-card">
 
             <div class="row g-0">
 
-                <!-- الأيقونة -->
                 <div class="col-md-4">
 
-                    <div class="category-form-icon-area">
+                    <div class="category-page-icon-area">
 
-                        <span class="category-form-icon">
+                        <span class="category-page-icon">
 
                             <svg viewBox="0 0 24 24"
                                  fill="none"
                                  stroke="currentColor"
-                                 stroke-width="2">
+                                 stroke-width="2"
+                                 aria-hidden="true">
 
                                 <path d="M4 4h6v6H4z" />
                                 <path d="M14 4h6v6h-6z" />
@@ -222,23 +73,22 @@
 
                 </div>
 
-                <!-- الحقول -->
                 <div class="col-md-8">
 
-                    <div class="category-form-content">
+                    <div class="category-page-content">
 
                         <div asp-validation-summary="ModelOnly"
                              class="alert alert-danger"
                              role="alert">
                         </div>
 
-                        <!-- اسم التصنيف -->
                         <div class="mb-4">
 
                             <label asp-for="Name"
                                    class="form-label">
 
                                 @Localizer["Name"]
+
                             </label>
 
                             <input asp-for="Name"
@@ -251,13 +101,13 @@
 
                         </div>
 
-                        <!-- الوصف -->
                         <div>
 
                             <label asp-for="Description"
                                    class="form-label">
 
                                 @Localizer["Description"]
+
                             </label>
 
                             <textarea asp-for="Description"
@@ -277,19 +127,20 @@
 
             </div>
 
-            <!-- الأزرار -->
-            <div class="category-form-actions d-flex gap-2">
+            <div class="category-page-actions d-flex gap-2">
 
                 <button type="submit"
                         class="btn btn-primary px-4">
 
                     @Localizer["Save"]
+
                 </button>
 
                 <a asp-action="Index"
                    class="btn btn-outline-secondary px-4">
 
                     @Localizer["BackToList"]
+
                 </a>
 
             </div>

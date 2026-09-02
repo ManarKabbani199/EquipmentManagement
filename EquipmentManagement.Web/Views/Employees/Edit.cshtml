@@ -8,179 +8,17 @@
         Localizer["EditEmployee"];
 }
 
-<style>
-    .employee-edit-header {
-        position: relative;
-        overflow: hidden;
-        padding: 1.75rem;
-        color: white;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(255, 255, 255, 0.2),
-                transparent 35%
-            ),
-            linear-gradient(135deg, #0f172a, #d97706);
-        border-radius: 1.2rem;
-        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.12);
-    }
+<div class="employee-page employee-theme-edit">
 
-    .employee-edit-header-content {
-        position: relative;
-        z-index: 1;
-    }
+    <section class="employee-page-header mb-4">
 
-    .employee-edit-title {
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 800;
-    }
-
-    .employee-edit-card {
-        overflow: hidden;
-        background: white;
-        border: 0;
-        border-radius: 1.1rem;
-        box-shadow: 0 0.6rem 1.8rem rgba(15, 23, 42, 0.08);
-    }
-
-    .employee-edit-icon-area {
-        display: flex;
-        min-height: 100%;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        color: #d97706;
-        background: #fffbeb;
-        border-inline-end: 1px solid #e2e8f0;
-    }
-
-    .employee-edit-icon {
-        display: inline-flex;
-        width: 8rem;
-        height: 8rem;
-        align-items: center;
-        justify-content: center;
-        background: #fef3c7;
-        border-radius: 50%;
-    }
-
-    .employee-edit-icon svg {
-        width: 4rem;
-        height: 4rem;
-    }
-
-    .employee-edit-content {
-        padding: 1.5rem;
-    }
-
-    .employee-edit-card .form-label {
-        color: #334155;
-        font-size: 0.9rem;
-        font-weight: 700;
-    }
-
-    .employee-edit-card .form-control {
-        min-height: 2.8rem;
-        border-color: #cbd5e1;
-        border-radius: 0.7rem;
-    }
-
-    .employee-edit-card .form-control:focus {
-        border-color: #d97706;
-        box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.14);
-    }
-
-    .employee-edit-card .input-validation-error {
-        border-color: #dc2626;
-    }
-
-    .validation-summary-valid {
-        display: none;
-    }
-
-    .employee-account-notice {
-        display: flex;
-        gap: 0.8rem;
-        align-items: flex-start;
-        margin-bottom: 1.25rem;
-        padding: 1rem;
-        color: #075985;
-        background: #f0f9ff;
-        border: 1px solid #bae6fd;
-        border-radius: 0.8rem;
-    }
-
-    .employee-account-notice svg {
-        width: 1.4rem;
-        height: 1.4rem;
-        flex: 0 0 1.4rem;
-    }
-
-    .employee-edit-actions {
-        padding: 1.25rem 1.5rem;
-        background: #f8fafc;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    @@media (max-width: 767.98px) {
-        .employee-edit-icon-area {
-            min-height: 12rem;
-            border-inline-end: 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .employee-edit-icon {
-            width: 6rem;
-            height: 6rem;
-        }
-
-        .employee-edit-icon svg {
-            width: 3rem;
-            height: 3rem;
-        }
-    }
-
-    @@media (max-width: 575.98px) {
-        .employee-edit-header {
-            padding: 1.3rem;
-            border-radius: 1rem;
-        }
-
-        .employee-edit-header-content {
-            align-items: stretch !important;
-            flex-direction: column;
-        }
-
-        .employee-edit-header .btn {
-            width: 100%;
-        }
-
-        .employee-edit-content {
-            padding: 1.2rem;
-        }
-
-        .employee-edit-actions {
-            flex-direction: column;
-        }
-
-        .employee-edit-actions .btn {
-            width: 100%;
-        }
-    }
-</style>
-
-<div class="employee-edit-page">
-
-    <!-- عنوان الصفحة -->
-    <section class="employee-edit-header mb-4">
-
-        <div class="employee-edit-header-content
+        <div class="employee-page-header-content
                     d-flex justify-content-between
                     align-items-center gap-3">
 
             <div>
 
-                <h1 class="employee-edit-title mb-1">
+                <h1 class="employee-page-title mb-1">
                     @Localizer["EditEmployee"]
                 </h1>
 
@@ -194,6 +32,7 @@
                class="btn btn-light fw-semibold px-4">
 
                 @Localizer["BackToList"]
+
             </a>
 
         </div>
@@ -205,25 +44,24 @@
 
         @Html.AntiForgeryToken()
 
-        <!-- رقم سجل الموظف فقط -->
         <input type="hidden"
                asp-for="Id" />
 
-        <div class="employee-edit-card">
+        <div class="employee-page-card">
 
             <div class="row g-0">
 
-                <!-- أيقونة الموظف -->
                 <div class="col-md-4">
 
-                    <div class="employee-edit-icon-area">
+                    <div class="employee-page-profile">
 
-                        <span class="employee-edit-icon">
+                        <span class="employee-profile-icon">
 
                             <svg viewBox="0 0 24 24"
                                  fill="none"
                                  stroke="currentColor"
-                                 stroke-width="2">
+                                 stroke-width="2"
+                                 aria-hidden="true">
 
                                 <circle cx="10"
                                         cy="8"
@@ -241,12 +79,10 @@
 
                 </div>
 
-                <!-- حقول الموظف -->
                 <div class="col-md-8">
 
-                    <div class="employee-edit-content">
+                    <div class="employee-page-content">
 
-                        <!-- أخطاء النموذج -->
                         <div asp-validation-summary="ModelOnly"
                              class="alert alert-danger"
                              role="alert">
@@ -257,7 +93,8 @@
                             <svg viewBox="0 0 24 24"
                                  fill="none"
                                  stroke="currentColor"
-                                 stroke-width="2">
+                                 stroke-width="2"
+                                 aria-hidden="true">
 
                                 <circle cx="12"
                                         cy="12"
@@ -274,13 +111,13 @@
 
                         </div>
 
-                        <!-- الاسم الكامل -->
                         <div class="mb-4">
 
                             <label asp-for="FullName"
                                    class="form-label">
 
                                 @Localizer["FullName"]
+
                             </label>
 
                             <input asp-for="FullName"
@@ -294,13 +131,13 @@
 
                         </div>
 
-                        <!-- البريد الإلكتروني -->
                         <div class="mb-4">
 
                             <label asp-for="Email"
                                    class="form-label">
 
                                 @Localizer["Email"]
+
                             </label>
 
                             <input asp-for="Email"
@@ -315,13 +152,13 @@
 
                         </div>
 
-                        <!-- القسم -->
                         <div>
 
                             <label asp-for="Department"
                                    class="form-label">
 
                                 @Localizer["Department"]
+
                             </label>
 
                             <input asp-for="Department"
@@ -339,13 +176,13 @@
 
             </div>
 
-            <!-- الأزرار -->
-            <div class="employee-edit-actions d-flex gap-2">
+            <div class="employee-page-actions d-flex gap-2">
 
                 <button type="submit"
                         class="btn btn-warning px-4">
 
                     @Localizer["SaveChanges"]
+
                 </button>
 
                 <a asp-action="Details"
@@ -353,12 +190,14 @@
                    class="btn btn-outline-info px-4">
 
                     @Localizer["Details"]
+
                 </a>
 
                 <a asp-action="Index"
                    class="btn btn-outline-secondary px-4">
 
                     @Localizer["BackToList"]
+
                 </a>
 
             </div>

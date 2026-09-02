@@ -1,227 +1,26 @@
 @model EquipmentManagement.Domain.Entities.Category
 
 @using Microsoft.Extensions.Localization
-@using System.Text.Json
-
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
     ViewData["Title"] =
         Localizer["DeleteCategory"];
-
-    var deleteConfirmationJson =
-        JsonSerializer.Serialize(
-            Localizer["DeleteConfirmation"].Value
-        );
 }
 
-<style>
-    .category-delete-header {
-        position: relative;
-        overflow: hidden;
-        padding: 1.75rem;
-        color: white;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(255, 255, 255, 0.18),
-                transparent 35%
-            ),
-            linear-gradient(135deg, #450a0a, #dc2626);
-        border-radius: 1.2rem;
-        box-shadow: 0 1rem 2rem rgba(127, 29, 29, 0.16);
-    }
+<div class="category-page
+            category-theme-delete
+            category-read-page">
 
-    .category-delete-header-content {
-        position: relative;
-        z-index: 1;
-    }
+    <section class="category-page-header mb-4">
 
-    .category-delete-title {
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 800;
-    }
-
-    .category-delete-warning {
-        display: flex;
-        gap: 1rem;
-        align-items: flex-start;
-        padding: 1.25rem;
-        color: #991b1b;
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        border-radius: 1rem;
-    }
-
-    .category-delete-warning-icon {
-        display: inline-flex;
-        width: 3rem;
-        height: 3rem;
-        flex: 0 0 3rem;
-        align-items: center;
-        justify-content: center;
-        color: #dc2626;
-        background: #fee2e2;
-        border-radius: 50%;
-    }
-
-    .category-delete-warning-icon svg {
-        width: 1.5rem;
-        height: 1.5rem;
-    }
-
-    .category-delete-card {
-        overflow: hidden;
-        background: white;
-        border: 1px solid #fecaca;
-        border-radius: 1.1rem;
-        box-shadow: 0 0.6rem 1.8rem rgba(127, 29, 29, 0.09);
-    }
-
-    .category-delete-icon-area {
-        display: flex;
-        min-height: 18rem;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        color: #dc2626;
-        background: #fef2f2;
-        border-inline-end: 1px solid #fecaca;
-    }
-
-    .category-delete-icon {
-        display: inline-flex;
-        width: 8rem;
-        height: 8rem;
-        align-items: center;
-        justify-content: center;
-        background: #fee2e2;
-        border-radius: 2.2rem;
-    }
-
-    .category-delete-icon svg {
-        width: 4rem;
-        height: 4rem;
-    }
-
-    .category-delete-content {
-        padding: 1.75rem;
-    }
-
-    .category-delete-name {
-        margin-bottom: 1.25rem;
-        color: #0f172a;
-        font-size: 1.6rem;
-        font-weight: 800;
-        overflow-wrap: anywhere;
-    }
-
-    .category-delete-list {
-        margin: 0;
-    }
-
-    .category-delete-row {
-        display: grid;
-        grid-template-columns: minmax(7rem, 0.7fr) 1.5fr;
-        gap: 1rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid #f1f5f9;
-    }
-
-    .category-delete-row:last-child {
-        border-bottom: 0;
-    }
-
-    .category-delete-label {
-        margin: 0;
-        color: #64748b;
-        font-size: 0.9rem;
-        font-weight: 700;
-    }
-
-    .category-delete-value {
-        margin: 0;
-        color: #0f172a;
-        line-height: 1.8;
-        overflow-wrap: anywhere;
-        white-space: pre-line;
-    }
-
-    .category-delete-footer {
-        padding: 1.25rem 1.5rem;
-        background: #f8fafc;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    @@media (max-width: 767.98px) {
-        .category-delete-icon-area {
-            min-height: 12rem;
-            border-inline-end: 0;
-            border-bottom: 1px solid #fecaca;
-        }
-
-        .category-delete-icon {
-            width: 6rem;
-            height: 6rem;
-            border-radius: 1.6rem;
-        }
-
-        .category-delete-icon svg {
-            width: 3rem;
-            height: 3rem;
-        }
-    }
-
-    @@media (max-width: 575.98px) {
-        .category-delete-header {
-            padding: 1.3rem;
-            border-radius: 1rem;
-        }
-
-        .category-delete-header-content {
-            align-items: stretch !important;
-            flex-direction: column;
-        }
-
-        .category-delete-header .btn {
-            width: 100%;
-        }
-
-        .category-delete-warning {
-            flex-direction: column;
-        }
-
-        .category-delete-content {
-            padding: 1.25rem;
-        }
-
-        .category-delete-row {
-            grid-template-columns: 1fr;
-            gap: 0.35rem;
-        }
-
-        .category-delete-footer .d-flex {
-            flex-direction: column;
-        }
-
-        .category-delete-footer .btn {
-            width: 100%;
-        }
-    }
-</style>
-
-<div class="category-delete-page">
-
-    <!-- عنوان الصفحة -->
-    <section class="category-delete-header mb-4">
-
-        <div class="category-delete-header-content
+        <div class="category-page-header-content
                     d-flex justify-content-between
                     align-items-center gap-3">
 
             <div>
 
-                <h1 class="category-delete-title mb-1">
+                <h1 class="category-page-title mb-1">
                     @Localizer["DeleteCategory"]
                 </h1>
 
@@ -235,13 +34,13 @@
                class="btn btn-light fw-semibold px-4">
 
                 @Localizer["BackToList"]
+
             </a>
 
         </div>
 
     </section>
 
-    <!-- التحذير -->
     <div class="category-delete-warning mb-4">
 
         <span class="category-delete-warning-icon">
@@ -249,7 +48,8 @@
             <svg viewBox="0 0 24 24"
                  fill="none"
                  stroke="currentColor"
-                 stroke-width="2">
+                 stroke-width="2"
+                 aria-hidden="true">
 
                 <path d="M10.3 2.9 1.8 17a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 2.9a2 2 0 0 0-3.4 0Z" />
                 <path d="M12 9v4" />
@@ -273,22 +73,21 @@
 
     </div>
 
-    <!-- بيانات التصنيف -->
-    <section class="category-delete-card">
+    <section class="category-page-card">
 
         <div class="row g-0">
 
-            <!-- أيقونة الحذف -->
             <div class="col-md-4">
 
-                <div class="category-delete-icon-area">
+                <div class="category-page-icon-area">
 
-                    <span class="category-delete-icon">
+                    <span class="category-page-icon">
 
                         <svg viewBox="0 0 24 24"
                              fill="none"
                              stroke="currentColor"
-                             stroke-width="2">
+                             stroke-width="2"
+                             aria-hidden="true">
 
                             <path d="M3 6h18" />
                             <path d="M8 6V4h8v2" />
@@ -304,36 +103,35 @@
 
             </div>
 
-            <!-- التفاصيل -->
             <div class="col-md-8">
 
-                <div class="category-delete-content">
+                <div class="category-page-content">
 
-                    <h2 class="category-delete-name">
+                    <h2 class="category-page-name">
                         @Model.Name
                     </h2>
 
-                    <dl class="category-delete-list">
+                    <dl class="category-page-list">
 
-                        <div class="category-delete-row">
+                        <div class="category-page-row">
 
-                            <dt class="category-delete-label">
+                            <dt class="category-page-label">
                                 @Localizer["Name"]
                             </dt>
 
-                            <dd class="category-delete-value fw-semibold">
+                            <dd class="category-page-value fw-semibold">
                                 @Model.Name
                             </dd>
 
                         </div>
 
-                        <div class="category-delete-row">
+                        <div class="category-page-row">
 
-                            <dt class="category-delete-label">
+                            <dt class="category-page-label">
                                 @Localizer["Description"]
                             </dt>
 
-                            <dd class="category-delete-value">
+                            <dd class="category-page-value">
 
                                 @(string.IsNullOrWhiteSpace(Model.Description)
                                     ? "-"
@@ -351,42 +149,35 @@
 
         </div>
 
-        <!-- نموذج الحذف -->
-        <div class="category-delete-footer">
+        <div class="category-page-actions">
 
-            <form id="deleteCategoryForm"
-                  asp-action="Delete"
-                  method="post">
+            <div class="d-flex gap-2">
 
-                @Html.AntiForgeryToken()
+                <button type="button"
+                        class="btn btn-danger px-4"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteCategoryModal">
 
-                <input type="hidden"
-                       asp-for="Id" />
+                    @Localizer["ConfirmDelete"]
 
-                <div class="d-flex gap-2">
+                </button>
 
-                    <button type="submit"
-                            class="btn btn-danger px-4">
+                <a asp-action="Details"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-outline-info px-4">
 
-                        @Localizer["ConfirmDelete"]
-                    </button>
+                    @Localizer["Details"]
 
-                    <a asp-action="Details"
-                       asp-route-id="@Model.Id"
-                       class="btn btn-outline-info px-4">
+                </a>
 
-                        @Localizer["Details"]
-                    </a>
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary px-4">
 
-                    <a asp-action="Index"
-                       class="btn btn-outline-secondary px-4">
+                    @Localizer["Cancel"]
 
-                        @Localizer["Cancel"]
-                    </a>
+                </a>
 
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
@@ -394,26 +185,94 @@
 
 </div>
 
-@section Scripts {
+<!-- نافذة تأكيد الحذف -->
+<div class="modal fade"
+     id="deleteCategoryModal"
+     tabindex="-1"
+     aria-labelledby="deleteCategoryModalLabel"
+     aria-hidden="true">
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+    <div class="modal-dialog modal-dialog-centered">
 
-            const deleteForm =
-                document.getElementById("deleteCategoryForm");
+        <form asp-action="Delete"
+              method="post"
+              class="modal-content category-delete-modal">
 
-            const confirmationMessage =
-                @Html.Raw(deleteConfirmationJson);
+            @Html.AntiForgeryToken()
 
-            deleteForm.addEventListener("submit", function (event) {
+            <input type="hidden"
+                   asp-for="Id" />
 
-                if (!window.confirm(confirmationMessage)) {
-                    event.preventDefault();
-                }
+            <div class="modal-header category-delete-modal-header">
 
-            });
+                <h2 class="modal-title h5 mb-0"
+                    id="deleteCategoryModalLabel">
 
-        });
-    </script>
+                    @Localizer["DeleteCategory"]
 
-}
+                </h2>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="@Localizer["Cancel"]">
+                </button>
+
+            </div>
+
+            <div class="modal-body p-4 text-center">
+
+                <span class="category-delete-modal-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         aria-hidden="true">
+
+                        <path d="M10.3 2.9 1.8 17a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 2.9a2 2 0 0 0-3.4 0Z" />
+                        <path d="M12 9v4" />
+                        <path d="M12 17h.01" />
+
+                    </svg>
+
+                </span>
+
+                <h3 class="h5 fw-bold mb-3">
+                    @Localizer["DeleteConfirmation"]
+                </h3>
+
+                <p class="text-muted mb-3">
+                    @Localizer["DeleteCategoryWarning"]
+                </p>
+
+                <div class="category-delete-modal-name">
+                    @Model.Name
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-outline-secondary px-4"
+                        data-bs-dismiss="modal">
+
+                    @Localizer["Cancel"]
+
+                </button>
+
+                <button type="submit"
+                        class="btn btn-danger px-4">
+
+                    @Localizer["ConfirmDelete"]
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

@@ -2,236 +2,12 @@
 @model LoginModel
 
 @using Microsoft.Extensions.Localization
-
 @inject IStringLocalizer<EquipmentManagement.Web.SharedResource> Localizer
 
 @{
     ViewData["Title"] =
         Localizer["Login"];
 }
-
-<style>
-    .login-page {
-        padding: 2rem 0;
-    }
-
-    .login-card {
-        overflow: hidden;
-        background: white;
-        border: 0;
-        border-radius: 1.25rem;
-        box-shadow: 0 1rem 3rem rgba(15, 23, 42, 0.12);
-    }
-
-    .login-visual {
-        position: relative;
-        display: flex;
-        min-height: 34rem;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        padding: 2.5rem;
-        color: white;
-        background:
-            radial-gradient(circle at top right,
-                rgba(255, 255, 255, 0.22),
-                transparent 35%),
-            linear-gradient(135deg, #0f172a, #1d4ed8);
-        text-align: center;
-    }
-
-    .login-visual::before,
-    .login-visual::after {
-        content: "";
-        position: absolute;
-        border: 2rem solid rgba(255, 255, 255, 0.06);
-        border-radius: 50%;
-    }
-
-    .login-visual::before {
-        top: -5rem;
-        inset-inline-end: -5rem;
-        width: 14rem;
-        height: 14rem;
-    }
-
-    .login-visual::after {
-        bottom: -6rem;
-        inset-inline-start: -6rem;
-        width: 17rem;
-        height: 17rem;
-    }
-
-    .login-visual-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    .login-logo {
-        display: inline-flex;
-        width: 7rem;
-        height: 7rem;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1.5rem;
-        color: white;
-        background: rgba(255, 255, 255, 0.14);
-        border: 1px solid rgba(255, 255, 255, 0.24);
-        border-radius: 2rem;
-        backdrop-filter: blur(0.5rem);
-    }
-
-    .login-logo svg {
-        width: 3.5rem;
-        height: 3.5rem;
-    }
-
-    .login-visual-title {
-        margin-bottom: 0.75rem;
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 800;
-    }
-
-    .login-visual-description {
-        max-width: 24rem;
-        margin: 0 auto;
-        color: rgba(255, 255, 255, 0.78);
-        line-height: 1.8;
-    }
-
-    .login-form-area {
-        display: flex;
-        min-height: 34rem;
-        align-items: center;
-        padding: 2.5rem;
-    }
-
-    .login-form-content {
-        width: 100%;
-        max-width: 28rem;
-        margin: 0 auto;
-    }
-
-    .login-form-title {
-        margin-bottom: 0.5rem;
-        color: #0f172a;
-        font-size: 1.8rem;
-        font-weight: 800;
-    }
-
-    .login-form-description {
-        margin-bottom: 1.75rem;
-        color: #64748b;
-    }
-
-    .login-card .form-control {
-        min-height: 3.5rem;
-        border-color: #cbd5e1;
-        border-radius: 0.75rem;
-    }
-
-    .login-card .form-control:focus {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.14);
-    }
-
-    .login-card .form-floating>label {
-        color: #64748b;
-    }
-
-    .login-card .input-validation-error {
-        border-color: #dc2626;
-    }
-
-    .validation-summary-valid {
-        display: none;
-    }
-
-    .login-remember {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        margin-bottom: 1.25rem;
-    }
-
-    .login-remember .form-check {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-        margin: 0;
-        padding: 0;
-    }
-
-    .login-remember .form-check-input {
-        float: none;
-        width: 1.15rem;
-        height: 1.15rem;
-        margin: 0;
-        cursor: pointer;
-    }
-
-    .login-remember .form-check-label {
-        color: #475569;
-        cursor: pointer;
-    }
-
-    .login-submit-button {
-        min-height: 3.2rem;
-        border-radius: 0.75rem;
-        font-weight: 700;
-    }
-
-    @@media (max-width: 991.98px) {
-        .login-visual {
-            min-height: 18rem;
-            padding: 2rem;
-        }
-
-        .login-logo {
-            width: 5.5rem;
-            height: 5.5rem;
-            border-radius: 1.5rem;
-        }
-
-        .login-logo svg {
-            width: 2.8rem;
-            height: 2.8rem;
-        }
-
-        .login-form-area {
-            min-height: auto;
-        }
-    }
-
-    @@media (max-width: 575.98px) {
-        .login-page {
-            padding: 0.5rem 0;
-        }
-
-        .login-card {
-            border-radius: 1rem;
-        }
-
-        .login-visual {
-            min-height: 14rem;
-            padding: 1.5rem;
-        }
-
-        .login-visual-description {
-            display: none;
-        }
-
-        .login-form-area {
-            padding: 1.5rem 1.2rem;
-        }
-
-        .login-remember {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-    }
-</style>
 
 <div class="login-page">
 
@@ -250,13 +26,15 @@
 
                             <div class="login-visual-content">
 
-                                <span class="login-logo">
+                                <span class="login-logo"
+                                      aria-hidden="true">
 
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <svg viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="2">
 
-                                        <path
-                                        d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
-
+                                        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
                                         <path d="m3.3 7 8.7 5 8.7-5" />
                                         <path d="M12 22V12" />
 
@@ -293,19 +71,25 @@
                                     @Localizer["LoginInstructions"]
                                 </p>
 
-                                <form id="account" method="post">
+                                <form id="account"
+                                      method="post">
 
                                     @Html.AntiForgeryToken()
 
-                                    <!-- أخطاء تسجيل الدخول -->
-                                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert">
+                                    <div asp-validation-summary="ModelOnly"
+                                         class="alert alert-danger"
+                                         role="alert">
                                     </div>
 
                                     <!-- البريد الإلكتروني -->
                                     <div class="form-floating mb-3">
 
-                                        <input asp-for="Input.Email" type="email" class="form-control"
-                                               autocomplete="username" aria-required="true" placeholder="name@example.com"
+                                        <input asp-for="Input.Email"
+                                               type="email"
+                                               class="form-control"
+                                               autocomplete="username"
+                                               aria-required="true"
+                                               placeholder="name@example.com"
                                                dir="ltr" />
 
                                         <label asp-for="Input.Email">
@@ -314,14 +98,20 @@
 
                                     </div>
 
-                                    <span asp-validation-for="Input.Email" class="text-danger small d-block mb-3">
+                                    <span asp-validation-for="Input.Email"
+                                          class="text-danger small
+                                                 d-block mb-3">
                                     </span>
 
                                     <!-- كلمة المرور -->
                                     <div class="form-floating mb-3">
 
-                                        <input asp-for="Input.Password" type="password" class="form-control"
-                                               autocomplete="current-password" aria-required="true" placeholder="Password"
+                                        <input asp-for="Input.Password"
+                                               type="password"
+                                               class="form-control"
+                                               autocomplete="current-password"
+                                               aria-required="true"
+                                               placeholder="Password"
                                                dir="ltr" />
 
                                         <label asp-for="Input.Password">
@@ -330,17 +120,21 @@
 
                                     </div>
 
-                                    <span asp-validation-for="Input.Password" class="text-danger small d-block mb-3">
+                                    <span asp-validation-for="Input.Password"
+                                          class="text-danger small
+                                                 d-block mb-3">
                                     </span>
 
-                                    <!-- تذكر الحساب ونسيان كلمة المرور -->
+                                    <!-- تذكر الحساب -->
                                     <div class="login-remember">
 
                                         <div class="form-check">
 
-                                            <input asp-for="Input.RememberMe" class="form-check-input" />
+                                            <input asp-for="Input.RememberMe"
+                                                   class="form-check-input" />
 
-                                            <label asp-for="Input.RememberMe" class="form-check-label">
+                                            <label asp-for="Input.RememberMe"
+                                                   class="form-check-label">
 
                                                 @Localizer["RememberMe"]
                                             </label>
@@ -348,9 +142,11 @@
                                         </div>
 
                                     </div>
-                                    <!-- زر تسجيل الدخول -->
-                                    <button id="login-submit" type="submit" class="btn btn-primary
-                                        login-submit-button w-100">
+
+                                    <button id="login-submit"
+                                            type="submit"
+                                            class="btn btn-primary
+                                                   login-submit-button w-100">
 
                                         @Localizer["Login"]
                                     </button>

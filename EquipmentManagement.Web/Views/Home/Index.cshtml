@@ -11,204 +11,6 @@
         SignInManager.IsSignedIn(User);
 }
 
-<style>
-    .home-page {
-        --home-primary: #2563eb;
-        --home-dark: #0f172a;
-        --home-muted: #64748b;
-        --home-light: #f8fafc;
-    }
-
-    .home-hero {
-        position: relative;
-        overflow: hidden;
-        padding: clamp(2rem, 6vw, 5rem);
-        color: #ffffff;
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(34, 211, 238, 0.28),
-                transparent 35%
-            ),
-            linear-gradient(135deg, #0f172a, #1d4ed8);
-        border-radius: 1.5rem;
-        box-shadow: 0 1.25rem 3rem rgba(15, 23, 42, 0.16);
-    }
-
-    .home-hero-content {
-        position: relative;
-        z-index: 1;
-        max-width: 50rem;
-    }
-
-    .home-hero-badge {
-        display: inline-flex;
-        padding: 0.5rem 0.85rem;
-        margin-bottom: 1.25rem;
-        color: #cffafe;
-        background: rgba(255, 255, 255, 0.12);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 999px;
-        font-size: 0.85rem;
-        font-weight: 700;
-    }
-
-    .home-hero-title {
-        margin-bottom: 1rem;
-        font-size: clamp(2rem, 6vw, 3.7rem);
-        font-weight: 900;
-        line-height: 1.15;
-    }
-
-    .home-hero-description {
-        max-width: 44rem;
-        margin-bottom: 1.75rem;
-        color: rgba(255, 255, 255, 0.82);
-        font-size: clamp(1rem, 2vw, 1.15rem);
-        line-height: 1.9;
-    }
-
-    .home-actions {
-        display: flex;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-    }
-
-    .home-actions .btn {
-        min-width: 10rem;
-        padding: 0.75rem 1.25rem;
-        font-weight: 700;
-        border-radius: 0.75rem;
-    }
-
-    .home-feature-card {
-        height: 100%;
-        padding: 1.5rem;
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 1rem;
-        box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.06);
-        transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
-    }
-
-    .home-feature-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.1);
-    }
-
-    .home-feature-icon {
-        display: inline-flex;
-        width: 3.25rem;
-        height: 3.25rem;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        background: #dbeafe;
-        border-radius: 0.9rem;
-        font-size: 1.5rem;
-    }
-
-    .home-feature-title {
-        margin-bottom: 0.6rem;
-        color: var(--home-dark);
-        font-size: 1.05rem;
-        font-weight: 800;
-    }
-
-    .home-feature-description {
-        margin-bottom: 0;
-        color: var(--home-muted);
-        line-height: 1.7;
-    }
-
-    .developer-card {
-        overflow: hidden;
-        background: #ffffff;
-        border: 0;
-        border-radius: 1.25rem;
-        box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.1);
-    }
-
-    .developer-content {
-        padding: clamp(1.5rem, 4vw, 2.5rem);
-    }
-
-    .developer-label {
-        display: inline-flex;
-        padding: 0.4rem 0.75rem;
-        margin-bottom: 1rem;
-        color: #1d4ed8;
-        background: #dbeafe;
-        border-radius: 999px;
-        font-size: 0.8rem;
-        font-weight: 800;
-    }
-
-    .developer-name {
-        margin-bottom: 0.75rem;
-        color: var(--home-dark);
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 900;
-    }
-
-    .developer-description {
-        max-width: 48rem;
-        margin-bottom: 1.5rem;
-        color: var(--home-muted);
-        line-height: 1.9;
-    }
-
-    .developer-contact-list {
-        display: flex;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-    }
-
-    .developer-contact {
-        display: inline-flex;
-        gap: 0.5rem;
-        align-items: center;
-        padding: 0.7rem 1rem;
-        color: #334155;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.75rem;
-        font-weight: 700;
-        text-decoration: none;
-        overflow-wrap: anywhere;
-    }
-
-    .developer-contact:hover {
-        color: #ffffff;
-        background: var(--home-primary);
-        border-color: var(--home-primary);
-    }
-
-    @@media (max-width: 575.98px) {
-        .home-hero {
-            padding: 2rem 1.25rem;
-            border-radius: 1rem;
-        }
-
-        .home-actions,
-        .developer-contact-list {
-            flex-direction: column;
-        }
-
-        .home-actions .btn,
-        .developer-contact {
-            width: 100%;
-        }
-
-        .developer-contact {
-            justify-content: center;
-            text-align: center;
-        }
-    }
-</style>
-
 <div class="home-page">
 
     <!-- القسم الرئيسي -->
@@ -237,7 +39,6 @@
                        class="btn btn-light">
 
                         @Localizer["Dashboard"]
-
                     </a>
 
                     <a asp-controller="Equipment"
@@ -245,7 +46,6 @@
                        class="btn btn-outline-light">
 
                         @Localizer["ViewEquipment"]
-
                     </a>
                 }
                 else
@@ -255,7 +55,6 @@
                        class="btn btn-light">
 
                         @Localizer["Login"]
-
                     </a>
                 }
 
@@ -284,7 +83,9 @@
                     </h2>
 
                     <p class="home-feature-description">
-                        @Localizer["EquipmentManagementFeatureDescription"]
+                        @Localizer[
+                            "EquipmentManagementFeatureDescription"
+                        ]
                     </p>
 
                 </div>
@@ -305,7 +106,9 @@
                     </h2>
 
                     <p class="home-feature-description">
-                        @Localizer["BorrowingManagementFeatureDescription"]
+                        @Localizer[
+                            "BorrowingManagementFeatureDescription"
+                        ]
                     </p>
 
                 </div>
@@ -326,7 +129,9 @@
                     </h2>
 
                     <p class="home-feature-description">
-                        @Localizer["EmployeeManagementFeatureDescription"]
+                        @Localizer[
+                            "EmployeeManagementFeatureDescription"
+                        ]
                     </p>
 
                 </div>

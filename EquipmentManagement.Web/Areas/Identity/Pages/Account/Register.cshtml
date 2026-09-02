@@ -5,83 +5,9 @@
 @inject IStringLocalizer<EquipmentManagement.Web.SharedResource> Localizer
 
 @{
-    ViewData["Title"] = Localizer["RegistrationDisabled"];
+    ViewData["Title"] =
+        Localizer["RegistrationDisabled"];
 }
-
-<style>
-    .registration-disabled-page {
-        min-height: calc(100vh - 15rem);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem 0;
-    }
-
-    .registration-disabled-card {
-        overflow: hidden;
-        border: 0;
-        border-radius: 1.25rem;
-        box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.12);
-    }
-
-    .registration-disabled-header {
-        padding: 1.25rem;
-        color: #78350f;
-        background: linear-gradient(135deg, #fbbf24, #f59e0b);
-    }
-
-    .registration-disabled-body {
-        padding: 3rem 2rem;
-    }
-
-    .registration-disabled-icon {
-        display: inline-flex;
-        width: 5.5rem;
-        height: 5.5rem;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1.5rem;
-        color: #b45309;
-        background: #fef3c7;
-        border-radius: 50%;
-        font-size: 2.5rem;
-    }
-
-    .registration-disabled-message {
-        max-width: 28rem;
-        margin-right: auto;
-        margin-bottom: 1.5rem;
-        margin-left: auto;
-        color: #64748b;
-        line-height: 1.8;
-    }
-
-    .registration-login-button {
-        min-width: 9rem;
-        padding: 0.7rem 1.5rem;
-        font-weight: 700;
-        border-radius: 0.75rem;
-    }
-
-    @@media (max-width: 575.98px) {
-        .registration-disabled-page {
-            min-height: auto;
-            padding: 1rem 0;
-        }
-
-        .registration-disabled-card {
-            border-radius: 1rem;
-        }
-
-        .registration-disabled-body {
-            padding: 2.25rem 1.25rem;
-        }
-
-        .registration-login-button {
-            width: 100%;
-        }
-    }
-</style>
 
 <div class="registration-disabled-page">
 
@@ -91,7 +17,9 @@
 
             <div class="col-md-8 col-lg-6">
 
-                <div class="card registration-disabled-card text-center">
+                <div class="card
+                            registration-disabled-card
+                            text-center">
 
                     <div class="registration-disabled-header">
 
@@ -101,7 +29,8 @@
 
                     </div>
 
-                    <div class="card-body registration-disabled-body">
+                    <div class="card-body
+                                registration-disabled-body">
 
                         <div class="registration-disabled-icon"
                              aria-hidden="true">
@@ -113,10 +42,10 @@
                         </p>
 
                         <a asp-page="./Login"
-                           class="btn btn-primary registration-login-button">
+                           class="btn btn-primary
+                                  registration-login-button">
 
                             @Localizer["Login"]
-
                         </a>
 
                     </div>
