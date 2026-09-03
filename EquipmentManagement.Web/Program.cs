@@ -191,151 +191,154 @@ var app = builder.Build();
 //
 // 5. إنشاء الأدوار وحساب المدير عند تشغيل المشروع
 //
-using (var scope = app.Services.CreateScope())
+if (app.Environment.IsDevelopment())
 {
-    // خدمة إدارة الأدوار
-    var roleManager =
-        scope.ServiceProvider
-            .GetRequiredService<
-                RoleManager<IdentityRole>
-            >();
-
-    // خدمة إدارة المستخدمين
-    var userManager =
-        scope.ServiceProvider
-            .GetRequiredService<
-                UserManager<IdentityUser>
-            >();
-
-    // الأدوار المطلوبة داخل النظام
-    string[] roles =
+    using (var scope = app.Services.CreateScope())
     {
+        // خدمة إدارة الأدوار
+        var roleManager =
+            scope.ServiceProvider
+                .GetRequiredService<
+                    RoleManager<IdentityRole>
+                >();
+
+        // خدمة إدارة المستخدمين
+        var userManager =
+            scope.ServiceProvider
+                .GetRequiredService<
+                    UserManager<IdentityUser>
+                >();
+
+        // الأدوار المطلوبة داخل النظام
+        string[] roles =
+        {
         "Admin",
         "Employee"
     };
 
-    //
-    // إنشاء الأدوار إذا لم تكن موجودة
-    //
-    foreach (var role in roles)
-    {
-        var roleExists =
-            await roleManager.RoleExistsAsync(role);
-
-        if (!roleExists)
+        //
+        // إنشاء الأدوار إذا لم تكن موجودة
+        //
+        foreach (var role in roles)
         {
-            var roleResult =
-                await roleManager.CreateAsync(
-                    new IdentityRole(role)
+            var roleExists =
+                await roleManager.RoleExistsAsync(role);
+
+            if (!roleExists)
+            {
+                var roleResult =
+                    await roleManager.CreateAsync(
+                        new IdentityRole(role)
+                    );
+
+                if (!roleResult.Succeeded)
+                {
+                    var errors = string.Join(
+                        ", ",
+                        roleResult.Errors.Select(
+                            error => error.Description
+                        )
+                    );
+
+                    throw new Exception(
+                        $"فشل إنشاء الدور {role}: {errors}"
+                    );
+                }
+            }
+        }
+
+        //
+        // قراءة بيانات المدير
+        //
+        // في جهاز التطوير تُقرأ من User Secrets.
+        // عند النشر على Azure ستُضاف في App Settings.
+        //
+        var adminEmail =
+            builder.Configuration["AdminUser:Email"];
+
+        var adminPassword =
+            builder.Configuration["AdminUser:Password"];
+
+        // إيقاف التشغيل إذا لم تُضبط بيانات المدير
+        if (string.IsNullOrWhiteSpace(adminEmail) ||
+            string.IsNullOrWhiteSpace(adminPassword))
+        {
+            throw new Exception(
+                "بيانات حساب المدير غير موجودة في إعدادات التطبيق."
+            );
+        }
+
+        //
+        // البحث عن حساب المدير بواسطة البريد
+        //
+        var adminUser =
+            await userManager.FindByEmailAsync(
+                adminEmail
+            );
+
+        //
+        // إنشاء حساب المدير إذا لم يكن موجودًا
+        //
+        if (adminUser == null)
+        {
+            adminUser = new IdentityUser
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                EmailConfirmed = true
+            };
+
+            var createResult =
+                await userManager.CreateAsync(
+                    adminUser,
+                    adminPassword
                 );
 
-            if (!roleResult.Succeeded)
+            if (!createResult.Succeeded)
             {
                 var errors = string.Join(
                     ", ",
-                    roleResult.Errors.Select(
+                    createResult.Errors.Select(
                         error => error.Description
                     )
                 );
 
                 throw new Exception(
-                    $"فشل إنشاء الدور {role}: {errors}"
+                    $"فشل إنشاء حساب المدير: {errors}"
                 );
             }
         }
-    }
 
-    //
-    // قراءة بيانات المدير
-    //
-    // في جهاز التطوير تُقرأ من User Secrets.
-    // عند النشر على Azure ستُضاف في App Settings.
-    //
-    var adminEmail =
-        builder.Configuration["AdminUser:Email"];
-
-    var adminPassword =
-        builder.Configuration["AdminUser:Password"];
-
-    // إيقاف التشغيل إذا لم تُضبط بيانات المدير
-    if (string.IsNullOrWhiteSpace(adminEmail) ||
-        string.IsNullOrWhiteSpace(adminPassword))
-    {
-        throw new Exception(
-            "بيانات حساب المدير غير موجودة في إعدادات التطبيق."
-        );
-    }
-
-    //
-    // البحث عن حساب المدير بواسطة البريد
-    //
-    var adminUser =
-        await userManager.FindByEmailAsync(
-            adminEmail
-        );
-
-    //
-    // إنشاء حساب المدير إذا لم يكن موجودًا
-    //
-    if (adminUser == null)
-    {
-        adminUser = new IdentityUser
-        {
-            UserName = adminEmail,
-            Email = adminEmail,
-            EmailConfirmed = true
-        };
-
-        var createResult =
-            await userManager.CreateAsync(
-                adminUser,
-                adminPassword
-            );
-
-        if (!createResult.Succeeded)
-        {
-            var errors = string.Join(
-                ", ",
-                createResult.Errors.Select(
-                    error => error.Description
-                )
-            );
-
-            throw new Exception(
-                $"فشل إنشاء حساب المدير: {errors}"
-            );
-        }
-    }
-
-    //
-    // منح الحساب دور Admin إذا لم يكن يمتلكه
-    //
-    var isAdmin =
-        await userManager.IsInRoleAsync(
-            adminUser,
-            "Admin"
-        );
-
-    if (!isAdmin)
-    {
-        var addRoleResult =
-            await userManager.AddToRoleAsync(
+        //
+        // منح الحساب دور Admin إذا لم يكن يمتلكه
+        //
+        var isAdmin =
+            await userManager.IsInRoleAsync(
                 adminUser,
                 "Admin"
             );
 
-        if (!addRoleResult.Succeeded)
+        if (!isAdmin)
         {
-            var errors = string.Join(
-                ", ",
-                addRoleResult.Errors.Select(
-                    error => error.Description
-                )
-            );
+            var addRoleResult =
+                await userManager.AddToRoleAsync(
+                    adminUser,
+                    "Admin"
+                );
 
-            throw new Exception(
-                $"فشل منح المدير الصلاحية: {errors}"
-            );
+            if (!addRoleResult.Succeeded)
+            {
+                var errors = string.Join(
+                    ", ",
+                    addRoleResult.Errors.Select(
+                        error => error.Description
+                    )
+                );
+
+                throw new Exception(
+                    $"فشل منح المدير الصلاحية: {errors}"
+                );
+            }
         }
     }
 }
